@@ -1,7 +1,8 @@
 {
 	"name": "cake-vscode",
+	"displayName": "Cake",
 	"publisher": "cake-build",
-	"description": "Cake script language support.",
+	"description": "Cake build script language support.",
 	"version": "0.1.0",
 	"icon": "images/cake.svg",
 	"private": true,
