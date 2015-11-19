@@ -1,6 +1,6 @@
-# Cake for Visual Studio Code
+# Cake
 
-This addin brings syntax highlighting for [Cake](http://cakebuild.net) build scripts to VS Code.
+This addin brings language support for [Cake](http://cakebuild.net) build scripts to Visual Studio Code.
 
 ## What is Cake?
 
