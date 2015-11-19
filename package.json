@@ -1,0 +1,48 @@
+{
+	"name": "cake-vscode",
+	"publisher": "cake-build",
+	"description": "Cake script language support.",
+	"version": "0.1.0",
+	"icon": "images/cake.svg",
+	"private": true,
+	"author": {
+		"name": "Cake Build"
+	},
+	"bugs": {
+		"url": "https://github.com/cake-build/cake-vscode/issues"
+  },
+  "homepage": "http://cakebuild.net",
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/cake-build/cake-vscode.git"
+	},
+	"galleryBanner": {
+        "color": "rgb(255, 224, 92)",
+        "theme": "light"
+  },
+	"engines": {
+		"vscode": "^0.10.1"
+	},
+	"categories": [
+		"Languages",
+		"Snippets"
+	],
+	"contributes": {
+		"languages": [{
+			"id": "cake",
+			"aliases": ["Cake Script", "Cake"],
+			"extensions": [".cake"]
+		}],
+		"grammars": [{
+			"language": "cake",
+			"scopeName": "source.cake",
+			"path": "./syntaxes/cake.json"
+		}],
+		"snippets": [
+            {
+                "language": "cake",
+                "path": "./snippets/snippets.json"
+            }
+        ]
+	}
+}
