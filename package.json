@@ -18,7 +18,7 @@
 		"url": "https://github.com/cake-build/cake-vscode.git"
 	},
 	"galleryBanner": {
-        "color": "rgb(255, 224, 92)",
+        "color": "#FFE05C",
         "theme": "light"
   },
 	"engines": {
