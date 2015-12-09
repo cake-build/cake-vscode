@@ -1,5 +1,7 @@
 # Cake
 
+[![Join the chat at https://gitter.im/cake-build/cake-vscode](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/cake-build/cake-vscode?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+
 This addin brings language support for [Cake](http://cakebuild.net) build scripts to Visual Studio Code.
 
 ## What is Cake?
