@@ -33,7 +33,7 @@
 			"id": "cake",
 			"aliases": ["Cake Script", "Cake"],
 			"extensions": [".cake"],
-			"configuration": "./cake.configuration.json"
+			"configuration": "./config/cake.configuration.json"
 		}],
 		"grammars": [{
 			"language": "cake",
