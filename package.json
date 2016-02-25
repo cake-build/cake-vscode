@@ -32,7 +32,8 @@
 		"languages": [{
 			"id": "cake",
 			"aliases": ["Cake Script", "Cake"],
-			"extensions": [".cake"]
+			"extensions": [".cake"],
+			"configuration": "./cake.configuration.json"
 		}],
 		"grammars": [{
 			"language": "cake",
