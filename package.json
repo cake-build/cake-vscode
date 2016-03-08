@@ -22,12 +22,16 @@
         "theme": "light"
   },
 	"engines": {
-		"vscode": "^0.10.1"
+		"vscode": "^0.10.9"
 	},
 	"categories": [
 		"Languages",
 		"Snippets"
 	],
+    "activationEvents": [
+		"onCommand:cake.bootstrapper"
+	],
+    "main": "./out/src/cakeExtension",
 	"contributes": {
 		"languages": [{
 			"id": "cake",
@@ -45,6 +49,22 @@
                 "language": "cake",
                 "path": "./snippets/snippets.json"
             }
-        ]
+        ],
+        "commands": [{
+			"command": "cake.bootstrapper",
+			"title": "Cake: Install the bootstrapper"
+		}],
+		"outputChannels": [
+			"Cake"
+		]
+	},
+    "scripts": {
+		"vscode:prepublish": "node ./node_modules/vscode/bin/compile",
+		"compile": "node ./node_modules/vscode/bin/compile -watch -p ./",
+        "postinstall": "node ./node_modules/vscode/bin/install"
+	},
+    "devDependencies": {
+		"typescript": "^1.7.5",
+		"vscode": "^0.11.0"
 	}
 }
