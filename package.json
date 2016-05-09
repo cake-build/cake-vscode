@@ -3,7 +3,7 @@
 	"displayName": "Cake",
 	"publisher": "cake-build",
 	"description": "Cake build script language support.",
-	"version": "0.1.1",
+	"version": "0.2.0",
 	"icon": "images/cake.svg",
 	"private": true,
 	"author": {
@@ -11,62 +11,88 @@
 	},
 	"bugs": {
 		"url": "https://github.com/cake-build/cake-vscode/issues"
-  },
-  "homepage": "http://cakebuild.net",
+	},
+	"homepage": "http://cakebuild.net",
 	"repository": {
 		"type": "git",
 		"url": "https://github.com/cake-build/cake-vscode.git"
 	},
 	"galleryBanner": {
-        "color": "#FFE05C",
-        "theme": "light"
-  },
+		"color": "#FFE05C",
+		"theme": "light"
+	},
 	"engines": {
-		"vscode": "^0.10.9"
+		"vscode": "^1.0.0"
 	},
 	"categories": [
 		"Languages",
 		"Snippets"
 	],
-    "activationEvents": [
+	"activationEvents": [
 		"onCommand:cake.bootstrapper"
 	],
-    "main": "./out/src/cakeExtension",
+	"main": "./out/src/cakeMain",
 	"contributes": {
-		"languages": [{
-			"id": "cake",
-			"aliases": ["Cake Script", "Cake"],
-			"extensions": [".cake"],
-			"configuration": "./config/cake.configuration.json"
-		}],
-		"grammars": [{
-			"language": "cake",
-			"scopeName": "source.cake",
-			"path": "./syntaxes/cake.json"
-		}],
+		"languages": [
+			{
+				"id": "cake",
+				"aliases": [
+					"Cake Script",
+					"Cake"
+				],
+				"extensions": [
+					".cake"
+				],
+				"configuration": "./config/cake.configuration.json"
+			}
+		],
+		"grammars": [
+			{
+				"language": "cake",
+				"scopeName": "source.cake",
+				"path": "./syntaxes/cake.json"
+			}
+		],
 		"snippets": [
-            {
-                "language": "cake",
-                "path": "./snippets/snippets.json"
-            }
-        ],
-        "commands": [{
-			"command": "cake.bootstrapper",
-			"title": "Cake: Install the bootstrapper"
-		}],
+			{
+				"language": "cake",
+				"path": "./snippets/snippets.json"
+			}
+		],
+		"commands": [
+			{
+				"command": "cake.bootstrapper",
+				"title": "Cake: Install a bootstrapper"
+			}
+		],
 		"outputChannels": [
 			"Cake"
-		]
+		],
+		"configuration": {
+			"type": "object",
+			"title": "Cake configuration",
+			"properties": {
+				"cake.bootstrappers": {
+					"type": "object",
+					"default": {
+						"win32": "http://cakebuild.net/download/bootstrapper/windows",
+						"darwin": "http://cakebuild.net/download/bootstrapper/osx",
+						"linux": "http://cakebuild.net/download/bootstrapper/linux"
+					},
+					"description": "The Cake bootstrapper URIs."
+				}
+			}
+		}
 	},
-    "scripts": {
+	"scripts": {
 		"vscode:prepublish": "node ./node_modules/vscode/bin/compile",
 		"compile": "node ./node_modules/vscode/bin/compile -watch -p ./",
-        "postinstall": "node ./node_modules/vscode/bin/install"
+		"postinstall": "node ./node_modules/vscode/bin/install"
 	},
-    "dependencies": {
-        "request":"^2.67.0"
-    },
-    "devDependencies": {
+	"dependencies": {
+		"request": "^2.67.0"
+	},
+	"devDependencies": {
 		"typescript": "^1.7.5",
 		"vscode": "^0.11.0"
 	}
