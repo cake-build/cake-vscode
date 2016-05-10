@@ -6,7 +6,7 @@ This addin brings language support for [Cake](http://cakebuild.net) build script
 
 In addition to integrated editing features, the extension also provide a command in the Command Palette for working with Cake files:
 
-* `Cake: Install the bootstrapper` to install the Cake bootstrapper in the root folder.
+* `Cake: Install a bootstrapper` to install a Cake bootstrapper for Windows, OS X or Linux in the root folder.
 
 ## What is Cake?
 
