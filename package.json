@@ -3,7 +3,7 @@
 	"displayName": "Cake",
 	"publisher": "cake-build",
 	"description": "Cake build script language support.",
-	"version": "0.2.0",
+	"version": "0.3.0",
 	"icon": "images/cake.svg",
 	"private": true,
 	"author": {
@@ -29,7 +29,8 @@
 		"Snippets"
 	],
 	"activationEvents": [
-		"onCommand:cake.bootstrapper"
+		"onCommand:cake.bootstrapper",
+		"onCommand:cake.configuration"
 	],
 	"main": "./out/src/cakeMain",
 	"contributes": {
@@ -63,6 +64,10 @@
 			{
 				"command": "cake.bootstrapper",
 				"title": "Cake: Install a bootstrapper"
+			},
+			{
+				"command": "cake.configuration",
+				"title": "Cake: Install a configuration file"
 			}
 		],
 		"outputChannels": [
@@ -80,6 +85,11 @@
 						"linux": "http://cakebuild.net/download/bootstrapper/linux"
 					},
 					"description": "The Cake bootstrapper URIs."
+				}, "cake.configuration": {
+					"type": "object",
+					"default": {
+						"config": "http://cakebuild.net/download/configuration"
+					}
 				}
 			}
 		}
