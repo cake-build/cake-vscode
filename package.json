@@ -80,16 +80,17 @@
 				"cake.bootstrappers": {
 					"type": "object",
 					"default": {
-						"win32": "http://cakebuild.net/download/bootstrapper/windows",
-						"darwin": "http://cakebuild.net/download/bootstrapper/osx",
-						"linux": "http://cakebuild.net/download/bootstrapper/linux"
+						"powershell": "http://cakebuild.net/download/bootstrapper/powershell",
+						"bash": "http://cakebuild.net/download/bootstrapper/bash"
 					},
 					"description": "The Cake bootstrapper URIs."
-				}, "cake.configuration": {
+				},
+				"cake.configuration": {
 					"type": "object",
 					"default": {
 						"config": "http://cakebuild.net/download/configuration"
-					}
+					},
+					"description": "The Cake configuration URI."
 				}
 			}
 		}

@@ -1,3 +1,4 @@
+import vscode = require('vscode');
 import {window, workspace, commands, ExtensionContext} from 'vscode';
 import * as path from 'path';
 import * as fs from 'fs';
@@ -7,7 +8,11 @@ import {CakeBootstrapperInfo} from './cakeBootstrapperInfo';
 export async function installCakeBootstrapper()
 {
   // Let the user select the bootstrapper.
-  var info = await window.showQuickPick(CakeBootstrapper.getBootstrappers());
+  var info = await window.showQuickPick(CakeBootstrapper.getBootstrappers(), {
+      "placeHolder": "Select the bootstrapper that you want to install",
+      "matchOnDetail": true,
+      "matchOnDescription": true
+  });
   if (!info) {
       return;
   }
@@ -35,7 +40,7 @@ export async function installCakeBootstrapper()
   var file = fs.createWriteStream(buildFilePath);
   var result = await bootstrapper.download(file);
   if (result) {
-      if (process.platform !== 'win32' && info.platform !== 'win32') {
+      if (process.platform !== 'win32' && info.posix) {
           fs.chmod(buildFilePath, 0o755);
       }
       window.showInformationMessage('Cake bootstrapper downloaded successfully.');
