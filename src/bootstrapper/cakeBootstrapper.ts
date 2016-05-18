@@ -10,9 +10,8 @@ export class CakeBootstrapper {
     private _info: CakeBootstrapperInfo;
 
     private static bootstrappers = [
-        new CakeBootstrapperInfo("win32", "Windows", "build.ps1"),
-        new CakeBootstrapperInfo("darwin", "OS X", "build.sh"),
-        new CakeBootstrapperInfo("linux", "Linux", "build.sh")
+        new CakeBootstrapperInfo("powershell", "PowerShell", "Bootstrapper for Windows", "build.ps1", false),
+        new CakeBootstrapperInfo("bash", "Bash", "Bootstrapper for Linux and OSX", "build.sh", true)
     ];
 
     constructor(info: CakeBootstrapperInfo) {
@@ -24,18 +23,7 @@ export class CakeBootstrapper {
     }
 
     public static getBootstrappers(): CakeBootstrapperInfo[] {
-        var result = [];
-        let current = CakeBootstrapper.bootstrappers.find(e => e.platform == process.platform);
-        if (current) {
-            result.push(current);
-        }
-        for(var info of CakeBootstrapper.bootstrappers) {
-            if(current && info.platform == current.platform) {
-                continue;
-            }
-            result.push(info);
-        }
-        return result;
+        return CakeBootstrapper.bootstrappers;
     }
 
     public download(stream: NodeJS.WritableStream): Thenable<boolean> {
@@ -49,7 +37,7 @@ export class CakeBootstrapper {
             }
 
             // Get the bootstrapper URI from the configuration.
-            var uri = config['bootstrappers'][this._info.platform];
+            var uri = config['bootstrappers'][this._info.id];
             if (!uri) {
                 reject("Could not resolve bootstrapper URI from configuration.");
                 return;
