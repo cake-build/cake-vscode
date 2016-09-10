@@ -108,8 +108,12 @@ Task("Publish-Extension")
     .WithCriteria(() => parameters.ShouldPublish)
     .Does(() =>
 {
+    var buildResultDir = Directory("./build-results");
+    var packageFile = File("cake-vscode-" + parameters.Version.SemVersion + ".vsix");
+
     VscePublish(new VscePublishSettings(){
-        PersonalAccessToken = parameters.Marketplace.Token
+        PersonalAccessToken = parameters.Marketplace.Token,
+        Package = buildResultDir + packageFile
     });
 });
 
