@@ -113,7 +113,7 @@ Task("Publish-Extension")
 
     VscePublish(new VscePublishSettings(){
         PersonalAccessToken = parameters.Marketplace.Token,
-        Package = packageFile
+        Package = buildResultDir + packageFile
     });
 });
 
