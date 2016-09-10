@@ -60,6 +60,12 @@ Task("Npm-Install")
     Npm.Install();
 });
 
+Task("Install-Vsce")
+    .Does(() =>
+{
+    Npm.Install(settings => settings.Package("vsce").Globally());
+});
+
 Task("Create-Release-Notes")
     .Does(() =>
 {
@@ -85,6 +91,7 @@ Task("Update-Project-Json-Version")
 Task("Package-Extension")
     .IsDependentOn("Update-Project-Json-Version")
     .IsDependentOn("Npm-Install")
+    .IsDependentOn("Install-Vsce")
     .IsDependentOn("Clean")
     .Does(() =>
 {
