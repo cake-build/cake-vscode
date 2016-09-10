@@ -103,6 +103,22 @@ Task("Package-Extension")
     });
 });
 
+Task("Publish-GitHub-Release")
+    .WithCriteria(() => parameters.ShouldPublish)
+    .Does(() =>
+{
+    var buildResultDir = Directory("./build-results");
+    var packageFile = File("cake-vscode-" + parameters.Version.SemVersion + ".vsix");
+
+    GitReleaseManagerAddAssets(parameters.GitHub.UserName, parameters.GitHub.Password, "cake-build", "cake-vscode", parameters.Version.Milestone, buildResultDir + packageFile);
+    GitReleaseManagerClose(parameters.GitHub.UserName, parameters.GitHub.Password, "cake-build", "cake-vscode", parameters.Version.Milestone);
+})
+.OnError(exception =>
+{
+    Information("Publish-GitHub-Release Task failed, but continuing with next Task...");
+    publishingError = true;
+});
+
 Task("Publish-Extension")
     .IsDependentOn("Package-Extension")
     .WithCriteria(() => parameters.ShouldPublish)
@@ -115,6 +131,11 @@ Task("Publish-Extension")
         PersonalAccessToken = parameters.Marketplace.Token,
         Package = buildResultDir + packageFile
     });
+})
+.OnError(exception =>
+{
+    Information("Publish-Extension Task failed, but continuing with next Task...");
+    publishingError = true;
 });
 
 //////////////////////////////////////////////////////////////////////
@@ -125,7 +146,14 @@ Task("Default")
     .IsDependentOn("Package-Extension");
 
 Task("Appveyor")
-    .IsDependentOn("Publish-Extension");
+    .IsDependentOn("Publish-Extension")
+    .Finally(() =>
+{
+    if(publishingError)
+    {
+        throw new Exception("An error occurred during the publishing of cake-vscode.  All publishing tasks have been attempted.");
+    }
+});
 
 Task("ReleaseNotes")
     .IsDependentOn("Create-Release-Notes");
