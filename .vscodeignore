@@ -6,3 +6,6 @@ test/**
 **/*.map
 .gitignore
 tsconfig.json
+tools/**
+build/**
+build-results/**
