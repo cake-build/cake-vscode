@@ -298,7 +298,11 @@
         },
         {
           "match": "(Task|WithCriteria|Does|IsDependentOn|OnError|ContinueOnError|ReportError|Finally|Setup|Teardown|TaskSetup|TaskTeardown|RunTarget)\\(",
-          "name": "keyword.cake.cs"
+          "captures": {
+            "1": {
+              "name": "keyword.cake.cs"
+            }
+          }
         },
         {
           "match": "\\b(from|where|select|group|into|orderby|join|let|on|equals|by|ascending|descending)\\b",
