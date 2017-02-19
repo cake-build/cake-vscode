@@ -8,6 +8,7 @@ In addition to integrated editing features, the extension also provides commands
 
 * `Cake: Install a bootstrapper` to install a Cake bootstrapper for Windows, OS X or Linux in the root folder.
 * `Cake: Install a configuration file` to install the default Cake Configuration file for controlling internal components of Cake.
+* `Cake: Execute task` to execute task in build.cake.
 
 ## What is Cake?
 
