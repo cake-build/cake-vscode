@@ -4,7 +4,7 @@
   "publisher": "cake-build",
   "description": "Cake build script language support.",
   "version": "0.5.0",
-  "icon": "images/cake.svg",
+  "icon": "images/cake.png",
   "private": true,
   "author": {
     "name": "Cake Build"
