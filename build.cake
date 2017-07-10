@@ -2,16 +2,16 @@
 // ADDINS
 //////////////////////////////////////////////////////////////////////
 
-#addin "nuget:?package=MagicChunks&version=1.1.0.34"
-#addin "nuget:?package=Cake.VsCode&version=0.6.0"
-#addin "nuget:?package=Cake.Npm&version=0.7.1"
+#addin "nuget:?package=MagicChunks&version=1.2.0.58"
+#addin "nuget:?package=Cake.VsCode&version=0.7.0"
+#addin "nuget:?package=Cake.Npm&version=0.10.0"
 
 //////////////////////////////////////////////////////////////////////
 // TOOLS
 //////////////////////////////////////////////////////////////////////
 
-#tool "nuget:?package=gitreleasemanager&version=0.5.0"
-#tool "nuget:?package=GitVersion.CommandLine&version=3.4.1"
+#tool "nuget:?package=gitreleasemanager&version=0.6.0"
+#tool "nuget:?package=GitVersion.CommandLine&version=3.6.5"
 
 // Load other scripts.
 #load "./build/parameters.cake"
@@ -57,13 +57,16 @@ Task("Clean")
 Task("Npm-Install")
     .Does(() =>
 {
-    Npm.Install();
+    NpmInstall();
 });
 
 Task("Install-Vsce")
     .Does(() =>
 {
-    Npm.Install(settings => settings.Package("vsce").Globally());
+    var settings = new NpmInstallSettings();
+    settings.Global = true;
+    settings.AddPackage("vsce");
+    NpmInstall(settings);
 });
 
 Task("Create-Release-Notes")
