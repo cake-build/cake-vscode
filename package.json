@@ -3,8 +3,8 @@
   "displayName": "Cake",
   "publisher": "cake-build",
   "description": "Cake build script language support.",
-  "version": "0.6.0",
-  "icon": "images/cake.svg",
+  "version": "0.7.0",
+  "icon": "images/cake.png",
   "private": true,
   "author": {
     "name": "Cake Build"
