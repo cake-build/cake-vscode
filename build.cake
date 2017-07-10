@@ -146,6 +146,7 @@ Task("Default")
     .IsDependentOn("Package-Extension");
 
 Task("Appveyor")
+    .IsDependentOn("Publish-GitHub-Release")
     .IsDependentOn("Publish-Extension")
     .Finally(() =>
 {
