@@ -104,6 +104,7 @@ Task("Package-Extension")
 });
 
 Task("Publish-GitHub-Release")
+    .IsDependentOn("Package-Extension")
     .WithCriteria(() => parameters.ShouldPublish)
     .Does(() =>
 {
