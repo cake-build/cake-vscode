@@ -30,7 +30,8 @@
   ],
   "activationEvents": [
     "onCommand:cake.bootstrapper",
-    "onCommand:cake.configuration"
+    "onCommand:cake.configuration",
+    "onCommand:cake.execution"
   ],
   "main": "./out/src/cakeMain",
   "contributes": {
@@ -73,6 +74,10 @@
       {
         "command": "cake.configuration",
         "title": "Cake: Install a configuration file"
+      }, 
+      {
+        "command": "cake.execution",
+        "title": "Cake: Execute task"
       }
     ],
     "outputChannels": [
