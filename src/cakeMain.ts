@@ -60,7 +60,7 @@ async function getCakeScriptsAsTasks(): Promise<vscode.Task[]> {
     }
 
     try {
-        let files = await vscode.workspace.findFiles('**/*.cake', 'tools');
+        let files = await vscode.workspace.findFiles('**/*.cake');
         if (files.length === 0) {
             return emptyTasks;
         }
