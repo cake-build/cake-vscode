@@ -20,7 +20,7 @@ export function activate(context: vscode.ExtensionContext): void {
     }));
 
     function onConfigurationChanged() {
-        let autoDetect = vscode.workspace.getConfiguration('npm').get<AutoDetect>('autoDetect');
+        let autoDetect = vscode.workspace.getConfiguration('cake').get<AutoDetect>('autoDetect');
 		if (taskProvider  && autoDetect === 'off') {
             taskProvider.dispose();
             taskProvider = undefined;
