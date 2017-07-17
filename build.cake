@@ -60,6 +60,15 @@ Task("Npm-Install")
     NpmInstall();
 });
 
+Task("Install-TypeScript")
+    .Does(() =>
+{
+    var settings = new NpmInstallSettings();
+    settings.Global = true;
+    settings.AddPackage("typescript");
+    NpmInstall(settings);
+});
+
 Task("Install-Vsce")
     .Does(() =>
 {
@@ -94,6 +103,7 @@ Task("Update-Project-Json-Version")
 Task("Package-Extension")
     .IsDependentOn("Update-Project-Json-Version")
     .IsDependentOn("Npm-Install")
+    .IsDependentOn("Install-TypeScript")
     .IsDependentOn("Install-Vsce")
     .IsDependentOn("Clean")
     .Does(() =>
