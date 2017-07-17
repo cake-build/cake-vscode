@@ -30,7 +30,8 @@
   ],
   "activationEvents": [
     "onCommand:cake.bootstrapper",
-    "onCommand:cake.configuration"
+    "onCommand:cake.configuration",
+    "onCommand:workbench.action.tasks.runTask"
   ],
   "main": "./out/src/cakeMain",
   "contributes": {
