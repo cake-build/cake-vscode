@@ -82,6 +82,15 @@
       "type": "object",
       "title": "Cake configuration",
       "properties": {
+        "cake.autoDetect": {
+          "type": "string",
+          "enum": [
+            "off",
+            "on"
+          ],
+          "default": "on",
+          "description": "Decide whether to automatically import Cake tasks or not."
+        },
         "cake.bootstrappers": {
           "type": "object",
           "default": {
