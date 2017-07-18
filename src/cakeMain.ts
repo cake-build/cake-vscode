@@ -60,7 +60,8 @@ async function getCakeScriptsAsTasks(): Promise<vscode.Task[]> {
     }
 
     try {
-        let files = await vscode.workspace.findFiles('**/*.cake');
+        let cakeConfig = vscode.workspace.getConfiguration('cake');
+        let files = await vscode.workspace.findFiles(cakeConfig.scriptsGlobPattern, cakeConfig.scriptsExcludePattern );
         if (files.length === 0) {
             return emptyTasks;
         }
@@ -69,7 +70,7 @@ async function getCakeScriptsAsTasks(): Promise<vscode.Task[]> {
         files.forEach(file => {
             const contents = fs.readFileSync(file.fsPath).toString();
 
-            let taskRegularExpression = /Task\("(.*?)"\)/g;
+            let taskRegularExpression = new RegExp(cakeConfig.taskRegularExpression, "g");
 
             let matches, taskNames = [];
             while (matches = taskRegularExpression.exec(contents)) {
