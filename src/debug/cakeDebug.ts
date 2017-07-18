@@ -31,10 +31,22 @@ export class CakeDebug {
         return "";
     }
 
+    public getToolFolderPath(): string {
+        if (vscode.workspace.rootPath) {
+            return path.join(vscode.workspace.rootPath, "tools");
+        }
+
+        return "";
+    }
+
     public downloadAndExtract(): Thenable<boolean> {
         return new Promise((resolve, reject) => {
             // Download the NuGet Package
             let vm = this;
+            if (!fs.existsSync(vm.getToolFolderPath())) {
+                fs.mkdirSync(vm.getToolFolderPath());
+            }
+
             request.get("http://nuget.org/api/v2/package/Cake.CoreCLR/", { timeout: 10000 })
                 .on('end', function () {
                     var zip = new AdmZip(vm.getNupkgPath());
