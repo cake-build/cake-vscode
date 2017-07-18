@@ -31,7 +31,8 @@
   "activationEvents": [
     "onCommand:cake.bootstrapper",
     "onCommand:cake.configuration",
-    "onCommand:workbench.action.tasks.runTask"
+    "onCommand:workbench.action.tasks.runTask",
+    "onCommand:cake.provideInitialConfigurations"
   ],
   "main": "./out/src/cakeMain",
   "contributes": {
@@ -113,13 +114,14 @@
     "debuggers": [
       {
         "type": "cake",
-        "label": "Cake Debug",
+        "label": "Cake",
+        "initialConfigurations": "cake.provideInitialConfigurations",
         "configurationSnippets": [
           {
-            "label": "Debug Cake Script",
+            "label": "Cake: Debug Script",
             "description": "test",
             "body": {
-              "name": "Debug Cake Script",
+              "name": "Cake: Debug Script",
               "type": "coreclr",
               "request": "launch",
               "program": "^\"\\${workspaceRoot}/tools/Cake.CoreCLR/Cake.dll\"",

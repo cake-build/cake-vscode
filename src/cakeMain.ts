@@ -18,6 +18,32 @@ export function activate(context: vscode.ExtensionContext): void {
         installCakeConfiguration();
     }));
 
+    const initialConfigurations = {
+        version: '0.2.0',
+        configurations: [
+            {
+                "name": "Cake: Debug Script",
+                "type": "coreclr",
+                "request": "launch",
+                "program": "${workspaceRoot}/tools/Cake.CoreCLR/Cake.dll",
+                "args": [
+                  "${workspaceRoot}/build.cake",
+                  "--debug",
+                  "--verbosity=diagnostic"
+                ],
+                "cwd": "${workspaceRoot}",
+                "stopAtEntry": true,
+                "externalConsole": false
+            }
+        ]
+    };
+
+    vscode.commands.registerCommand("cake.provideInitialConfigurations", () => {
+        return [
+            JSON.stringify(initialConfigurations, null, '\t')
+        ].join('\n');
+    });
+
     function onConfigurationChanged() {
         let autoDetect = vscode.workspace.getConfiguration('cake').get('taskRunner.autoDetect');
         if (taskProvider  && !autoDetect) {
