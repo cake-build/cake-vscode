@@ -109,7 +109,33 @@
           "description": "The Cake configuration URI."
         }
       }
-    }
+    },
+    "debuggers": [
+      {
+        "type": "cake",
+        "label": "Cake Debug",
+        "configurationSnippets": [
+          {
+            "label": "Debug Cake Script",
+            "description": "test",
+            "body": {
+              "name": "Debug Cake Script",
+              "type": "coreclr",
+              "request": "launch",
+              "program": "^\"\\${workspaceRoot}/tools/Cake.CoreCLR/Cake.dll\"",
+              "args": [
+                "^\"\\${workspaceRoot}/build.cake\"",
+                "--debug",
+                "--verbosity=diagnostic"
+              ],
+              "cwd": "^\"\\${workspaceRoot}\"",
+              "stopAtEntry": true,
+              "externalConsole": false
+            }
+          }
+        ]
+      }
+    ]
   },
   "scripts": {
     "vscode:prepublish": "tsc -p ./",
