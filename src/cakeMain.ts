@@ -87,7 +87,7 @@ async function getCakeScriptsAsTasks(): Promise<vscode.Task[]> {
                     buildCommand = `powershell -ExecutionPolicy ByPass -File build.ps1 -target \"${taskName}\"`;
                 }
 
-                const buildTask = new vscode.Task(kind, `Run ${taskName}`, 'Cake', new vscode.ShellExecution(`${buildCommand}`));
+                const buildTask = new vscode.Task(kind, `Run ${taskName}`, 'Cake', new vscode.ShellExecution(`${buildCommand}`), []);
                 buildTask.group = vscode.TaskGroup.Build;
 
                 result.push(buildTask);
