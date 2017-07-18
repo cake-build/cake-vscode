@@ -31,6 +31,7 @@
   "activationEvents": [
     "onCommand:cake.bootstrapper",
     "onCommand:cake.configuration",
+    "onCommand:cake.debug",
     "onCommand:workbench.action.tasks.runTask",
     "onCommand:cake.provideInitialConfigurations"
   ],
@@ -75,6 +76,10 @@
       {
         "command": "cake.configuration",
         "title": "Cake: Install a configuration file"
+      },
+      {
+        "command": "cake.debug",
+        "title": "Cake: Download Debug Dependencies"
       }
     ],
     "outputChannels": [
@@ -146,7 +151,8 @@
     "test": "node ./node_modules/vscode/bin/test"
   },
   "dependencies": {
-    "request": "^2.67.0"
+    "request": "^2.67.0",
+    "adm-zip": "^0.4.7"
   },
   "devDependencies": {
     "typescript": "^2.0.3",
