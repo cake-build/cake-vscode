@@ -15,14 +15,6 @@ export class CakeDebug {
         return "";
     }
 
-    public getNupkgPath(): string {
-        if (vscode.workspace.rootPath) {
-            return path.join(vscode.workspace.rootPath, "tools/Cake.CoreCLR.zip");
-        }
-
-        return "";
-    }
-
     public getNupkgDestinationPath(): string {
         if (vscode.workspace.rootPath) {
             return path.join(vscode.workspace.rootPath, "tools/Cake.CoreCLR");
@@ -47,16 +39,28 @@ export class CakeDebug {
                 fs.mkdirSync(vm.getToolFolderPath());
             }
 
+            var data:any[] = [], dataLen = 0;
+
             request.get("http://nuget.org/api/v2/package/Cake.CoreCLR/", { timeout: 10000 })
+                .on('data', function (chunk: any) {
+                    data.push(chunk);
+                    dataLen += chunk.length;
+                })
                 .on('end', function () {
-                    var zip = new AdmZip(vm.getNupkgPath());
+                    var buf = new Buffer(dataLen);
+
+                    for (var i = 0, len = data.length, pos = 0; i < len; i++) {
+                        data[i].copy(buf, pos);
+                        pos += data[i].length;
+                    }
+
+                    var zip = new AdmZip(buf);
                     zip.extractAllTo(vm.getNupkgDestinationPath());
                     resolve(true);
                 })
                 .on('error', function (e: any) {
                     reject(`Failed to download debug dependencies: ${e}`);
                 })
-                .pipe(fs.createWriteStream(this.getNupkgPath()))
         });
     }
 }
