@@ -6,7 +6,6 @@ import { installCakeConfiguration } from './configuration/cakeConfigurationComma
 import * as fs from 'fs';
 import * as os from 'os';
 
-type AutoDetect = 'on' | 'off';
 let taskProvider: vscode.Disposable | undefined;
 
 export function activate(context: vscode.ExtensionContext): void {
@@ -20,11 +19,11 @@ export function activate(context: vscode.ExtensionContext): void {
     }));
 
     function onConfigurationChanged() {
-        let autoDetect = vscode.workspace.getConfiguration('cake').get<AutoDetect>('autoDetect');
-        if (taskProvider  && autoDetect === 'off') {
+        let autoDetect = vscode.workspace.getConfiguration('cake').get('taskRunner.autoDetect');
+        if (taskProvider  && !autoDetect) {
             taskProvider.dispose();
             taskProvider = undefined;
-        } else if (!taskProvider && autoDetect === 'on') {
+        } else if (!taskProvider && autoDetect) {
             taskProvider = vscode.workspace.registerTaskProvider('cake', {
                 provideTasks: async () => {
                     return await getCakeScriptsAsTasks();
@@ -61,7 +60,7 @@ async function getCakeScriptsAsTasks(): Promise<vscode.Task[]> {
 
     try {
         let cakeConfig = vscode.workspace.getConfiguration('cake');
-        let files = await vscode.workspace.findFiles(cakeConfig.scriptsGlobPattern, cakeConfig.scriptsExcludePattern );
+        let files = await vscode.workspace.findFiles(cakeConfig.taskRunner.scriptsIncludePattern, cakeConfig.taskRunner.scriptsExcludePattern );
         if (files.length === 0) {
             return emptyTasks;
         }
@@ -70,7 +69,7 @@ async function getCakeScriptsAsTasks(): Promise<vscode.Task[]> {
         files.forEach(file => {
             const contents = fs.readFileSync(file.fsPath).toString();
 
-            let taskRegularExpression = new RegExp(cakeConfig.taskRegularExpression, "g");
+            let taskRegularExpression = new RegExp(cakeConfig.taskRunner.taskRegularExpression, "g");
 
             let matches, taskNames = [];
             while (matches = taskRegularExpression.exec(contents)) {

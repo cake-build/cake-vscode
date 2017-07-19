@@ -83,29 +83,15 @@
       "type": "object",
       "title": "Cake configuration",
       "properties": {
-        "cake.autoDetect": {
-          "type": "string",
-          "enum": [
-            "off",
-            "on"
-          ],
-          "default": "on",
-          "description": "Decide whether to automatically import Cake tasks or not."
-        },
-        "cake.scriptsGlobPattern": {
-          "type": "string",
-          "default": "**/*.cake",
-          "description": "Glob pattern to use for searching for script files to auto detect Cake Tasks from."
-        },
-        "cake.scriptsExcludePattern": {
-          "type": "string",
-          "default": "",
-          "description": "Glob pattern to use for which folders to exclude when searching for script files to auto detect Cake Tasks from."
-        },
-        "cake.taskRegularExpression": {
-          "type": "string",
-          "default": "Task\\s*?\\(\\s*?\"(.*?)\"\\s*?\\)",
-          "description": "Regular Expression pattern to use for searching for tasks within script files."
+        "cake.taskRunner": {
+          "type": "object",
+          "default": {
+            "autoDetect": true,
+            "scriptsIncludePattern": "**/*.cake",
+            "scriptsExcludePattern": "",
+            "taskRegularExpression": "Task\\s*?\\(\\s*?\"(.*?)\"\\s*?\\)"
+          },
+          "description": "The Cake Task Runner settings"
         },
         "cake.bootstrappers": {
           "type": "object",
