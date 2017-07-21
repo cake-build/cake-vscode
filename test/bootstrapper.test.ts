@@ -3,11 +3,7 @@
 //
 import * as assert from 'assert';
 
-import vscode = require('vscode');
-import * as path from 'path';
-import {MemoryStream} from './memorystream';
 import {CakeBootstrapper} from '../src/bootstrapper/cakeBootstrapper';
-import {CakeBootstrapperInfo} from '../src/bootstrapper/CakeBootstrapperInfo';
 
 // Defines a Mocha test suite to group tests of similar kind together
 suite("Bootstrapper", () => {

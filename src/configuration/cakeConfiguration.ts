@@ -7,7 +7,11 @@ import * as path from 'path';
 export class CakeConfiguration {
 
     public getTargetPath(): string {
-        return path.join(vscode.workspace.rootPath, "cake.config");
+        if (vscode.workspace.rootPath) {
+            return path.join(vscode.workspace.rootPath, "cake.config");
+        }
+
+        return "";
     }
 
     public download(stream: NodeJS.WritableStream): Thenable<boolean> {
@@ -15,7 +19,7 @@ export class CakeConfiguration {
 
             // Get the Cake configuration.
             var config = vscode.workspace.getConfiguration("cake");
-            if(!config) {
+            if (!config) {
                 reject("Could not resolve configuration configuration.");
                 return;
             }
@@ -29,7 +33,7 @@ export class CakeConfiguration {
 
             // Download the bootstrapper.
             request.get(uri, { timeout: 4000 })
-                .on('response', function (response) {
+                .on('response', function (response: any) {
                     if (response.statusCode === 200) {
                         resolve(true);
                     }
@@ -37,7 +41,7 @@ export class CakeConfiguration {
                         reject(`Failed to download configuration: ${response.statusMessage}`);
                     }
                 })
-                .on('error', function (e) {
+                .on('error', function (e: any) {
                     reject(`Failed to download configuration: ${e}`);
                 })
                 .pipe(stream);
