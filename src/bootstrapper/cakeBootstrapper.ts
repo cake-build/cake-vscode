@@ -3,7 +3,7 @@
 var request = require('request');
 import vscode = require('vscode');
 import * as path from 'path';
-import {CakeBootstrapperInfo} from './cakeBootstrapperInfo';
+import { CakeBootstrapperInfo } from './cakeBootstrapperInfo';
 
 export class CakeBootstrapper {
 
@@ -19,7 +19,11 @@ export class CakeBootstrapper {
     }
 
     public getTargetPath(): string {
-        return path.join(vscode.workspace.rootPath, this._info.fileName);
+        if (vscode.workspace.rootPath) {
+            return path.join(vscode.workspace.rootPath, this._info.fileName);
+        }
+
+        return "";
     }
 
     public static getBootstrappers(): CakeBootstrapperInfo[] {
@@ -31,7 +35,7 @@ export class CakeBootstrapper {
 
             // Get the Cake configuration.
             var config = vscode.workspace.getConfiguration("cake");
-            if(!config) {
+            if (!config) {
                 reject("Could not resolve bootstrapper configuration.");
                 return;
             }
@@ -45,7 +49,7 @@ export class CakeBootstrapper {
 
             // Download the bootstrapper.
             request.get(uri, { timeout: 4000 })
-                .on('response', function (response) {
+                .on('response', function (response: any) {
                     if (response.statusCode === 200) {
                         resolve(true);
                     }
@@ -53,7 +57,7 @@ export class CakeBootstrapper {
                         reject(`Failed to download bootstrapper: ${response.statusMessage}`);
                     }
                 })
-                .on('error', function (e) {
+                .on('error', function (e: any) {
                     reject(`Failed to download bootstrapper: ${e}`);
                 })
                 .pipe(stream);

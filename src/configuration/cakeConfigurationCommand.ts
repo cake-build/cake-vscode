@@ -1,5 +1,4 @@
-import {window, workspace, commands, ExtensionContext} from 'vscode';
-import * as path from 'path';
+import {window, workspace} from 'vscode';
 import * as fs from 'fs';
 import {CakeConfiguration} from './cakeConfiguration';
 
