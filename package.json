@@ -31,7 +31,9 @@
   "activationEvents": [
     "onCommand:cake.bootstrapper",
     "onCommand:cake.configuration",
-    "onCommand:workbench.action.tasks.runTask"
+    "onCommand:cake.debug",
+    "onCommand:workbench.action.tasks.runTask",
+    "onCommand:cake.provideInitialConfigurations"
   ],
   "main": "./out/src/cakeMain",
   "contributes": {
@@ -74,6 +76,10 @@
       {
         "command": "cake.configuration",
         "title": "Cake: Install a configuration file"
+      },
+      {
+        "command": "cake.debug",
+        "title": "Cake: Download Debug Dependencies"
       }
     ],
     "outputChannels": [
@@ -109,7 +115,34 @@
           "description": "The Cake configuration URI."
         }
       }
-    }
+    },
+    "debuggers": [
+      {
+        "type": "cake",
+        "label": "Cake",
+        "initialConfigurations": "cake.provideInitialConfigurations",
+        "configurationSnippets": [
+          {
+            "label": "Cake: Debug Script",
+            "description": "test",
+            "body": {
+              "name": "Cake: Debug Script",
+              "type": "coreclr",
+              "request": "launch",
+              "program": "^\"\\${workspaceRoot}/tools/Cake.CoreCLR/Cake.dll\"",
+              "args": [
+                "^\"\\${workspaceRoot}/build.cake\"",
+                "--debug",
+                "--verbosity=diagnostic"
+              ],
+              "cwd": "^\"\\${workspaceRoot}\"",
+              "stopAtEntry": true,
+              "externalConsole": false
+            }
+          }
+        ]
+      }
+    ]
   },
   "scripts": {
     "vscode:prepublish": "tsc -p ./",
@@ -118,7 +151,8 @@
     "test": "node ./node_modules/vscode/bin/test"
   },
   "dependencies": {
-    "request": "^2.67.0"
+    "request": "^2.67.0",
+    "adm-zip": "^0.4.7"
   },
   "devDependencies": {
     "typescript": "^2.0.3",
