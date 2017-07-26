@@ -30,5 +30,12 @@
             "",
             "RunTarget(target);"
         ]
+    },
+    "Cake Script Argument": {
+        "prefix": "cake-argument",
+        "body": [
+            "var ${1:target} = Argument(\"${2:target}\", \"${3:Default}\");",
+            "$0"
+        ]
     }
 }
