@@ -1,20 +1,34 @@
 {
     "Cake Task": {
-            "prefix": "task",
-            "body": [
-                "Task(\"${1:name}\");"
-            ],
-            "description": "Cake task"
-        },
+        "prefix": "task",
+        "body": [
+            "Task(\"${1:name}\");"
+        ],
+        "description": "Cake task"
+    },
     "Cake Task With Action": {
-            "prefix": "task",
-            "body": [
-                "Task(\"${1:name}\")",
-                "\t.Does(() =>",
-                "{",
-                "\t$0",
-                "});"
-            ],
-            "description": "Cake task (with action)"
-        }
+        "prefix": "task",
+        "body": [
+            "Task(\"${1:name}\")",
+            "\t.Does(() =>",
+            "{",
+            "\t$0",
+            "});"
+        ],
+        "description": "Cake task (with action)"
+    },
+    "Sample Cake Script": {
+        "prefix": "cake-sample",
+        "body": [
+            "var target = Argument(\"target\", \"Default\");",
+            "",
+            "Task(\"Default\")",
+            "\t.Does(() =>",
+            "{",
+            "\tInformation(\"Hello World!\");",
+            "});",
+            "",
+            "RunTarget(target);"
+        ]
+    }
 }
