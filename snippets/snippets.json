@@ -16,5 +16,19 @@
             "});"
         ],
         "description": "Cake task (with action)"
+    },
+    "Sample Cake Script": {
+        "prefix": "cake-sample",
+        "body": [
+            "var target = Argument(\"target\", \"Default\");",
+            "",
+            "Task(\"Default\")",
+            "\t.Does(() =>",
+            "{",
+            "\tInformation(\"Hello World!\");",
+            "});",
+            "",
+            "RunTarget(target);"
+        ]
     }
 }
