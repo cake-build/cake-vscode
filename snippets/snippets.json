@@ -62,5 +62,19 @@
             "var ${1:target} = Argument(\"${2:target}\", \"${3:Default}\");",
             "$0"
         ]
+    },
+    "Cake Addin Preprocessor Directive": {
+        "prefix": "cake-addin",
+        "body": [
+            "#addin \"nuget:?package=${1:Cake.Foo}&version=${2:1.2.3}\"",
+            "$0"
+        ]
+    },
+    "Cake Addin Preprocessor Directive - Full": {
+        "prefix": "cake-addin-full",
+        "body": [
+            "#addin \"nuget:${1:https://www.nuget.org/api/v2}?package=${2:Cake.Foo}&version=${3:1.2.3}\"",
+            "$0"
+        ]
     }
 }
