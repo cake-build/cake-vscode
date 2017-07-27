@@ -97,5 +97,19 @@
             "#reference \"${1:bin/myassembly.dll}\"",
             "$0"
         ]
+    },
+    "Cake Tool Preprocessor Directive": {
+        "prefix": "cake-tool",
+        "body": [
+            "#tool \"nuget:?package=${1:Cake.Foo}&version=${2:1.2.3}\"",
+            "$0"
+        ]
+    },
+    "Cake Tool Preprocessor Directive - Full": {
+        "prefix": "cake-tool-full",
+        "body": [
+            "#tool \"nuget:${1:https://www.nuget.org/api/v2}?package=${2:Cake.Foo}&version=${3:1.2.3}\"",
+            "$0"
+        ]
     }
 }
