@@ -32,6 +32,7 @@
     "onCommand:cake.bootstrapper",
     "onCommand:cake.configuration",
     "onCommand:cake.debug",
+    "onCommand:cake.buildFile",
     "onCommand:workbench.action.tasks.runTask",
     "onCommand:cake.provideInitialConfigurations"
   ],
@@ -80,6 +81,10 @@
       {
         "command": "cake.debug",
         "title": "Cake: Download Debug Dependencies"
+      },
+      {
+        "command": "cake.buildFile",
+        "title": "Cake: Install Sample Build Cake File"
       }
     ],
     "outputChannels": [

@@ -4,6 +4,7 @@ import * as vscode from 'vscode';
 import { installCakeBootstrapper } from './bootstrapper/cakeBootstrapperCommand';
 import { installCakeConfiguration } from './configuration/cakeConfigurationCommand';
 import { installCakeDebug} from './debug/cakeDebugCommand';
+import { installBuildFile } from './buildFile/cakeBuildFileCommand';
 import * as fs from 'fs';
 import * as os from 'os';
 
@@ -21,6 +22,10 @@ export function activate(context: vscode.ExtensionContext): void {
     // Register the debug command.
     context.subscriptions.push(vscode.commands.registerCommand('cake.debug', async() => {
         installCakeDebug();
+    }));
+    // Register the build file command.
+    context.subscriptions.push(vscode.commands.registerCommand('cake.buildFile', async() => {
+        installBuildFile();
     }))
 
     const initialConfigurations = {
