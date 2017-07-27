@@ -76,5 +76,19 @@
             "#addin \"nuget:${1:https://www.nuget.org/api/v2}?package=${2:Cake.Foo}&version=${3:1.2.3}\"",
             "$0"
         ]
+    },
+    "Cake Load Preprocessor Directive": {
+        "prefix": "cake-load",
+        "body": [
+            "#load \"${1:scripts/utilities.cake}\"",
+            "$0"
+        ]
+    },
+    "Cake Load Preprocessor Directive - NuGet": {
+        "prefix": "cake-load-nuget",
+        "body": [
+            "#load \"nuget:${1:https://www.nuget.org/api/v2}?package=${2:Cake.Foo}&version=${3:1.2.3}\"",
+            "$0"
+        ]
     }
 }
