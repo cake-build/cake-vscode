@@ -3,7 +3,7 @@ import {
     showScriptNameBox, showBootstrapperOption, handleScriptNameResponse, showConfigOption, installCake
 } from './actions'
 
-import { CANCEL } from './constants'
+import { CANCEL } from '../constants'
 
 export function installCakeToWorkspace() {
     showScriptNameBox()

@@ -33,6 +33,7 @@
     "onCommand:cake.configuration",
     "onCommand:cake.debug",
     "onCommand:cake.buildFile",
+    "onCommand:cake.install",
     "onCommand:workbench.action.tasks.runTask",
     "onCommand:cake.provideInitialConfigurations"
   ],
@@ -85,6 +86,10 @@
       {
         "command": "cake.buildFile",
         "title": "Cake: Install Sample Build Cake File"
+      },
+      {
+        "command": "cake.install",
+        "title": "Cake: Install Cake to workspace"
       }
     ],
     "outputChannels": [

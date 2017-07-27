@@ -1,7 +1,10 @@
 import * as vscode from 'vscode';
-import { DEFAULT_SCRIPT_NAME, CANCEL, OUTPUT_CHANNEL_NAME } from '../constants';
-import * as messages from '../messages';
+import { DEFAULT_SCRIPT_NAME, CANCEL } from '../../constants';
+import { messages } from "../../shared";
 import InstallOptions from "../installOptions";
+import { installCake } from './installCake';
+
+export {installCake}
 
 export function showScriptNameBox(): Thenable<string | undefined> {
     return vscode.window.showInputBox({
@@ -39,15 +42,6 @@ export function showConfigOption(installOpts: InstallOptions): Thenable<InstallO
         Promise.reject(CANCEL);
     }
     return getOption(messages.CONFIRM_INSTALL_CONFIG, installOpts, (opts, value) => opts.installConfig = value);
-}
-
-export function installCake(installOpts: InstallOptions): Thenable<string> {
-    return new Promise((resolve) => {
-        var channel = vscode.window.createOutputChannel(OUTPUT_CHANNEL_NAME);
-        channel.show();
-        channel.appendLine(JSON.stringify(installOpts));
-        return resolve('Successfully installed Cake to current workspace');
-    });
 }
 
 function getOption(
