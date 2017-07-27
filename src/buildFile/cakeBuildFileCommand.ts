@@ -9,7 +9,7 @@ export async function installBuildFile() {
         return;
     }
 
-    // Create the debug object
+    // Create the buildFile object
     let buildFile = new CakeBuildFile();
 
     var targetPath = buildFile.getTargetPath();
