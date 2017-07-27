@@ -90,5 +90,12 @@
             "#load \"nuget:${1:https://www.nuget.org/api/v2}?package=${2:Cake.Foo}&version=${3:1.2.3}\"",
             "$0"
         ]
+    },
+    "Cake Reference Preprocessor Directive": {
+        "prefix": "cake-reference",
+        "body": [
+            "#reference \"${1:bin/myassembly.dll}\"",
+            "$0"
+        ]
     }
 }
