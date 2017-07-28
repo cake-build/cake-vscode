@@ -22,10 +22,10 @@ export function installCake(installOpts: InstallOptions): Promise<string> {
         results.push(installBuildFile(installOpts.scriptName)
             .then(v => {
                 logResult(
-            v,
-            `Cake script successfully created at '${installOpts.scriptName}'`,
-            'Error encountered while creating default build script'
-        );
+                    v,
+                    `Cake script successfully created at '${installOpts.scriptName}'`,
+                    'Error encountered while creating default build script'
+                );
             }, err => {
                 logResult(false, '', err);
             }));
@@ -39,20 +39,20 @@ export function installCake(installOpts: InstallOptions): Promise<string> {
             results.push(installCakeConfiguration()
                 .then(v => {
                     logResult(
-                v,
-                'Configuration file successfully created at \'cake.config\'',
-                'Error encountered while creating configuration file'
-            );
+                        v,
+                        'Configuration file successfully created at \'cake.config\'',
+                        'Error encountered while creating configuration file'
+                    );
                 }));
         }
         Promise.all(results)
-        .then(_ => {
-            resolve('Successfully installed Cake to current workspace');
-        },
-    err => {
-        reject(err);
-    })
-    .catch(err => reject(err));
+            .then(_ => {
+                resolve('Successfully installed Cake to current workspace');
+            },
+            err => {
+                reject(err);
+            })
+            .catch(err => reject(err));
     })
 }
 

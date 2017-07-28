@@ -7,7 +7,7 @@ import { DEFAULT_SCRIPT_NAME } from "../constants";
 
 export class CakeBuildFile {
 
-    constructor(public scriptName: string = DEFAULT_SCRIPT_NAME) {}
+    constructor(public scriptName: string = DEFAULT_SCRIPT_NAME) { }
 
     public getTargetPath(): string {
         if (vscode.workspace.rootPath) {
@@ -58,7 +58,7 @@ export class CakeBuildFile {
                 buildFile.write('\n');
                 buildFile.write('RunTarget(target);');
                 resolve(true);
-            } catch(error) {
+            } catch (error) {
                 reject(false);
             }
         });

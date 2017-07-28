@@ -3,7 +3,7 @@
 import * as vscode from 'vscode';
 import { installCakeBootstrapper } from './bootstrapper/cakeBootstrapperCommand';
 import { installCakeConfigurationCommand } from './configuration/cakeConfigurationCommand';
-import { installCakeDebug} from './debug/cakeDebugCommand';
+import { installCakeDebug } from './debug/cakeDebugCommand';
 import { installBuildFileCommand } from './buildFile/cakeBuildFileCommand';
 import { installCakeToWorkspace } from './install/cakeInstallCommand';
 import * as fs from 'fs';
@@ -21,15 +21,15 @@ export function activate(context: vscode.ExtensionContext): void {
         installCakeConfigurationCommand();
     }));
     // Register the debug command.
-    context.subscriptions.push(vscode.commands.registerCommand('cake.debug', async() => {
+    context.subscriptions.push(vscode.commands.registerCommand('cake.debug', async () => {
         installCakeDebug();
     }));
     // Register the build file command.
-    context.subscriptions.push(vscode.commands.registerCommand('cake.buildFile', async() => {
+    context.subscriptions.push(vscode.commands.registerCommand('cake.buildFile', async () => {
         installBuildFileCommand();
     }));
     // Register the interactive install command.
-    context.subscriptions.push(vscode.commands.registerCommand('cake.install', async() => {
+    context.subscriptions.push(vscode.commands.registerCommand('cake.install', async () => {
         installCakeToWorkspace();
     }));
 
@@ -42,9 +42,9 @@ export function activate(context: vscode.ExtensionContext): void {
                 "request": "launch",
                 "program": "${workspaceRoot}/tools/Cake.CoreCLR/Cake.dll",
                 "args": [
-                  "${workspaceRoot}/build.cake",
-                  "--debug",
-                  "--verbosity=diagnostic"
+                    "${workspaceRoot}/build.cake",
+                    "--debug",
+                    "--verbosity=diagnostic"
                 ],
                 "cwd": "${workspaceRoot}",
                 "stopAtEntry": true,
@@ -61,7 +61,7 @@ export function activate(context: vscode.ExtensionContext): void {
 
     function onConfigurationChanged() {
         let autoDetect = vscode.workspace.getConfiguration('cake').get('taskRunner.autoDetect');
-        if (taskProvider  && !autoDetect) {
+        if (taskProvider && !autoDetect) {
             taskProvider.dispose();
             taskProvider = undefined;
         } else if (!taskProvider && autoDetect) {
@@ -101,7 +101,7 @@ async function getCakeScriptsAsTasks(): Promise<vscode.Task[]> {
 
     try {
         let cakeConfig = vscode.workspace.getConfiguration('cake');
-        let files = await vscode.workspace.findFiles(cakeConfig.taskRunner.scriptsIncludePattern, cakeConfig.taskRunner.scriptsExcludePattern );
+        let files = await vscode.workspace.findFiles(cakeConfig.taskRunner.scriptsIncludePattern, cakeConfig.taskRunner.scriptsExcludePattern);
         if (files.length === 0) {
             return emptyTasks;
         }

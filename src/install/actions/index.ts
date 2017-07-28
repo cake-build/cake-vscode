@@ -4,7 +4,7 @@ import { messages } from "../../shared";
 import InstallOptions from "../installOptions";
 import { installCake } from './installCake';
 
-export {installCake}
+export { installCake }
 
 export function showScriptNameBox(): Thenable<string | undefined> {
     return vscode.window.showInputBox({

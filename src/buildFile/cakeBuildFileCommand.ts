@@ -22,7 +22,7 @@ export async function installBuildFileCommand() {
 
     var result = await installBuildFile(name);
 
-    if(result) {
+    if (result) {
         window.showInformationMessage("Sample Build Cake File successfully created.");
     } else {
         window.showErrorMessage("Error creating Sample Build Cake File.");
