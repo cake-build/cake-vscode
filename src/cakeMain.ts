@@ -1,5 +1,3 @@
-'use strict';
-
 import * as vscode from 'vscode';
 import { installCakeBootstrapper } from './bootstrapper/cakeBootstrapperCommand';
 import { installCakeConfigurationCommand } from './configuration/cakeConfigurationCommand';

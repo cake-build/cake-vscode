@@ -1,5 +1,3 @@
-'use strict';
-
 var request = require('request');
 import vscode = require('vscode');
 import * as path from 'path';

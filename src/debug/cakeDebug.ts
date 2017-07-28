@@ -1,5 +1,3 @@
-'use strict';
-
 var request = require('request');
 var AdmZip = require('adm-zip');
 import * as vscode from 'vscode';

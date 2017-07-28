@@ -1,5 +1,3 @@
-'use strict';
-
 // This is an implementation of the QuickPickItem interface
 // that is used to show the available bootstrappers.
 // https://code.visualstudio.com/Docs/extensionAPI/vscode-api#QuickPickItem.
