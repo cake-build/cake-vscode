@@ -100,9 +100,11 @@ async function getCakeScriptsAsTasks(): Promise<vscode.Task[]> {
     try {
         let cakeConfig = vscode.workspace.getConfiguration('cake');
         let files = await vscode.workspace.findFiles(cakeConfig.taskRunner.scriptsIncludePattern, cakeConfig.taskRunner.scriptsExcludePattern);
+
         if (files.length === 0) {
             return emptyTasks;
         }
+
         const result: vscode.Task[] = [];
 
         files.forEach(file => {
@@ -111,6 +113,7 @@ async function getCakeScriptsAsTasks(): Promise<vscode.Task[]> {
             let taskRegularExpression = new RegExp(cakeConfig.taskRunner.taskRegularExpression, "g");
 
             let matches, taskNames = [];
+
             while (matches = taskRegularExpression.exec(contents)) {
                 taskNames.push(matches[1]);
             }
@@ -122,6 +125,7 @@ async function getCakeScriptsAsTasks(): Promise<vscode.Task[]> {
                 };
 
                 let buildCommand = `./build.sh --target \"${taskName}\"`;
+
                 if (os.platform() === "win32") {
                     buildCommand = `powershell -ExecutionPolicy ByPass -File build.ps1 -target \"${taskName}\"`;
                 }

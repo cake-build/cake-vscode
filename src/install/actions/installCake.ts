@@ -12,11 +12,13 @@ export function installCake(installOpts: InstallOptions): Promise<string> {
             logger.logError(ERROR_INVALID_SETTINGS, true);
             reject(ERROR_INVALID_SETTINGS)
         }
+
         // Check if there is an open folder in workspace
         if (vscode.workspace.rootPath === undefined) {
             vscode.window.showErrorMessage(ERROR_NO_WORKSPACE);
             reject(ERROR_NO_WORKSPACE);
         }
+
         logSettingsToOutput(installOpts);
         var results = new Array<Thenable<void>>();
         results.push(installBuildFile(installOpts.scriptName)

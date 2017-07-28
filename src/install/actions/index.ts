@@ -4,7 +4,7 @@ import { messages } from "../../shared";
 import InstallOptions from "../installOptions";
 import { installCake } from './installCake';
 
-export { installCake }
+export {installCake}
 
 export function showScriptNameBox(): Thenable<string | undefined> {
     return vscode.window.showInputBox({
@@ -18,6 +18,7 @@ export function handleScriptNameResponse(scriptName: string): Thenable<InstallOp
         // user cancelled
         return Promise.reject(CANCEL);
     }
+
     return Promise.resolve(new InstallOptions(scriptName));
 }
 
@@ -34,6 +35,7 @@ export function showBootstrapperOption(installOpts: InstallOptions): Thenable<In
     if (!installOpts) {
         Promise.reject(CANCEL);
     }
+
     return getOption(messages.CONFIRM_INSTALL_BOOTSTRAPPERS, installOpts, (opts, value) => opts.installBootstrappers = value);
 }
 
@@ -41,6 +43,7 @@ export function showConfigOption(installOpts: InstallOptions): Thenable<InstallO
     if (!installOpts) {
         Promise.reject(CANCEL);
     }
+
     return getOption(messages.CONFIRM_INSTALL_CONFIG, installOpts, (opts, value) => opts.installConfig = value);
 }
 
@@ -56,6 +59,7 @@ function getOption(
             if (!value) {
                 reject(CANCEL)
             }
+
             callback(options, value == 'Yes');
             resolve(options);
         });

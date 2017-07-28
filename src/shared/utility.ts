@@ -7,5 +7,6 @@ export async function checkForExisting(path: string): Promise<boolean> {
         var option = await window.showWarningMessage(message, 'Overwrite');
         return option === 'Overwrite';
     }
+
     return true;
 }

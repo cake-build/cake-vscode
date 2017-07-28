@@ -17,6 +17,7 @@ export class CakeConfiguration {
 
             // Get the Cake configuration.
             var config = vscode.workspace.getConfiguration("cake");
+
             if (!config) {
                 reject("Could not resolve configuration configuration.");
                 return;
@@ -24,6 +25,7 @@ export class CakeConfiguration {
 
             // Get the bootstrapper URI from the configuration.
             var uri = config['configuration']['config'];
+
             if (!uri) {
                 reject("Could not resolve configuration URI from configuration.");
                 return;

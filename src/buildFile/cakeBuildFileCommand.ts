@@ -35,9 +35,11 @@ export async function installBuildFile(fileName: string): Promise<boolean> {
 
     var targetPath = buildFile.getTargetPath();
     var ready = await utils.checkForExisting(targetPath);
+
     if (!ready) {
         Promise.reject(CANCEL);
     }
+
     var result = await buildFile.create();
     return result;
 }

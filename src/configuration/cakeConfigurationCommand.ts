@@ -12,6 +12,7 @@ export async function installCakeConfigurationCommand() {
     }
 
     var result = await installCakeConfiguration();
+
     if (result) {
         window.showInformationMessage('Cake configuration downloaded successfully.');
     } else {
@@ -26,6 +27,7 @@ export async function installCakeConfiguration(): Promise<boolean> {
     // Does the configuration already exist?
     var targetPath = configuration.getTargetPath();
     var ready = utils.checkForExisting(targetPath);
+
     if (!ready) {
         Promise.reject(CANCEL);
     }

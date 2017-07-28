@@ -10,6 +10,7 @@ export async function installCakeBootstrapperCommand() {
         "matchOnDetail": true,
         "matchOnDescription": true
     });
+
     if (!info) {
         return;
     }
@@ -19,6 +20,7 @@ export async function installCakeBootstrapperCommand() {
         window.showErrorMessage('You have not yet opened a folder.');
         return;
     }
+
     installCakeBootstrapperFile(info);
 }
 
@@ -28,9 +30,11 @@ export async function installCakeBootstrapperFile(info: CakeBootstrapperInfo, no
 
     // Does the bootstrapper already exist?
     var buildFilePath = bootstrapper.getTargetPath();
+
     if (fs.existsSync(buildFilePath)) {
         var message = `Overwrite the existing \'${info.fileName}\' file in this folder?`;
         var option = await window.showWarningMessage(message, 'Overwrite');
+
         if (option !== 'Overwrite') {
             return;
         }
@@ -39,10 +43,12 @@ export async function installCakeBootstrapperFile(info: CakeBootstrapperInfo, no
     // Download the bootstrapper and save it to disk.
     var file = fs.createWriteStream(buildFilePath);
     var result = await bootstrapper.download(file);
+
     if (result) {
         if (process.platform !== 'win32' && info.posix) {
             fs.chmod(buildFilePath, 0o755);
         }
+
         if (notifyOnCompletion) {
             window.showInformationMessage('Cake bootstrapper downloaded successfully.');
         }
