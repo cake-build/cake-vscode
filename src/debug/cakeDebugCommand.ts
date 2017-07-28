@@ -2,7 +2,7 @@ import { window, workspace } from 'vscode';
 import * as fs from 'fs';
 import { CakeDebug } from './cakeDebug';
 
-export async function installCakeDebug() {
+export async function installCakeDebugCommand() {
     // Check if there is an open folder in workspace
     if (workspace.rootPath === undefined) {
         window.showErrorMessage('You have not yet opened a folder.');

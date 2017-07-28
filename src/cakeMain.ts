@@ -1,9 +1,9 @@
 import * as vscode from 'vscode';
-import { installCakeBootstrapper } from './bootstrapper/cakeBootstrapperCommand';
+import { installCakeBootstrapperCommand } from './bootstrapper/cakeBootstrapperCommand';
 import { installCakeConfigurationCommand } from './configuration/cakeConfigurationCommand';
-import { installCakeDebug } from './debug/cakeDebugCommand';
+import { installCakeDebugCommand } from './debug/cakeDebugCommand';
 import { installBuildFileCommand } from './buildFile/cakeBuildFileCommand';
-import { installCakeToWorkspace } from './install/cakeInstallCommand';
+import { installCakeToWorkspaceCommand} from './install/cakeInstallCommand';
 import * as fs from 'fs';
 import * as os from 'os';
 
@@ -12,7 +12,7 @@ let taskProvider: vscode.Disposable | undefined;
 export function activate(context: vscode.ExtensionContext): void {
     // Register the bootstrapper command.
     context.subscriptions.push(vscode.commands.registerCommand('cake.bootstrapper', async () => {
-        installCakeBootstrapper();
+        installCakeBootstrapperCommand();
     }));
     // Register the configuration command.
     context.subscriptions.push(vscode.commands.registerCommand('cake.configuration', async () => {
@@ -20,7 +20,7 @@ export function activate(context: vscode.ExtensionContext): void {
     }));
     // Register the debug command.
     context.subscriptions.push(vscode.commands.registerCommand('cake.debug', async () => {
-        installCakeDebug();
+        installCakeDebugCommand();
     }));
     // Register the build file command.
     context.subscriptions.push(vscode.commands.registerCommand('cake.buildFile', async () => {
@@ -28,7 +28,7 @@ export function activate(context: vscode.ExtensionContext): void {
     }));
     // Register the interactive install command.
     context.subscriptions.push(vscode.commands.registerCommand('cake.install', async () => {
-        installCakeToWorkspace();
+        installCakeToWorkspaceCommand();
     }));
 
     const initialConfigurations = {

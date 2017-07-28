@@ -3,7 +3,7 @@ import * as fs from 'fs';
 import { CakeBootstrapper } from './cakeBootstrapper';
 import { CakeBootstrapperInfo } from "./cakeBootstrapperInfo";
 
-export async function installCakeBootstrapper() {
+export async function installCakeBootstrapperCommand() {
     // Let the user select the bootstrapper.
     var info = await window.showQuickPick(CakeBootstrapper.getBootstrappers(), {
         "placeHolder": "Select the bootstrapper that you want to install",

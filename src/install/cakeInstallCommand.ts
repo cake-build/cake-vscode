@@ -5,7 +5,7 @@ import {
 
 import { CANCEL } from '../constants'
 
-export function installCakeToWorkspace() {
+export function installCakeToWorkspaceCommand() {
     showScriptNameBox()
         .then(handleScriptNameResponse)
         .then(showBootstrapperOption)
