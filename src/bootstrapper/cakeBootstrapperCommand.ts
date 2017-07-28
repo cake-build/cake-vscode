@@ -1,6 +1,7 @@
 import {window, workspace} from 'vscode';
 import * as fs from 'fs';
 import {CakeBootstrapper} from './cakeBootstrapper';
+import { CakeBootstrapperInfo } from "./cakeBootstrapperInfo";
 
 export async function installCakeBootstrapper()
 {
@@ -19,7 +20,10 @@ export async function installCakeBootstrapper()
       window.showErrorMessage('You have not yet opened a folder.');
       return;
   }
+  installCakeBootstrapperFile(info);
+}
 
+export async function installCakeBootstrapperFile(info: CakeBootstrapperInfo, notifyOnCompletion: boolean = true) {
   // Create the bootstrapper from the platform.
   let bootstrapper = new CakeBootstrapper(info);
 
@@ -40,7 +44,9 @@ export async function installCakeBootstrapper()
       if (process.platform !== 'win32' && info.posix) {
           fs.chmod(buildFilePath, 0o755);
       }
-      window.showInformationMessage('Cake bootstrapper downloaded successfully.');
+      if (notifyOnCompletion) {
+          window.showInformationMessage('Cake bootstrapper downloaded successfully.');
+      }
   } else {
       window.showErrorMessage('Error downloading Cake bootstrapper.');
   }

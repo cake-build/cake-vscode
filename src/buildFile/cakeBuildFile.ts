@@ -3,11 +3,15 @@
 import * as vscode from 'vscode';
 import * as path from 'path';
 import * as fs from 'fs';
+import { DEFAULT_SCRIPT_NAME } from "../constants";
 
 export class CakeBuildFile {
+
+    constructor(public scriptName: string = DEFAULT_SCRIPT_NAME) {}
+
     public getTargetPath(): string {
         if (vscode.workspace.rootPath) {
-            return path.join(vscode.workspace.rootPath, "build.cake");
+            return path.join(vscode.workspace.rootPath, this.scriptName);
         }
 
         return "";
