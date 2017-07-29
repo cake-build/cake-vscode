@@ -47,6 +47,13 @@ export function showConfigOption(installOpts: InstallOptions): Thenable<InstallO
     return getOption(messages.CONFIRM_INSTALL_CONFIG, installOpts, (opts, value) => opts.installConfig = value);
 }
 
+export function showDebugOption(installOpts: InstallOptions): Thenable<InstallOptions | undefined> {
+    if (!installOpts) {
+        Promise.reject(CANCEL);
+    }
+    return getOption(messages.CONFIRM_DEBUG_CONFIG, installOpts, (opts, value) => opts.installDebug = value);
+}
+
 function getOption(
     message: string,
     options: InstallOptions,
