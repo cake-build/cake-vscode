@@ -5,8 +5,9 @@ import { ERROR_INVALID_SETTINGS, ERROR_NO_WORKSPACE } from "../../constants";
 import { installBootstrappers } from "./bootstrapper";
 import { installBuildFile } from "../../buildFile/cakeBuildFileCommand";
 import { installCakeConfiguration } from '../../configuration/cakeConfigurationCommand';
+import { installCakeDebug } from "../../debug/cakeDebugCommand";
 
-export function installCake(installOpts: InstallOptions): Promise<string> {
+export function installCake(installOpts: InstallOptions): Promise<{message: string, fileName: string}> {
     return new Promise((resolve, reject) => {
         if (!installOpts) {
             logger.logError(ERROR_INVALID_SETTINGS, true);
@@ -20,6 +21,7 @@ export function installCake(installOpts: InstallOptions): Promise<string> {
         }
 
         logSettingsToOutput(installOpts);
+        vscode.window.setStatusBarMessage('Installing Cake to workspace with requested options!');
         var results = new Array<Thenable<void>>();
         results.push(installBuildFile(installOpts.scriptName)
             .then(v => {
@@ -47,9 +49,23 @@ export function installCake(installOpts: InstallOptions): Promise<string> {
                     );
                 }));
         }
+        if (installOpts.installDebug) {
+            results.push(installCakeDebug()
+                .then(v => {
+                    logResult(
+                        v,
+                        'Debug dependencies successfully installed!',
+                        'Error encountered while install debugging dependencies'
+                    );
+                    vscode.window.showInformationMessage("Add a new 'Cake' debug configuration to get started debugging your script");
+                }));
+        }
         Promise.all(results)
             .then(_ => {
-                resolve('Successfully installed Cake to current workspace');
+                resolve({
+                    message: 'Successfully installed Cake to current workspace',
+                    fileName: `./${installOpts.scriptName}`
+                });
             },
             err => {
                 reject(err);
@@ -71,6 +87,6 @@ function logSettingsToOutput(installOpts: InstallOptions): void {
     logger.logToOutput(
         'Installing Cake to current workspace:',
         `  - Script name: '${installOpts.scriptName}'`,
-        `  - Installing: script${installOpts.installBootstrappers ? ', bootstrappers' : ''}${installOpts.installConfig ? ', cake.config' : ''}`
+        `  - Installing: script${installOpts.installBootstrappers ? ', bootstrappers' : ''}${installOpts.installConfig ? ', cake.config' : ''}${installOpts.installDebug ? ', debugging dependencies' : ''}`
     );
 }
