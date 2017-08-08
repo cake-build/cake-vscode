@@ -3,7 +3,7 @@
 //////////////////////////////////////////////////////////////////////
 
 #addin "nuget:?package=MagicChunks&version=1.2.0.58"
-#addin "nuget:?package=Cake.VsCode&version=0.7.0"
+#addin "nuget:https://www.myget.org/F/cake-contrib/api/v2?package=Cake.VsCode&prerelease"
 #addin "nuget:?package=Cake.Npm&version=0.10.0"
 
 //////////////////////////////////////////////////////////////////////
