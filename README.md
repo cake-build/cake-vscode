@@ -6,9 +6,45 @@ This addin brings language support for [Cake](https://cakebuild.net) build scrip
 
 In addition to integrated editing features, the extension also provides commands in the Command Palette for working with Cake files:
 
-* `Cake: Download Debug Dependencies` to download the Cake.CoreCLR NuGet Package into the tools folder, ready for enabling debugging
 * `Cake: Install a bootstrapper` to install a Cake bootstrapper for Windows, OS X or Linux in the root folder.
+* `Cake: Install Cake to workspace` will run through all of the available commands at once, to save having to run them one by one
+* `Cake: Download Debug Dependencies` to download the Cake.CoreCLR NuGet Package into the tools folder, ready for enabling debugging
+* `Cake: Install Sample Build Cake File` to install a sample Cake File that contains Setup and Teardown actions, a sample task, and argument parsing.
 * `Cake: Install a configuration file` to install the default Cake Configuration file for controlling internal components of Cake.
+
+### Snippets
+
+* `cake-addin`
+  * Provides a basic addin pre-processor directive, where the package name and version can be changed
+  * Default Value: `#addin "nuget:?package=Cake.Foo&version=1.2.3"`
+* `cake-addin-full`
+  * Provides a more complete addin pre-processor directive, where source, package name and version can be changed
+  * Default Value: `#addin "nuget:https://www.nuget.org/api/v2?package=Cake.Foo&version=1.2.3"`
+* `cake-argument`
+  * Provides code for basic input argument parsing, where variable name, argument name and default value can be changed
+  * Default Value: `var target = Argument("target", "Default");`
+* `cake-load`
+  * Provides a basic load pre-processor directive, where the path to the .cake file can be changed
+  * Default Value: `#load "scripts/utilities.cake"`
+* `cake-load-nuget`
+  * Provides a more complex load pre-processor directive, where source, package name and version can be changed
+  * Default Value: `#load "nuget:https://www.nuget.org/api/v2?package=Cake.Foo&version=1.2.3"`
+* `cake-reference`
+  * Provides a basic reference pre-processor directive, where path to the assembly can be changed
+  * Default Value: `#reference "bin/myassembly.dll"`
+* `cake-sample`
+  * Provides a complete sample Build Cake Script including Setup and Teardown actions, a single task, and argument parsing
+* `cake-tool`
+  * Provides a basic tool pre-processor directive, where the package name and version can be changed
+  * Default Value: `#tool "nuget:?package=Cake.Foo&version=1.2.3"`
+* `cake-tool-full`
+  * Provides a more complete tool pre-processor directive, where source, package name and version can be changed
+  * Default Value: `#tool "nuget:https://www.nuget.org/api/v2?package=Cake.Foo&version=1.2.3"`
+* `task`
+  * Provides a basic task definition, where the name of the task can be changed
+  * Default Value: `Task("name");`
+* `task` (With Action)
+  * Provides a more complex task definition, including an .Does body, where the name of the task can be changed
 
 ### Task Provider
 
