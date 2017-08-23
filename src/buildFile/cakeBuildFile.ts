@@ -40,7 +40,7 @@ export class CakeBuildFile {
                 buildFile.write('});\n');
                 buildFile.write('\n');
                 buildFile.write('Teardown(ctx =>\n');
-                buildFile.write('\n');
+                buildFile.write('{\n');
                 buildFile.write('   // Executed AFTER the last task.\n');
                 buildFile.write('   Information("Finished running tasks.");\n');
                 buildFile.write('});\n');
@@ -55,6 +55,7 @@ export class CakeBuildFile {
                 buildFile.write('});\n');
                 buildFile.write('\n');
                 buildFile.write('RunTarget(target);');
+                buildFile.end();
                 resolve(true);
             } catch (error) {
                 reject(false);

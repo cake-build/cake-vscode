@@ -9,20 +9,25 @@ export async function installCakeDebugCommand() {
         return;
     }
 
+    var result = await installCakeDebug();
+
+    if(result) {
+        window.showInformationMessage("Cake Debug Dependencies correctly downloaded.");
+    } else {
+        window.showErrorMessage("Error downloading Cake Debug Dependencies");
+    }
+}
+
+export async function installCakeDebug(): Promise<boolean> {
     // Create the debug object
     let debug = new CakeDebug();
 
     var targetPath = debug.getTargetPath();
     if (fs.existsSync(targetPath)) {
         window.showWarningMessage("Cake.CoreCLR package has already been installed.");
-        return;
+        return true;
     }
 
     var result = await debug.downloadAndExtract();
-
-    if (result) {
-        window.showInformationMessage("Cake Debug Dependencies correctly downloaded.");
-    } else {
-        window.showErrorMessage("Error downloading Cake Debug Dependencies");
-    }
+    return result;
 }
