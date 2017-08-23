@@ -27,7 +27,7 @@ export function installCakeToWorkspaceCommand() {
             if (err !== CANCEL) {
                 window.showErrorMessage(err.message || err || 'We encountered an unknown error! Please try again.');
             } else {
-                window.setStatusBarMessage('Cake installation cancelled!');
+                window.setStatusBarMessage('Cake installation cancelled.');
             }
         });
 }

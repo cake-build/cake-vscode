@@ -21,22 +21,22 @@ export function installCake(installOpts: InstallOptions): Promise<{message: stri
         }
 
         logSettingsToOutput(installOpts);
-        vscode.window.setStatusBarMessage('Installing Cake to workspace with requested options!');
+        vscode.window.setStatusBarMessage('Installing Cake to workspace with requested options...');
         var results = new Array<Thenable<void>>();
         results.push(installBuildFile(installOpts.scriptName)
             .then(v => {
                 logResult(
                     v,
-                    `Cake script successfully created at '${installOpts.scriptName}'`,
-                    'Error encountered while creating default build script'
+                    `Cake script successfully created at '${installOpts.scriptName}'.`,
+                    'Error encountered while creating default build script.'
                 );
             }, err => {
                 logResult(false, '', err);
             }));
         if (installOpts.installBootstrappers) {
             results.push(installBootstrappers()
-                .then(_ => logResult(true, 'Bootstrappers successfully created'))
-                .catch(err => logResult(false, '', `Error encountered while creating bootstrappers (${err})`))
+                .then(_ => logResult(true, 'Bootstrappers successfully created.'))
+                .catch(err => logResult(false, '', `Error encountered while creating bootstrappers (${err}).`))
             );
         }
         if (installOpts.installConfig) {
@@ -44,8 +44,8 @@ export function installCake(installOpts: InstallOptions): Promise<{message: stri
                 .then(v => {
                     logResult(
                         v,
-                        'Configuration file successfully created at \'cake.config\'',
-                        'Error encountered while creating configuration file'
+                        'Configuration file successfully created at \'cake.config\'.',
+                        'Error encountered while creating configuration file.'
                     );
                 }));
         }
@@ -54,16 +54,20 @@ export function installCake(installOpts: InstallOptions): Promise<{message: stri
                 .then(v => {
                     logResult(
                         v,
-                        'Debug dependencies successfully installed!',
-                        'Error encountered while install debugging dependencies'
+                        'Debug dependencies successfully installed.',
+                        'Error encountered while install debugging dependencies.'
                     );
-                    vscode.window.showInformationMessage("Add a new 'Cake' debug configuration to get started debugging your script");
+                    vscode.window.showInformationMessage("Add a new 'Cake' debug configuration to get started debugging your script.");
                 }));
         }
+
         Promise.all(results)
             .then(_ => {
+                // Clear the status bar, and display final notification
+                vscode.window.setStatusBarMessage('');
+
                 resolve({
-                    message: 'Successfully installed Cake to current workspace',
+                    message: 'Successfully installed Cake to current workspace.',
                     fileName: `./${installOpts.scriptName}`
                 });
             },
@@ -75,7 +79,7 @@ export function installCake(installOpts: InstallOptions): Promise<{message: stri
 }
 
 function logResult(result: boolean, success: string, failure?: string) {
-    failure = failure ? failure : 'An error has occurred!';
+    failure = failure ? failure : 'An error has occurred.';
     if (result) {
         logger.logToOutput(success);
     } else {

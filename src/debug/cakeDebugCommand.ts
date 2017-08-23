@@ -25,7 +25,7 @@ export async function installCakeDebug(): Promise<boolean> {
     var targetPath = debug.getTargetPath();
     if (fs.existsSync(targetPath)) {
         window.showWarningMessage("Cake.CoreCLR package has already been installed.");
-        return false;
+        return true;
     }
 
     var result = await debug.downloadAndExtract();
