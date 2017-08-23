@@ -26,7 +26,8 @@
   },
   "categories": [
     "Languages",
-    "Snippets"
+    "Snippets",
+    "Debuggers"
   ],
   "activationEvents": [
     "onCommand:cake.bootstrapper",
@@ -41,32 +42,12 @@
   "contributes": {
     "breakpoints": [
       {
-        "language": "cake"
-      }
-    ],
-    "languages": [
-      {
-        "id": "cake",
-        "aliases": [
-          "Cake Script",
-          "Cake"
-        ],
-        "extensions": [
-          ".cake"
-        ],
-        "configuration": "./config/cake.configuration.json"
-      }
-    ],
-    "grammars": [
-      {
-        "language": "cake",
-        "scopeName": "source.cake",
-        "path": "./syntaxes/cake.json"
+        "language": "csharp"
       }
     ],
     "snippets": [
       {
-        "language": "cake",
+        "language": "csharp",
         "path": "./snippets/snippets.json"
       }
     ],
