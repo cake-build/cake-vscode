@@ -3,7 +3,7 @@
   "displayName": "Cake",
   "publisher": "cake-build",
   "description": "Cake build script language support.",
-  "version": "0.9.0-unstable0037",
+  "version": "0.9.0-GH-55-0001",
   "icon": "images/cake.png",
   "private": true,
   "author": {
@@ -63,19 +63,19 @@
       },
       {
         "command": "cake.debug",
-        "title": "Cake: Download debug dependencies"
+        "title": "Cake: Install debug dependencies"
       },
       {
         "command": "cake.buildFile",
-        "title": "Cake: Install sample build Cake file"
+        "title": "Cake: Install sample build file"
       },
       {
         "command": "cake.install",
-        "title": "Cake: Install Cake to workspace"
+        "title": "Cake: Install to workspace"
       },
       {
         "command": "cake.intellisense",
-        "title": "Cake: Install intellisense support for Cake files"
+        "title": "Cake: Install intellisense support"
       }
     ],
     "outputChannels": [
