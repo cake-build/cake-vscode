@@ -4,6 +4,7 @@ import { installCakeConfigurationCommand } from './configuration/cakeConfigurati
 import { installCakeDebugCommand } from './debug/cakeDebugCommand';
 import { installBuildFileCommand } from './buildFile/cakeBuildFileCommand';
 import { installCakeToWorkspaceCommand} from './install/cakeInstallCommand';
+import { installCakeBakeryCommand} from './bakery/cakeBakeryCommand';
 import * as fs from 'fs';
 import * as os from 'os';
 
@@ -29,6 +30,10 @@ export function activate(context: vscode.ExtensionContext): void {
     // Register the interactive install command.
     context.subscriptions.push(vscode.commands.registerCommand('cake.install', async () => {
         installCakeToWorkspaceCommand();
+    }));
+    // Register the interactive install command.
+    context.subscriptions.push(vscode.commands.registerCommand('cake.intellisense', async () => {
+        installCakeBakeryCommand();
     }));
 
     const initialConfigurations = {
