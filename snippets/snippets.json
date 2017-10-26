@@ -1,20 +1,115 @@
 {
     "Cake Task": {
-            "prefix": "task",
-            "body": [
-                "Task(\"${1:name}\");"
-            ],
-            "description": "Cake task"
-        },
+        "prefix": "task",
+        "body": [
+            "Task(\"${1:name}\");"
+        ],
+        "description": "Cake task"
+    },
     "Cake Task With Action": {
-            "prefix": "task",
-            "body": [
-                "Task(\"${1:name}\")",
-                "\t.Does(() =>",
-                "{",
-                "\t$0",
-                "});"
-            ],
-            "description": "Cake task (with action)"
-        }
+        "prefix": "task",
+        "body": [
+            "Task(\"${1:name}\")",
+            "\t.Does(() =>",
+            "{",
+            "\t$0",
+            "});"
+        ],
+        "description": "Cake task (with action)"
+    },
+    "Sample Cake Script": {
+        "prefix": "cake-sample",
+        "body": [
+            "///////////////////////////////////////////////////////////////////////////////",
+            "// ARGUMENTS",
+            "///////////////////////////////////////////////////////////////////////////////",
+            "",
+            "var target = Argument(\"target\", \"Default\");",
+            "var configuration = Argument(\"configuration\", \"Release\");",
+            "",
+            "///////////////////////////////////////////////////////////////////////////////",
+            "// SETUP / TEARDOWN",
+            "///////////////////////////////////////////////////////////////////////////////",
+            "",
+            "Setup(ctx =>",
+            "{",
+            "\t// Executed BEFORE the first task.",
+            "\tInformation(\"Running tasks...\");",
+            "});",
+            "",
+            "Teardown(ctx =>",
+            "{",
+            "\t// Executed AFTER the last task.",
+            "\tInformation(\"Finished running tasks.\");",
+            "});",
+            "",
+            "///////////////////////////////////////////////////////////////////////////////",
+            "// TASKS",
+            "///////////////////////////////////////////////////////////////////////////////",
+            "",
+            "Task(\"Default\")",
+            "\t.Does(() =>",
+            "{",
+            "\tInformation(\"Hello Cake!\");",
+            "});",
+            "",
+            "RunTarget(target);"
+        ]
+    },
+    "Cake Script Argument": {
+        "prefix": "cake-argument",
+        "body": [
+            "var ${1:target} = Argument(\"${2:target}\", \"${3:Default}\");",
+            "$0"
+        ]
+    },
+    "Cake Addin Preprocessor Directive": {
+        "prefix": "cake-addin",
+        "body": [
+            "#addin \"nuget:?package=${1:Cake.Foo}&version=${2:1.2.3}\"",
+            "$0"
+        ]
+    },
+    "Cake Addin Preprocessor Directive - Full": {
+        "prefix": "cake-addin-full",
+        "body": [
+            "#addin \"nuget:${1:https://www.nuget.org/api/v2}?package=${2:Cake.Foo}&version=${3:1.2.3}\"",
+            "$0"
+        ]
+    },
+    "Cake Load Preprocessor Directive": {
+        "prefix": "cake-load",
+        "body": [
+            "#load \"${1:scripts/utilities.cake}\"",
+            "$0"
+        ]
+    },
+    "Cake Load Preprocessor Directive - NuGet": {
+        "prefix": "cake-load-nuget",
+        "body": [
+            "#load \"nuget:${1:https://www.nuget.org/api/v2}?package=${2:Cake.Foo}&version=${3:1.2.3}\"",
+            "$0"
+        ]
+    },
+    "Cake Reference Preprocessor Directive": {
+        "prefix": "cake-reference",
+        "body": [
+            "#reference \"${1:bin/myassembly.dll}\"",
+            "$0"
+        ]
+    },
+    "Cake Tool Preprocessor Directive": {
+        "prefix": "cake-tool",
+        "body": [
+            "#tool \"nuget:?package=${1:Cake.Foo}&version=${2:1.2.3}\"",
+            "$0"
+        ]
+    },
+    "Cake Tool Preprocessor Directive - Full": {
+        "prefix": "cake-tool-full",
+        "body": [
+            "#tool \"nuget:${1:https://www.nuget.org/api/v2}?package=${2:Cake.Foo}&version=${3:1.2.3}\"",
+            "$0"
+        ]
+    }
 }

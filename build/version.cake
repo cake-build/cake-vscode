@@ -47,10 +47,9 @@ public class BuildVersion
 
         if (string.IsNullOrEmpty(version) || string.IsNullOrEmpty(semVersion))
         {
-            context.Information("Fetching verson from SolutionInfo");
-            var assemblyInfo = context.ParseAssemblyInfo("./src/SolutionInfo.cs");
-            version = assemblyInfo.AssemblyVersion;
-            semVersion = assemblyInfo.AssemblyInformationalVersion;
+            context.Information("Hardcoding version number, as GitVersion didn't execute...");
+            version = "0.1.0";
+            semVersion = "0.1.0";
             milestone = string.Concat("v", version);
         }
 

@@ -1,5 +1,3 @@
-'use strict';
-
 var request = require('request');
 var AdmZip = require('adm-zip');
 import * as vscode from 'vscode';
@@ -39,7 +37,7 @@ export class CakeDebug {
                 fs.mkdirSync(vm.getToolFolderPath());
             }
 
-            var data:any[] = [], dataLen = 0;
+            var data: any[] = [], dataLen = 0;
 
             request.get("http://nuget.org/api/v2/package/Cake.CoreCLR/", { timeout: 10000 })
                 .on('data', function (chunk: any) {

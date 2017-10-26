@@ -1,9 +1,10 @@
-'use strict';
-
 import * as vscode from 'vscode';
-import { installCakeBootstrapper } from './bootstrapper/cakeBootstrapperCommand';
-import { installCakeConfiguration } from './configuration/cakeConfigurationCommand';
-import { installCakeDebug} from './debug/cakeDebugCommand';
+import { installCakeBootstrapperCommand } from './bootstrapper/cakeBootstrapperCommand';
+import { installCakeConfigurationCommand } from './configuration/cakeConfigurationCommand';
+import { installCakeDebugCommand } from './debug/cakeDebugCommand';
+import { installBuildFileCommand } from './buildFile/cakeBuildFileCommand';
+import { installCakeToWorkspaceCommand} from './install/cakeInstallCommand';
+import { installCakeBakeryCommand} from './bakery/cakeBakeryCommand';
 import * as fs from 'fs';
 import * as os from 'os';
 
@@ -12,29 +13,41 @@ let taskProvider: vscode.Disposable | undefined;
 export function activate(context: vscode.ExtensionContext): void {
     // Register the bootstrapper command.
     context.subscriptions.push(vscode.commands.registerCommand('cake.bootstrapper', async () => {
-        installCakeBootstrapper();
+        installCakeBootstrapperCommand();
     }));
     // Register the configuration command.
     context.subscriptions.push(vscode.commands.registerCommand('cake.configuration', async () => {
-        installCakeConfiguration();
+        installCakeConfigurationCommand();
     }));
     // Register the debug command.
-    context.subscriptions.push(vscode.commands.registerCommand('cake.debug', async() => {
-        installCakeDebug();
-    }))
+    context.subscriptions.push(vscode.commands.registerCommand('cake.debug', async () => {
+        installCakeDebugCommand();
+    }));
+    // Register the build file command.
+    context.subscriptions.push(vscode.commands.registerCommand('cake.buildFile', async () => {
+        installBuildFileCommand();
+    }));
+    // Register the interactive install command.
+    context.subscriptions.push(vscode.commands.registerCommand('cake.install', async () => {
+        installCakeToWorkspaceCommand();
+    }));
+    // Register the interactive install command.
+    context.subscriptions.push(vscode.commands.registerCommand('cake.intellisense', async () => {
+        installCakeBakeryCommand();
+    }));
 
-    const initialConfigurations = {
+    const initialCakeCoreClrConfigurations = {
         version: '0.2.0',
         configurations: [
             {
-                "name": "Cake: Debug Script",
+                "name": "Cake: Debug Script (CoreCLR)",
                 "type": "coreclr",
                 "request": "launch",
                 "program": "${workspaceRoot}/tools/Cake.CoreCLR/Cake.dll",
                 "args": [
-                  "${workspaceRoot}/build.cake",
-                  "--debug",
-                  "--verbosity=diagnostic"
+                    "${workspaceRoot}/build.cake",
+                    "--debug",
+                    "--verbosity=diagnostic"
                 ],
                 "cwd": "${workspaceRoot}",
                 "stopAtEntry": true,
@@ -43,15 +56,40 @@ export function activate(context: vscode.ExtensionContext): void {
         ]
     };
 
-    vscode.commands.registerCommand("cake.provideInitialConfigurations", () => {
+    const initialCakeMonoConfigurations = {
+        version: '0.2.0',
+        configurations: [
+            {
+                "name": "Cake: Debug Script (mono)",
+                "type": "mono",
+                "request": "launch",
+                "program": "${workspaceRoot}/tools/Cake/Cake.exe",
+                "args": [
+                    "${workspaceRoot}/build.cake",
+                    "--debug",
+                    "--verbosity=diagnostic"
+                ],
+                "cwd": "${workspaceRoot}",
+                "console": "internalConsole"
+            }
+        ]
+    }
+
+    vscode.commands.registerCommand("cake.provideInitialCoreClrConfigurations", () => {
         return [
-            JSON.stringify(initialConfigurations, null, '\t')
+            JSON.stringify(initialCakeCoreClrConfigurations, null, '\t')
+        ].join('\n');
+    });
+
+    vscode.commands.registerCommand("cake.provideInitialMonoConfigurations", () => {
+        return [
+            JSON.stringify(initialCakeMonoConfigurations, null, '\t')
         ].join('\n');
     });
 
     function onConfigurationChanged() {
         let autoDetect = vscode.workspace.getConfiguration('cake').get('taskRunner.autoDetect');
-        if (taskProvider  && !autoDetect) {
+        if (taskProvider && !autoDetect) {
             taskProvider.dispose();
             taskProvider = undefined;
         } else if (!taskProvider && autoDetect) {
@@ -91,10 +129,12 @@ async function getCakeScriptsAsTasks(): Promise<vscode.Task[]> {
 
     try {
         let cakeConfig = vscode.workspace.getConfiguration('cake');
-        let files = await vscode.workspace.findFiles(cakeConfig.taskRunner.scriptsIncludePattern, cakeConfig.taskRunner.scriptsExcludePattern );
+        let files = await vscode.workspace.findFiles(cakeConfig.taskRunner.scriptsIncludePattern, cakeConfig.taskRunner.scriptsExcludePattern);
+
         if (files.length === 0) {
             return emptyTasks;
         }
+
         const result: vscode.Task[] = [];
 
         files.forEach(file => {
@@ -103,6 +143,7 @@ async function getCakeScriptsAsTasks(): Promise<vscode.Task[]> {
             let taskRegularExpression = new RegExp(cakeConfig.taskRunner.taskRegularExpression, "g");
 
             let matches, taskNames = [];
+
             while (matches = taskRegularExpression.exec(contents)) {
                 taskNames.push(matches[1]);
             }
@@ -114,6 +155,7 @@ async function getCakeScriptsAsTasks(): Promise<vscode.Task[]> {
                 };
 
                 let buildCommand = `./build.sh --target \"${taskName}\"`;
+
                 if (os.platform() === "win32") {
                     buildCommand = `powershell -ExecutionPolicy ByPass -File build.ps1 -target \"${taskName}\"`;
                 }
