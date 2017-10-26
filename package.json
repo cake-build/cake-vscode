@@ -37,7 +37,8 @@
     "onCommand:cake.install",
     "onCommand:cake.intellisense",
     "onCommand:workbench.action.tasks.runTask",
-    "onCommand:cake.provideInitialConfigurations"
+    "onCommand:cake.provideInitialCoreClrConfigurations",
+    "onCommand:cake.provideInitialMonoConfigurations"
   ],
   "main": "./out/src/cakeMain",
   "contributes": {
@@ -114,15 +115,15 @@
     },
     "debuggers": [
       {
-        "type": "cake",
-        "label": "Cake",
-        "initialConfigurations": "cake.provideInitialConfigurations",
+        "type": "cake-coreclr",
+        "label": "Cake CoreCLR",
+        "initialConfigurations": "cake.provideInitialCoreClrConfigurations",
         "configurationSnippets": [
           {
-            "label": "Cake: Debug Script",
+            "label": "Cake: Debug Script (CoreCLR)",
             "description": "test",
             "body": {
-              "name": "Cake: Debug Script",
+              "name": "Cake: Debug Script (CoreCLR)",
               "type": "coreclr",
               "request": "launch",
               "program": "^\"\\${workspaceRoot}/tools/Cake.CoreCLR/Cake.dll\"",
@@ -134,6 +135,30 @@
               "cwd": "^\"\\${workspaceRoot}\"",
               "stopAtEntry": true,
               "externalConsole": false
+            }
+          }
+        ]
+      },
+      {
+        "type": "cake-mono",
+        "label": "Cake Mono",
+        "initialConfigurations": "cake.provideInitialMonoConfigurations",
+        "configurationSnippets": [
+          {
+            "label": "Cake: Debug Script (Mono)",
+            "description": "test",
+            "body": {
+              "name": "Cake: Debug Script (Mono)",
+              "type": "mono",
+              "request": "launch",
+              "program": "${workspaceRoot}/tools/Cake/Cake.exe",
+              "args": [
+                  "${workspaceRoot}/build.cake",
+                  "--debug",
+                  "--verbosity=diagnostic"
+              ],
+              "cwd": "${workspaceRoot}",
+              "console": "internalConsole"
             }
           }
         ]

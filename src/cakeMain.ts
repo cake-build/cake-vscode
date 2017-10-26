@@ -36,11 +36,11 @@ export function activate(context: vscode.ExtensionContext): void {
         installCakeBakeryCommand();
     }));
 
-    const initialConfigurations = {
+    const initialCakeCoreClrConfigurations = {
         version: '0.2.0',
         configurations: [
             {
-                "name": "Cake: Debug Script",
+                "name": "Cake: Debug Script (CoreCLR)",
                 "type": "coreclr",
                 "request": "launch",
                 "program": "${workspaceRoot}/tools/Cake.CoreCLR/Cake.dll",
@@ -56,9 +56,34 @@ export function activate(context: vscode.ExtensionContext): void {
         ]
     };
 
-    vscode.commands.registerCommand("cake.provideInitialConfigurations", () => {
+    const initialCakeMonoConfigurations = {
+        version: '0.2.0',
+        configurations: [
+            {
+                "name": "Cake: Debug Script (mono)",
+                "type": "mono",
+                "request": "launch",
+                "program": "${workspaceRoot}/tools/Cake/Cake.exe",
+                "args": [
+                    "${workspaceRoot}/build.cake",
+                    "--debug",
+                    "--verbosity=diagnostic"
+                ],
+                "cwd": "${workspaceRoot}",
+                "console": "internalConsole"
+            }
+        ]
+    }
+
+    vscode.commands.registerCommand("cake.provideInitialCoreClrConfigurations", () => {
         return [
-            JSON.stringify(initialConfigurations, null, '\t')
+            JSON.stringify(initialCakeCoreClrConfigurations, null, '\t')
+        ].join('\n');
+    });
+
+    vscode.commands.registerCommand("cake.provideInitialMonoConfigurations", () => {
+        return [
+            JSON.stringify(initialCakeMonoConfigurations, null, '\t')
         ].join('\n');
     });
 
