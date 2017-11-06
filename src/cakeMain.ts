@@ -3,8 +3,8 @@ import { installCakeBootstrapperCommand } from './bootstrapper/cakeBootstrapperC
 import { installCakeConfigurationCommand } from './configuration/cakeConfigurationCommand';
 import { installCakeDebugCommand } from './debug/cakeDebugCommand';
 import { installBuildFileCommand } from './buildFile/cakeBuildFileCommand';
-import { installCakeToWorkspaceCommand} from './install/cakeInstallCommand';
-import { installCakeBakeryCommand} from './bakery/cakeBakeryCommand';
+import { installCakeToWorkspaceCommand } from './install/cakeInstallCommand';
+import { installCakeBakeryCommand } from './bakery/cakeBakeryCommand';
 import * as fs from 'fs';
 import * as os from 'os';
 
@@ -35,57 +35,6 @@ export function activate(context: vscode.ExtensionContext): void {
     context.subscriptions.push(vscode.commands.registerCommand('cake.intellisense', async () => {
         installCakeBakeryCommand();
     }));
-
-    const initialCakeCoreClrConfigurations = {
-        version: '0.2.0',
-        configurations: [
-            {
-                "name": "Cake: Debug Script (CoreCLR)",
-                "type": "coreclr",
-                "request": "launch",
-                "program": "${workspaceRoot}/tools/Cake.CoreCLR/Cake.dll",
-                "args": [
-                    "${workspaceRoot}/build.cake",
-                    "--debug",
-                    "--verbosity=diagnostic"
-                ],
-                "cwd": "${workspaceRoot}",
-                "stopAtEntry": true,
-                "externalConsole": false
-            }
-        ]
-    };
-
-    const initialCakeMonoConfigurations = {
-        version: '0.2.0',
-        configurations: [
-            {
-                "name": "Cake: Debug Script (mono)",
-                "type": "mono",
-                "request": "launch",
-                "program": "${workspaceRoot}/tools/Cake/Cake.exe",
-                "args": [
-                    "${workspaceRoot}/build.cake",
-                    "--debug",
-                    "--verbosity=diagnostic"
-                ],
-                "cwd": "${workspaceRoot}",
-                "console": "internalConsole"
-            }
-        ]
-    }
-
-    vscode.commands.registerCommand("cake.provideInitialCoreClrConfigurations", () => {
-        return [
-            JSON.stringify(initialCakeCoreClrConfigurations, null, '\t')
-        ].join('\n');
-    });
-
-    vscode.commands.registerCommand("cake.provideInitialMonoConfigurations", () => {
-        return [
-            JSON.stringify(initialCakeMonoConfigurations, null, '\t')
-        ].join('\n');
-    });
 
     function onConfigurationChanged() {
         let autoDetect = vscode.workspace.getConfiguration('cake').get('taskRunner.autoDetect');
