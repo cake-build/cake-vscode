@@ -190,7 +190,11 @@
           }
         ]
       }
-    ]
+    ],
+    "languages": [{
+      "id": "ini",
+      "filenames": [ "cake.config"]
+    }]
   },
   "scripts": {
     "compile": "tsc -p ./",
