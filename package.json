@@ -22,7 +22,7 @@
     "theme": "light"
   },
   "engines": {
-    "vscode": "^1.17.0"
+    "vscode": "^1.16.0"
   },
   "categories": [
     "Languages",
@@ -208,7 +208,7 @@
   },
   "devDependencies": {
     "typescript": "^2.0.3",
-    "vscode": "^1.1.6",
+    "vscode": "^1.0.0",
     "mocha": "^2.3.3",
     "@types/node": "^6.0.40",
     "@types/mocha": "^2.2.32"
