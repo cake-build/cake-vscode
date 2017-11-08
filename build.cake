@@ -58,6 +58,8 @@ Task("Clean")
 Task("Npm-Install")
     .Does(() =>
 {
+    var settings = new NpmInstallSettings();
+    settings.LogLevel = NpmLogLevel.Silent;
     NpmInstall();
 });
 
@@ -67,6 +69,7 @@ Task("Install-TypeScript")
     var settings = new NpmInstallSettings();
     settings.Global = true;
     settings.AddPackage("typescript", "2.5.3");
+    settings.LogLevel = NpmLogLevel.Silent;
     NpmInstall(settings);
 });
 
@@ -76,6 +79,7 @@ Task("Install-Vsce")
     var settings = new NpmInstallSettings();
     settings.Global = true;
     settings.AddPackage("vsce", "1.31.1");
+    settings.LogLevel = NpmLogLevel.Silent;
     NpmInstall(settings);
 });
 
