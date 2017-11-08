@@ -5,6 +5,7 @@
 #addin "nuget:?package=MagicChunks&version=1.2.0.58"
 #addin "nuget:?package=Cake.VsCode&version=0.8.0"
 #addin "nuget:?package=Cake.Npm&version=0.10.0"
+#addin "nuget:?package=Cake.AppVeyor&version=1.1.0.9"
 
 //////////////////////////////////////////////////////////////////////
 // TOOLS
@@ -65,7 +66,7 @@ Task("Install-TypeScript")
 {
     var settings = new NpmInstallSettings();
     settings.Global = true;
-    settings.AddPackage("typescript");
+    settings.AddPackage("typescript", "2.5.3");
     NpmInstall(settings);
 });
 
@@ -74,7 +75,7 @@ Task("Install-Vsce")
 {
     var settings = new NpmInstallSettings();
     settings.Global = true;
-    settings.AddPackage("vsce");
+    settings.AddPackage("vsce", "1.31.1");
     NpmInstall(settings);
 });
 
@@ -114,6 +115,16 @@ Task("Package-Extension")
     VscePackage(new VscePackageSettings() {
         OutputFilePath = buildResultDir + packageFile
     });
+});
+
+Task("Upload-AppVeyor-Artifacts")
+    .IsDependentOn("Package-Extension")
+    .WithCriteria(() => parameters.IsRunningOnAppVeyor)
+.Does(() =>
+{
+    var buildResultDir = Directory("./build-results");
+    var packageFile = File("cake-vscode-" + parameters.Version.SemVersion + ".vsix");
+    AppVeyor.UploadArtifact(packageFile);
 });
 
 Task("Publish-GitHub-Release")
@@ -160,6 +171,7 @@ Task("Default")
     .IsDependentOn("Package-Extension");
 
 Task("Appveyor")
+    .IsDependentOn("Upload-AppVeyor-Artifacts")
     .IsDependentOn("Publish-GitHub-Release")
     .IsDependentOn("Publish-Extension")
     .Finally(() =>
