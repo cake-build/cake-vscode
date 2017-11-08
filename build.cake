@@ -124,7 +124,7 @@ Task("Upload-AppVeyor-Artifacts")
 {
     var buildResultDir = Directory("./build-results");
     var packageFile = File("cake-vscode-" + parameters.Version.SemVersion + ".vsix");
-    AppVeyor.UploadArtifact(packageFile);
+    AppVeyor.UploadArtifact(buildResultDir + packageFile);
 });
 
 Task("Publish-GitHub-Release")
