@@ -95,6 +95,7 @@ Task("Create-Release-Notes")
 });
 
 Task("Update-Project-Json-Version")
+    .WithCriteria(() => !parameters.IsLocalBuild)
     .Does(() =>
 {
     var projectToPackagePackageJson = "package.json";
