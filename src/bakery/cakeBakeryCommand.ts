@@ -1,4 +1,4 @@
-import { window, workspace } from 'vscode';
+import { commands, window, workspace } from 'vscode';
 import * as fs from 'fs';
 import { CakeBakery } from './cakeBakery';
 
@@ -13,6 +13,7 @@ export async function installCakeBakeryCommand() {
     // Install Cake Bakery
     var result = await installCakeDebug();
     if(result) {
+        commands.executeCommand('o.restart');
         window.showInformationMessage("Intellisense support for Cake files was installed.");
     } else {
         window.showErrorMessage("Error downloading intellisense support for Cake files.");
