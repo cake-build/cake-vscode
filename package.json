@@ -220,6 +220,6 @@
     "vscode": "^1.0.0"
   },
   "extensionDependencies": [
-    "vscode.csharp"
+    "ms-vscode.csharp"
   ]
 }
