@@ -56,7 +56,13 @@ export class CakeBuildFile {
                 buildFile.write('\n');
                 buildFile.write('RunTarget(target);');
                 buildFile.end();
-                resolve(true);
+
+                buildFile.on('finish', function() {
+                    vscode.workspace.openTextDocument(buildFile.path.toString()).then((document) => {
+                        vscode.window.showTextDocument(document);
+                    });
+                    resolve(true);
+                });
             } catch (error) {
                 reject(false);
             }

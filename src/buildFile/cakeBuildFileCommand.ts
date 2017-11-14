@@ -43,23 +43,3 @@ export async function installBuildFile(fileName: string): Promise<boolean> {
     var result = await buildFile.create();
     return result;
 }
-
-/*
-export function installBuildFile(fileName: string): Thenable<boolean> {
-    return new Promise((resolve, reject) => {
-        // Create the buildFile object
-        let buildFile = new CakeBuildFile(fileName);
-
-        var targetPath = buildFile.getTargetPath();
-        utils.checkForExisting(targetPath)
-            .then(v => {
-                if (!v) {
-                    reject(CANCEL);
-                }
-                buildFile.create()
-                    .then(_ => resolve(true), _ => reject(false));
-            }, _ => reject(false));
-    })
-
-}
-*/
