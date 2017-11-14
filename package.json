@@ -218,6 +218,6 @@
     "@types/mocha": "^2.2.32"
   },
   "extensionDependencies": [
-    "ms-vscode.csharp"
+    "vscode.csharp"
   ]
 }
