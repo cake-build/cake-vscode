@@ -4,27 +4,50 @@ import * as vscode from 'vscode';
 import * as path from 'path';
 import * as fs from 'fs';
 
+import * as ini from 'ini';
+function readConfigFile<T>(fileName: string) : T | undefined {
+    if(!vscode.workspace.rootPath || !fs.existsSync(path.join(vscode.workspace.rootPath, fileName))) {
+        return undefined;
+    }
+    return ini.parse(fs.readFileSync(path.join(vscode.workspace.rootPath, fileName), "utf-8"));
+}
+
+interface Config {
+    Tools: string,
+    Addins?: string,
+    Modules?: string
+}
+
 export class CakeBakery {
+    private config: Config;
+    constructor() {
+        const DEFAULT_TOOLS = "tools";
+        const CONFIG_NAME = "cake.config";
+        if(!vscode.workspace.rootPath) {
+            this.config = {Tools: '', Addins: '', Modules: ''};
+        } else {
+            this.config = readConfigFile<Config>(CONFIG_NAME) || {Tools: path.join(vscode.workspace.rootPath, DEFAULT_TOOLS)};
+        }
+    }
 
     public getTargetPath(): string {
-        if (vscode.workspace.rootPath) {
-            return path.join(vscode.workspace.rootPath, "tools/Cake.Bakery/tools/Cake.Bakery.exe");
-        }
-        return "";
+        return path.join(this.config.Tools, "Cake.Bakery/tools/Cake.Bakery.exe");
     }
 
     public getNupkgDestinationPath(): string {
-        if (vscode.workspace.rootPath) {
-            return path.join(vscode.workspace.rootPath, "tools/Cake.Bakery");
-        }
-        return "";
+        return path.join(this.config.Tools, "Cake.Bakery");
+        // if (vscode.workspace.rootPath) {
+        //     return path.join(vscode.workspace.rootPath, "tools/Cake.Bakery");
+        // }
+        // return "";
     }
 
     public getToolFolderPath(): string {
-        if (vscode.workspace.rootPath) {
-            return path.join(vscode.workspace.rootPath, "tools");
-        }
-        return "";
+        return this.config.Tools;
+        // if (vscode.workspace.rootPath) {
+        //     return path.join(vscode.workspace.rootPath, "tools");
+        // }
+        // return "";
     }
 
     public downloadAndExtract(): Thenable<boolean> {
