@@ -1,5 +1,15 @@
 export const CANCEL = '__CANCEL__';
+export const REMOVE = 'REMOVE';
+export const ADD = 'ADD';
 export const DEFAULT_SCRIPT_NAME = 'build.cake';
 export const OUTPUT_CHANNEL_NAME = 'Cake Workspace';
 export const ERROR_INVALID_SETTINGS = 'Invalid installation options! Please try again.';
 export const ERROR_NO_WORKSPACE = 'You have not yet opened a folder.';
+export const NUGET_SEARCH_URL = 'https://api-v2v3search-0.nuget.org/autocomplete';
+export const NUGET_VERSIONS_URL = "https://api.nuget.org/v3-flatcontainer/";
+export const DEFAULT_CAKE_NAME = "Cake";
+export const CAKE_FILE_EXTENSION_MATCHER = /\.(cake)$/;
+export const CAKE_ADDIN_DIRECTIVE = '#addin';
+export const CAKE_TOOL_DIRECTIVE = '#tool';
+export const CAKE_SEARCH_PAGE_SIZE = '100';
+export const RESPONSE_TIMEOUT = 10000;

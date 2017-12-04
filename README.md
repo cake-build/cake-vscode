@@ -10,6 +10,8 @@ In addition to integrated editing features, the extension also provides commands
 * `Cake: Install to workspace` will run through all of the available commands at once, to save having to run them one by one
 * `Cake: Install debug dependencies` to download the Cake.CoreCLR NuGet Package into the tools folder, ready for enabling debugging
 * `Cake: Install sample build file` to install a sample Cake File that contains Setup and Teardown actions, a sample task, and argument parsing.
+* `Cake: Add addin from nuget` to add or update an Addin from nuget in the specified Cake file.
+* `Cake: Add tool from nuget` to add or update an Addin from nuget in the specified Cake file.
 * `Cake: Install a configuration file` to install the default Cake Configuration file for controlling internal components of Cake.
 * `Cake: Install intellisense support` to download the Cake.Bakery NuGet Package into the tools folder, which in conjunction with OmniSharp provides intellisense support for Cake Files.
 

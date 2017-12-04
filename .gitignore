@@ -10,3 +10,6 @@ tools/**
 
 # until we move to Yarn
 yarn.lock
+
+# Mac OS X files
+.DS_Store

@@ -3,7 +3,7 @@ var AdmZip = require('adm-zip');
 import * as vscode from 'vscode';
 import * as path from 'path';
 import * as fs from 'fs';
-import * as utils from "./../shared/utility";
+import * as utils from "./../shared/utils";
 
 export class CakeDebug {
     private config: utils.Config;

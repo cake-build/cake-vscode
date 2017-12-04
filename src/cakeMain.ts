@@ -1,4 +1,6 @@
 import * as vscode from 'vscode';
+import { installAddAddinCommand } from './addDirective/cakeAddAddinCommand';
+import { installAddToolCommand } from './addDirective/cakeAddToolCommand';
 import { installCakeBootstrapperCommand } from './bootstrapper/cakeBootstrapperCommand';
 import { installCakeConfigurationCommand } from './configuration/cakeConfigurationCommand';
 import { installCakeDebugCommand } from './debug/cakeDebugCommand';
@@ -11,6 +13,14 @@ import * as os from 'os';
 let taskProvider: vscode.Disposable | undefined;
 
 export function activate(context: vscode.ExtensionContext): void {
+    // Register the add addin command.
+    context.subscriptions.push(vscode.commands.registerCommand('cake.addAddin', async () => {
+        installAddAddinCommand();
+    }));
+        // Register the add addin command.
+    context.subscriptions.push(vscode.commands.registerCommand('cake.addTool', async () => {
+        installAddToolCommand();
+    }));
     // Register the bootstrapper command.
     context.subscriptions.push(vscode.commands.registerCommand('cake.bootstrapper', async () => {
         installCakeBootstrapperCommand();
