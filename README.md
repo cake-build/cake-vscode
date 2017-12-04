@@ -73,3 +73,8 @@ For more information about Cake, please see the [Cake website](https://cakebuild
 There is a short introduction video to the Visual Studio Code Extension for Cake here:
 
 [![Introduction to Visual Studio Extension for Cake](https://img.youtube.com/vi/zzZuysl3xSg/0.jpg)](https://www.youtube.com/watch?v=zzZuysl3xSg)
+
+
+## Thanks
+
+The NuGet commands which have been added to this extension were based on this excellent work in this [VSCode Extension](https://github.com/jmrog/vscode-nuget-package-manager).  Rather than modify the projects `.csproj` or `.fsproj` files, the commands in this extension edit the `.cake` and `packages.config` files.  Our thanks go to [@jmrog](https://github.com/jmrog) for showing how this could be done!
