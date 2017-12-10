@@ -1,5 +1,5 @@
-import { window } from 'vscode';
 import * as fs from 'fs';
+import { window } from 'vscode';
 
 export default async function checkForExisting(path: string): Promise<boolean> {
     if (fs.existsSync(path)) {

@@ -1,44 +1,48 @@
+import { readCakeConfigFile } from '../shared/utils/readConfigFile';
 var request = require('request');
 var AdmZip = require('adm-zip');
-import * as vscode from 'vscode';
+import { window, workspace } from 'vscode';
 import * as path from 'path';
 import * as fs from 'fs';
-import * as utils from "./../shared/utils";
+import * as utils from './../shared/utils';
+import {
+    DEFAULT_RESPONSE_TIMEOUT,
+    CAKE_CORECLR_PACKAGE_URL
+} from '../constants';
 
 export class CakeDebug {
     private config: utils.Config;
     constructor() {
-        const DEFAULT_TOOLS = "tools";
-        const DEFAULT_ADDINS = "tools/Addins";
-        const DEFAULT_MODULES = "tools/Modules";
-
-        const CONFIG_NAME = "cake.config";
-        if (!vscode.workspace.rootPath) {
-            this.config = { Nuget: { Source: '', UseInProcessClient: false, LoadDependencies: false }, Paths: { Tools: '', Addins: '', Modules: '' }, Settings: { SkipVerification: false } };
-        } else {
-            this.config = utils.readConfigFile<utils.Config>(CONFIG_NAME) || { Nuget: { Source: '', UseInProcessClient: false, LoadDependencies: false }, Paths: { Tools: DEFAULT_TOOLS, Addins: DEFAULT_ADDINS, Modules: DEFAULT_MODULES }, Settings: { SkipVerification: false } };;
-        }
+        this.config = readCakeConfigFile(workspace.rootPath);
     }
 
     public getTargetPath(): string {
-        if (vscode.workspace.rootPath) {
-            return path.join(vscode.workspace.rootPath, this.config.Paths.Tools, "Cake.CoreCLR/Cake.dll");
+        if (workspace.rootPath) {
+            return path.join(
+                workspace.rootPath,
+                this.config.Paths.Tools,
+                'Cake.CoreCLR/Cake.dll'
+            );
         }
-        return "";
+        return '';
     }
 
     public getNupkgDestinationPath(): string {
-        if (vscode.workspace.rootPath) {
-            return path.join(vscode.workspace.rootPath, this.config.Paths.Tools, "Cake.CoreCLR");
+        if (workspace.rootPath) {
+            return path.join(
+                workspace.rootPath,
+                this.config.Paths.Tools,
+                'Cake.CoreCLR'
+            );
         }
-        return "";
+        return '';
     }
 
     public getToolFolderPath(): string {
-        if (vscode.workspace.rootPath) {
-            return path.join(vscode.workspace.rootPath, this.config.Paths.Tools);
+        if (workspace.rootPath) {
+            return path.join(workspace.rootPath, this.config.Paths.Tools);
         }
-        return "";
+        return '';
     }
 
     public downloadAndExtract(): Thenable<boolean> {
@@ -51,17 +55,21 @@ export class CakeDebug {
                     fs.mkdirSync(vm.getToolFolderPath());
                 }
             } catch (error) {
-                vscode.window.showErrorMessage("Unable to create directory");
+                window.showErrorMessage('Unable to create directory');
             }
 
-            var data: any[] = [], dataLen = 0;
+            var data: any[] = [],
+                dataLen = 0;
 
-            request.get("http://nuget.org/api/v2/package/Cake.CoreCLR/", { timeout: 10000 })
-                .on('data', function (chunk: any) {
+            request
+                .get(CAKE_CORECLR_PACKAGE_URL, {
+                    timeout: DEFAULT_RESPONSE_TIMEOUT
+                })
+                .on('data', function(chunk: any) {
                     data.push(chunk);
                     dataLen += chunk.length;
                 })
-                .on('end', function () {
+                .on('end', function() {
                     var buf = new Buffer(dataLen);
 
                     for (var i = 0, len = data.length, pos = 0; i < len; i++) {
@@ -73,9 +81,9 @@ export class CakeDebug {
                     zip.extractAllTo(vm.getNupkgDestinationPath());
                     resolve(true);
                 })
-                .on('error', function (e: any) {
+                .on('error', function(e: any) {
                     reject(`Failed to download debug dependencies: ${e}`);
-                })
+                });
         });
     }
 }

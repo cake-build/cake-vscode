@@ -11,10 +11,12 @@ export async function installCakeDebugCommand() {
 
     var result = await installCakeDebug();
 
-    if(result) {
-        window.showInformationMessage("Cake Debug Dependencies correctly downloaded.");
+    if (result) {
+        window.showInformationMessage(
+            'Cake Debug Dependencies correctly downloaded.'
+        );
     } else {
-        window.showErrorMessage("Error downloading Cake Debug Dependencies");
+        window.showErrorMessage('Error downloading Cake Debug Dependencies');
     }
 }
 
@@ -24,7 +26,9 @@ export async function installCakeDebug(): Promise<boolean> {
 
     var targetPath = debug.getTargetPath();
     if (fs.existsSync(targetPath)) {
-        window.showWarningMessage("Cake.CoreCLR package has already been installed.");
+        window.showWarningMessage(
+            'Cake.CoreCLR package has already been installed.'
+        );
         return true;
     }
 
