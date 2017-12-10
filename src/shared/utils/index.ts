@@ -1,11 +1,24 @@
-import checkFilePath from './checkFilePath';
+import { checkFilesPath, checkCakeFilesPath } from './checkFilesPath';
 import checkForExisting from './checkForExisting';
 import { Config } from './config';
 import flattenNestedArray from './flattenNestedArray';
 import getFetchOptions from './getFetchOptions';
-import getFilePath from './getFilePath';
-import handleError from './handleError';
-import readConfigFile from './readConfigFile';
+import getFilesPath from './getFilesPath';
+import {
+    getDirErrorMessage,
+    getFileErrorMessage,
+    handleError
+} from './handleError';
+import {
+    writeContentToFile,
+    writeLinesToFile,
+} from './handleWriteFile';
+import {
+    createEmptyPackagesConfigAsXml,
+    updatePackagesConfig,
+    parseAndUpdatePackagesConfig
+} from './handlePackagesConfig';
+import { readConfigFile, readCakeConfigFile } from './readConfigFile';
 import showFileQuickPick from './showFileQuickPick';
 import truncateFilePath from './truncateFilePath';
 import { window } from 'vscode';
@@ -13,15 +26,24 @@ import { window } from 'vscode';
 const showInformationMessage = window.showInformationMessage.bind(window);
 
 export {
-    checkFilePath,
+    checkFilesPath,
+    checkCakeFilesPath,
     checkForExisting,
     Config,
     flattenNestedArray,
     getFetchOptions,
-    getFilePath,
+    getFilesPath,
+    getDirErrorMessage,
+    getFileErrorMessage,
+    createEmptyPackagesConfigAsXml,
+    updatePackagesConfig,
+    parseAndUpdatePackagesConfig,
     handleError,
     readConfigFile,
+    readCakeConfigFile,
     showFileQuickPick,
     truncateFilePath,
-    showInformationMessage
+    showInformationMessage,
+    writeContentToFile,
+    writeLinesToFile
 };

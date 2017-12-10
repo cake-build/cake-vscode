@@ -1,5 +1,5 @@
 import { window, OutputChannel } from 'vscode';
-import { OUTPUT_CHANNEL_NAME } from "../constants";
+import { OUTPUT_CHANNEL_NAME } from '../constants';
 
 let channel: OutputChannel;
 
@@ -12,7 +12,7 @@ export function logToOutput(...items: string[]): void {
 
 export function logError(error: string, notify: boolean = true) {
     var channel = getChannel(OUTPUT_CHANNEL_NAME);
-    channel.appendLine('Error encountered during Cake operation.')
+    channel.appendLine('Error encountered during Cake operation.');
     channel.appendLine(`E: ${error}`);
 
     if (notify) {

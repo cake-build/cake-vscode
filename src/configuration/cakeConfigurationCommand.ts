@@ -1,8 +1,8 @@
 import { window, workspace } from 'vscode';
 import * as fs from 'fs';
 import { CakeConfiguration } from './cakeConfiguration';
-import { utils } from "../shared";
-import { CANCEL } from "../constants";
+import { utils } from '../shared';
+import { CANCEL } from '../constants';
 
 export async function installCakeConfigurationCommand() {
     // Check if there is an open folder in workspace
@@ -14,7 +14,9 @@ export async function installCakeConfigurationCommand() {
     var result = await installCakeConfiguration();
 
     if (result) {
-        window.showInformationMessage('Cake configuration downloaded successfully.');
+        window.showInformationMessage(
+            'Cake configuration downloaded successfully.'
+        );
     } else {
         window.showErrorMessage('Error downloading Cake configuration.');
     }

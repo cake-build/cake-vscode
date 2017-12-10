@@ -12,6 +12,7 @@ In addition to integrated editing features, the extension also provides commands
 * `Cake: Install sample build file` to install a sample Cake File that contains Setup and Teardown actions, a sample task, and argument parsing.
 * `Cake: Add addin from NuGet` to add or update an Addin from NuGet in the specified Cake file.
 * `Cake: Add tool from NuGet` to add or update a Tool from NuGet in the specified Cake file.
+* `Cake: Add module from NuGet` to add or update a Module from NuGet in the modules package.config.
 * `Cake: Install a configuration file` to install the default Cake Configuration file for controlling internal components of Cake.
 * `Cake: Install intellisense support` to download the Cake.Bakery NuGet Package into the tools folder, which in conjunction with OmniSharp provides intellisense support for Cake Files.
 

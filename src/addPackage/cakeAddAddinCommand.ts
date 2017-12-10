@@ -1,6 +1,4 @@
-import { window } from 'vscode';
-import { CANCEL } from './../constants';
-import { showInformationMessage } from '../shared/utils';
+import { showInformationMessage, writeLinesToFile } from '../shared/utils';
 
 import {
     fetchCakePackages,
@@ -9,9 +7,9 @@ import {
     fetchPackageVersions,
     handleVersionsResponse,
     showPackageSearchBox,
-    showVersionsQuickPick,
+    showVersionsWithLatestQuickPick,
     handleAddinWithContent,
-    handleWriteCakeFile
+    handleErrorMessage
 } from './actions';
 
 export function installAddAddinCommand() {
@@ -21,14 +19,9 @@ export function installAddAddinCommand() {
         .then(showPackageQuickPick)
         .then(fetchPackageVersions)
         .then(handleVersionsResponse)
-        .then(showVersionsQuickPick)
+        .then(showVersionsWithLatestQuickPick)
         .then(handleAddinWithContent)
-        .then(handleWriteCakeFile)
+        .then(writeLinesToFile)
         .then(showInformationMessage)
-        .then(undefined, (err: any) => {
-            window.setStatusBarMessage('');
-            if (err !== CANCEL) {
-                window.showErrorMessage(err.message || err || 'We encountered an unknown error! Please try again.');
-            }
-        });
+        .then(undefined, handleErrorMessage);
 }

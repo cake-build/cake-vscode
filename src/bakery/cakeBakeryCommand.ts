@@ -3,7 +3,6 @@ import * as fs from 'fs';
 import { CakeBakery } from './cakeBakery';
 
 export async function installCakeBakeryCommand() {
-
     // Make sure that we're in the correct place.
     if (workspace.rootPath === undefined) {
         window.showErrorMessage('You have not yet opened a folder.');
@@ -12,11 +11,15 @@ export async function installCakeBakeryCommand() {
 
     // Install Cake Bakery
     var result = await installCakeDebug();
-    if(result) {
+    if (result) {
         commands.executeCommand('o.restart');
-        window.showInformationMessage("Intellisense support for Cake files was installed.");
+        window.showInformationMessage(
+            'Intellisense support for Cake files was installed.'
+        );
     } else {
-        window.showErrorMessage("Error downloading intellisense support for Cake files.");
+        window.showErrorMessage(
+            'Error downloading intellisense support for Cake files.'
+        );
     }
 }
 
@@ -25,7 +28,9 @@ export async function installCakeDebug(): Promise<boolean> {
 
     var targetPath = bakery.getTargetPath();
     if (fs.existsSync(targetPath)) {
-        window.showWarningMessage("Intellisense support for Cake files has already been installed.");
+        window.showWarningMessage(
+            'Intellisense support for Cake files has already been installed.'
+        );
         return true;
     }
 

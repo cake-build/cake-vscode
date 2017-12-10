@@ -3,19 +3,24 @@
 // https://code.visualstudio.com/Docs/extensionAPI/vscode-api#QuickPickItem.
 
 export class CakeBootstrapperInfo {
-
     private _id: string;
     private _name: string;
     private _description: string;
     private _fileName: string;
     private _posix: boolean;
 
-    constructor(id: string, name: string, description: string, fileName: string, posix: boolean) {
+    constructor(
+        id: string,
+        name: string,
+        description: string,
+        fileName: string,
+        posix: boolean
+    ) {
         this._id = id;
         this._name = name;
         this._description = description;
         this._fileName = fileName;
-        this._posix = posix
+        this._posix = posix;
     }
 
     get id(): string {
