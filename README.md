@@ -73,24 +73,24 @@ The extension will also parse all `*.cake` files in the workspace and make them 
 There are a number of configuration options which allow you to control how the Task Provider works:
 
 * `cake.taskRunner.autoDetect`: a boolean value which toggles auto detection of Tasks on or off.  Default value is `true`
-* `cake.taskRunner.scriptsIncludePattern`: a glob pattern which specifies how to detect `.cake` files in the current workspace.  Default value is `**/*.cake`.
+* `cake.taskRunner.scriptsIncludePattern`: a glob pattern which specifies how to detect `.cake` files in the current workspace. Default value is `**/*.cake`.
 * `cake.taskRunner.scriptsExcludePattan`: a glob pattern which specifies all files and folders that shouldn't be included in search of current workspace.  Default value is `""`.
 * `cake.taskRunner.taskRegularExpression`: a regular expression pattern which is used to identify Tasks within the `*.cake` files. Default value is `Task\\s*?\\(\\s*?\"(.*?)\"\\s*?\\)`.
 
 ### Codelens
 
-The extension using codelens let you run and debug tasks individually on any `*.cake` file in your current workspace.
+The extension uses codelens to allow you to run and debug tasks individually on any `*.cake` file in your current workspace.
 
-There are a number of configuration options which allow you to control the cake output verbosity and what host framework to use for the debug session, etc.
+There are a number of configuration options which allow you to control the Cake output verbosity and what host framework to use for the debug session, etc.
 
 * `cake.codeLens.showCodeLens`: a boolean value which toggles codelens on or off. Default value is `true`.
 * `cake.codeLens.scriptsIncludePattern`: a glob pattern which specifies how to detect `.cake` files in the current workspace. Default value is `**/*.cake`.
 * `cake.codeLens.taskRegularExpression`: a regular expression pattern which is used to identify Tasks within the `*.cake` files. Default value is `Task\\s*?\\(\\s*?\"(.*?)\"\\s*?\\)`.
 * `cake.codeLens.runTask.verbosity`: allows you to control cake `run task` verbosity (`diagnostic`, `minimal`, `normal`, `quiet` and `verbose`. Default value is `normal`.
 * `cake.codeLens.debugTask.verbosity`: allows you to control cake `debug task` verbosity (`diagnostic`, `minimal`, `normal`, `quiet` and `verbose`. Default value is `normal`.
-* `cake.codeLens.debugTask.debugType`: "framework type of the debug session (`mono`or `coreclr`). Default value is `coreclr`.
+* `cake.codeLens.debugTask.debugType`: framework type of the debug session (`mono`or `coreclr`). Default value is `coreclr`.
 * `cake.codeLens.debugTask.request`: request type of the debug session. Default value is `launch`.
-* `cake.codeLens.debugTask.program`: program of the debug session (`tools/Cake/Cake.exe` for `mono` or `tools/Cake.CoreCLR/Cake.dll` for `coreclr`). Default value is `${workspaceRoot}/tools/Cake.CoreCLR/Cake.dll`.
+* `cake.codeLens.debugTask.program`: executable of the debug session (`tools/Cake/Cake.exe` for `mono` or `tools/Cake.CoreCLR/Cake.dll` for `coreclr`). Default value is `${workspaceRoot}/tools/Cake.CoreCLR/Cake.dll`.
 * `cake.codeLens.debugTask.cwd`: path to the working directory of the program being debugged. Default value is `${workspaceRoot}`.
 * `cake.codeLens.debugTask.stopAtEntry`: if true, the debugger should stop at the entry point of the target. Default value is `true`.
 * `cake.codeLens.debugTask.console`: console used by the debugger (`internalConsole`, `integratedTerminal` or `externalTerminal`) . Default value is `internalConsole`.

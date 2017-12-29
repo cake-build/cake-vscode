@@ -157,17 +157,17 @@
           "properties": {
             "showCodeLens": {
               "type": "boolean",
-              "description": "Show codelens for tasks on cake files",
+              "description": "Show codelens for tasks in Cake files",
               "default": true
             },
             "scriptsIncludePattern": {
               "type": "string",
-              "description": "Glob pattern to detect cake build scripts on current worksppace",
+              "description": "Glob pattern to detect cake build scripts in current workspace",
               "default": "**/*.cake"
             },
             "taskRegularExpression": {
               "type": "string",
-              "description": "Regular expression pattern to get tasks from cake script",
+              "description": "Regular expression pattern to get tasks from Cake script",
               "default": "Task\\s*?\\(\\s*?\"(.*?)\"\\s*?\\)"
             },
             "runTask": {
@@ -230,12 +230,12 @@
                 },
                 "program": {
                   "type": "string",
-                  "description": "The program of the debug session",
+                  "description": "The executable for the debug session",
                   "default": "${workspaceRoot}/tools/Cake.CoreCLR/Cake.dll"
                 },
                 "cwd": {
                   "type": "string",
-                  "description": "Path to the working directory of the program being debugged. Default is the current workspace.",
+                  "description": "The working directory of the Cake script being debugged. Default is the current workspace.",
                   "default": "${workspaceRoot}"
                 },
                 "stopAtEntry": {
@@ -284,7 +284,7 @@
                     },
                     "browserStdOut": {
                       "type": "boolean",
-                      "description": "Optional flag to determine if stdout text from the launching the web browser should be logged to the output window.",
+                      "description": "Optional flag to determine if stdout text from the launching web browser should be logged to the output window.",
                       "default": false
                     }
                   }
