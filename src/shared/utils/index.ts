@@ -22,6 +22,7 @@ import { readConfigFile, readCakeConfigFile } from './readConfigFile';
 import showFileQuickPick from './showFileQuickPick';
 import truncateFilePath from './truncateFilePath';
 import { window } from 'vscode';
+import TerminalExecutor from './terminalExecutor';
 
 const showInformationMessage = window.showInformationMessage.bind(window);
 
@@ -45,5 +46,6 @@ export {
     truncateFilePath,
     showInformationMessage,
     writeContentToFile,
-    writeLinesToFile
+    writeLinesToFile,
+    TerminalExecutor
 };

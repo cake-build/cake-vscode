@@ -21,3 +21,5 @@ export const CAKE_DEFAULT_ADDINS_PATH = 'tools/Addins';
 export const CAKE_DEFAULT_MODULES_PATH = 'tools/Modules';
 export const CAKE_CONFIG_NAME = 'cake.config';
 export const CAKE_PACKAGES_CONFIG_NAME = 'packages.config';
+export const CAKE_OUTPUT_CHANNEL = 'Cake';
+export const CAKE_DEFAULT_TERMINAL = 'Cake';

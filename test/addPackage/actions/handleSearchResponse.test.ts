@@ -1,5 +1,4 @@
 import * as assert from 'assert';
-
 import { Response } from 'node-fetch';
 import { handleSearchResponse } from '../../../src/addPackage/actions';
 
