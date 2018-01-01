@@ -39,7 +39,10 @@
     "onCommand:cake.buildFile",
     "onCommand:cake.install",
     "onCommand:cake.intellisense",
-    "onCommand:workbench.action.tasks.runTask"
+    "onCommand:cake.runTask",
+    "onCommand:cake.debugTask",
+    "onCommand:workbench.action.tasks.runTask",
+    "onLanguage:csharp"
   ],
   "main": "./out/src/cakeMain",
   "contributes": {
@@ -123,6 +126,172 @@
             "config": "https://cakebuild.net/download/configuration"
           },
           "description": "The Cake configuration URI."
+        },
+        "cake.codeLens": {
+          "type": "object",
+          "description": "The Cake codelens configuration",
+          "default": {
+            "showCodeLens": true,
+            "scriptsIncludePattern": "**/*.cake",
+            "taskRegularExpression": "Task\\s*?\\(\\s*?\"(.*?)\"\\s*?\\)",
+            "debugTask": {
+              "verbosity": "normal",
+              "debugType": "coreclr",
+              "request": "launch",
+              "program": "${workspaceRoot}/tools/Cake.CoreCLR/Cake.dll",
+              "cwd": "${workspaceRoot}",
+              "stopAtEntry": true,
+              "console": "internalConsole",
+              "logging": {
+                "exceptions": false,
+                "moduleLoad": false,
+                "programOutput": false,
+                "engineLogging": false,
+                "browserStdOut": false
+              }
+            },
+            "runTask": {
+              "verbosity": "normal"
+            }
+          },
+          "properties": {
+            "showCodeLens": {
+              "type": "boolean",
+              "description": "Show codelens for tasks in Cake files",
+              "default": true
+            },
+            "scriptsIncludePattern": {
+              "type": "string",
+              "description": "Glob pattern to detect cake build scripts in current workspace",
+              "default": "**/*.cake"
+            },
+            "taskRegularExpression": {
+              "type": "string",
+              "description": "Regular expression pattern to get tasks from Cake script",
+              "default": "Task\\s*?\\(\\s*?\"(.*?)\"\\s*?\\)"
+            },
+            "runTask": {
+              "type": "object",
+              "description": "Cake run task configuration",
+              "properties": {
+                "verbosity": {
+                  "type": "string",
+                  "description": "Represents Cake run task output verbosity",
+                  "enum": [
+                    "diagnostic",
+                    "minimal",
+                    "normal",
+                    "quiet",
+                    "verbose"
+                  ],
+                  "enumDescriptions": [
+                    "Diagnostic verbosity",
+                    "Minimal verbosity.",
+                    "Normal verbosity.",
+                    "Quiet verbosity.",
+                    "Verbose verbosity."
+                  ],
+                  "default": "diagnostic"
+                }
+              }
+            },
+            "debugTask": {
+              "type": "object",
+              "description": "Cake debug task configuration",
+              "properties": {
+                "verbosity": {
+                  "type": "string",
+                  "description": "Represents Cake debug task output verbosity",
+                  "enum": [
+                    "diagnostic",
+                    "minimal",
+                    "normal",
+                    "quiet",
+                    "verbose"
+                  ],
+                  "enumDescriptions": [
+                    "Diagnostic verbosity",
+                    "Minimal verbosity.",
+                    "Normal verbosity.",
+                    "Quiet verbosity.",
+                    "Verbose verbosity."
+                  ],
+                  "default": "diagnostic"
+                },
+                "debugType": {
+                  "type": "string",
+                  "description": "The type of the debug session",
+                  "default": "coreclr"
+                },
+                "request": {
+                  "type": "string",
+                  "description": "The request type of the debug session",
+                  "default": "launch"
+                },
+                "program": {
+                  "type": "string",
+                  "description": "The executable for the debug session",
+                  "default": "${workspaceRoot}/tools/Cake.CoreCLR/Cake.dll"
+                },
+                "cwd": {
+                  "type": "string",
+                  "description": "The working directory of the Cake script being debugged. Default is the current workspace.",
+                  "default": "${workspaceRoot}"
+                },
+                "stopAtEntry": {
+                  "type": "boolean",
+                  "description": "If true, the debugger should stop at the entry point of the target.",
+                  "default": true
+                },
+                "console": {
+                  "type": "string",
+                  "description": "Where to launch the debug target.",
+                  "enum": [
+                    "internalConsole",
+                    "integratedTerminal",
+                    "externalTerminal"
+                  ],
+                  "enumDescriptions": [
+                    "Output to the VS Code Debug Console. This doesn't support reading console input (ex:Console.ReadLine)",
+                    "VS Code's integrated terminal",
+                    "External terminal that can be configured via user settings"
+                  ],
+                  "default": "internalConsole"
+                },
+                "logging": {
+                  "description": "Optional flags to determine what types of messages should be logged to the output window.",
+                  "type": "object",
+                  "properties": {
+                    "exceptions": {
+                      "type": "boolean",
+                      "description": "Optional flag to determine whether exception messages should be logged to the output window.",
+                      "default": false
+                    },
+                    "moduleLoad": {
+                      "type": "boolean",
+                      "description": "Optional flag to determine whether module load events should be logged to the output window.",
+                      "default": false
+                    },
+                    "programOutput": {
+                      "type": "boolean",
+                      "description": "Optional flag to determine whether program output should be logged to the output window when not using an external console.",
+                      "default": false
+                    },
+                    "engineLogging": {
+                      "type": "boolean",
+                      "description": "Optional flag to determine whether diagnostic engine logs should be logged to the output window.",
+                      "default": false
+                    },
+                    "browserStdOut": {
+                      "type": "boolean",
+                      "description": "Optional flag to determine if stdout text from the launching web browser should be logged to the output window.",
+                      "default": false
+                    }
+                  }
+                }
+              }
+            }
+          }
         }
       }
     },
@@ -238,6 +407,7 @@
     "@types/node": "^6.0.40",
     "@types/node-fetch": "^1.6.7",
     "@types/xml2js": "^0.4.2",
+    "typemoq": "^2.1.0",
     "expect": "^21.2.1",
     "ini": "^1.3.4",
     "mocha": "^2.3.3",
