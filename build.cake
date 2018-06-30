@@ -68,7 +68,7 @@ Task("Install-TypeScript")
 {
     var settings = new NpmInstallSettings();
     settings.Global = true;
-    settings.AddPackage("typescript", "2.5.3");
+    settings.AddPackage("typescript", "2.9.2");
     settings.LogLevel = NpmLogLevel.Silent;
     NpmInstall(settings);
 });
