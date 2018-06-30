@@ -14,7 +14,7 @@ export function showScriptNameBox(): Thenable<string | undefined> {
 }
 
 export function handleScriptNameResponse(
-    scriptName: string
+    scriptName: string | undefined
 ): Thenable<InstallOptions> | Thenable<never> {
     if (!scriptName) {
         // user cancelled
@@ -27,28 +27,39 @@ export function handleScriptNameResponse(
 export function showBootstrapperOption(
     installOpts: InstallOptions
 ): Thenable<InstallOptions | undefined> {
-    /*return vscode.window.showQuickPick([' Yes', 'No'], {
-        placeHolder: messages.CONFIRM_INSTALL_BOOTSTRAPPERS,
-    }).then((value) => {
-    if (!value) {
-        Promise.reject(CANCEL);
-    }
-    installOpts.installBootstrappers = value == 'Yes';
-    return installOpts;
-    }); */
-    if (!installOpts) {
-        Promise.reject(CANCEL);
-    }
+    if(installOpts) {
+        /*return vscode.window.showQuickPick([' Yes', 'No'], {
+            placeHolder: messages.CONFIRM_INSTALL_BOOTSTRAPPERS,
+        }).then((value) => {
+        if (!value) {
+            Promise.reject(CANCEL);
+        }
+        installOpts.installBootstrappers = value == 'Yes';
+        return installOpts;
+        }); */
+        if (!installOpts) {
+            Promise.reject(CANCEL);
+        }
 
-    return getOption(
-        messages.CONFIRM_INSTALL_BOOTSTRAPPERS,
-        installOpts,
-        (opts, value) => (opts.installBootstrappers = value)
-    );
+        return getOption(
+            messages.CONFIRM_INSTALL_BOOTSTRAPPERS,
+            installOpts,
+            (opts, value) => {
+                if(opts) {
+                    opts.installBootstrappers = value;
+                    return opts;
+                } else {
+                    throw "Installation options are not defined."
+                }
+            }
+        );
+    } else {
+        throw "Installation options are not defined";
+    }
 }
 
 export function showConfigOption(
-    installOpts: InstallOptions
+    installOpts: InstallOptions | undefined
 ): Thenable<InstallOptions | undefined> {
     if (!installOpts) {
         Promise.reject(CANCEL);
@@ -57,12 +68,19 @@ export function showConfigOption(
     return getOption(
         messages.CONFIRM_INSTALL_CONFIG,
         installOpts,
-        (opts, value) => (opts.installConfig = value)
+        (opts, value) => {
+            if(opts) {
+                opts.installConfig = value;
+                return opts;
+            } else {
+                throw "Installation options are not defined."
+            }
+        }
     );
 }
 
 export function showDebugOption(
-    installOpts: InstallOptions
+    installOpts: InstallOptions | undefined
 ): Thenable<InstallOptions | undefined> {
     if (!installOpts) {
         Promise.reject(CANCEL);
@@ -70,14 +88,21 @@ export function showDebugOption(
     return getOption(
         messages.CONFIRM_DEBUG_CONFIG,
         installOpts,
-        (opts, value) => (opts.installDebug = value)
+        (opts, value) => {
+            if(opts) {
+                opts.installDebug = value;
+                return opts;
+            } else {
+                throw "Installation options are not defined."
+            }
+        }
     );
 }
 
 function getOption(
     message: string,
-    options: InstallOptions,
-    callback: (opts: InstallOptions, value: boolean) => void
+    options: InstallOptions | undefined,
+    callback: (opts: InstallOptions | undefined, value: boolean) => void
 ): Thenable<InstallOptions | undefined> {
     return new Promise((resolve, reject) => {
         vscode.window

@@ -1,6 +1,6 @@
 export default class InstallOptions {
     constructor(public scriptName: string) { }
-    installBootstrappers: boolean;
-    installConfig: boolean;
-    installDebug: boolean;
+    installBootstrappers!: boolean;
+    installConfig!: boolean;
+    installDebug!: boolean;
 }

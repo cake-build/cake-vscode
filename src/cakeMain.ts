@@ -148,8 +148,8 @@ async function _getCakeScriptsAsTasks(): Promise<vscode.Task[]> {
                 'g'
             );
 
-            let matches,
-                taskNames = [];
+            let matches: RegExpExecArray | null;
+            let taskNames: string[] = [];
 
             while ((matches = taskRegularExpression.exec(contents))) {
                 taskNames.push(matches[1]);
