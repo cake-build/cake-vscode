@@ -3,9 +3,9 @@ import fetchPackageVersions from './fetchPackageVersions';
 import handleSearchResponse from './handleSearchResponse';
 import {
     handleAddinWithContent,
-    handleToolWithContent
+    handleToolWithContent,
+    handleModuleWithContent
 } from './handleDirectiveWithContent';
-import { handleModuleWithContent } from './handleModuleWithContent';
 import handleVersionsResponse from './handleVersionsResponse';
 import showPackageQuickPick from './showPackageQuickPick';
 import showPackageSearchBox from './showPackageSearchBox';

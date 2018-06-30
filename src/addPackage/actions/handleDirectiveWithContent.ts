@@ -10,6 +10,7 @@ import {
 import {
     CAKE_ADDIN_DIRECTIVE,
     CAKE_TOOL_DIRECTIVE,
+    CAKE_MODULE_DIRECTIVE,
     ADD
 } from '../../constants';
 
@@ -127,4 +128,18 @@ export function handleToolWithContent({
         selectedVersion,
         selectedPackageName
     );
+}
+
+export function handleModuleWithContent({
+    selectedVersion,
+    selectedPackageName
+}: {
+    selectedVersion: string;
+    selectedPackageName: string;
+}): Promise<any> | Promise<never> {
+    return _handleDirectiveWithFileContent(
+        CAKE_MODULE_DIRECTIVE,
+        selectedVersion,
+        selectedPackageName
+    )
 }

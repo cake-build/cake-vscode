@@ -15,6 +15,7 @@ export const CAKE_FILE_EXTENSION_MATCHER = /\.(cake)$/;
 export const CAKE_FILE_EXTENSION = '.cake';
 export const CAKE_ADDIN_DIRECTIVE = '#addin';
 export const CAKE_TOOL_DIRECTIVE = '#tool';
+export const CAKE_MODULE_DIRECTIVE = '#module';
 export const CAKE_SEARCH_PAGE_SIZE = '100';
 export const CAKE_DEFAULT_TOOLS_PATH = 'tools';
 export const CAKE_DEFAULT_ADDINS_PATH = 'tools/Addins';

@@ -1,4 +1,4 @@
-import { showInformationMessage, writeContentToFile } from '../shared/utils';
+import { showInformationMessage, writeLinesToFile } from '../shared/utils';
 
 import {
     fetchCakePackages,
@@ -7,7 +7,7 @@ import {
     fetchPackageVersions,
     handleVersionsResponse,
     showPackageSearchBox,
-    showVersionsQuickPick,
+    showVersionsWithLatestQuickPick,
     handleModuleWithContent,
     handleErrorMessage
 } from './actions';
@@ -19,9 +19,9 @@ export function installAddModuleCommand() {
         .then(showPackageQuickPick)
         .then(fetchPackageVersions)
         .then(handleVersionsResponse)
-        .then(showVersionsQuickPick)
+        .then(showVersionsWithLatestQuickPick)
         .then(handleModuleWithContent)
-        .then(writeContentToFile)
+        .then(writeLinesToFile)
         .then(showInformationMessage)
         .then(undefined, handleErrorMessage);
 }
