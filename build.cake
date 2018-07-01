@@ -78,7 +78,7 @@ Task("Install-Vsce")
 {
     var settings = new NpmInstallSettings();
     settings.Global = true;
-    settings.AddPackage("vsce", "1.31.1");
+    settings.AddPackage("vsce", "1.43.0");
     settings.LogLevel = NpmLogLevel.Silent;
     NpmInstall(settings);
 });
