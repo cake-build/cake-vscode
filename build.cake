@@ -11,7 +11,7 @@
 // TOOLS
 //////////////////////////////////////////////////////////////////////
 
-#tool "nuget:?package=gitreleasemanager&version=0.6.0"
+#tool "nuget:?package=gitreleasemanager&version=0.7.0"
 #tool "nuget:?package=GitVersion.CommandLine&version=3.6.5"
 
 // Load other scripts.
@@ -58,6 +58,8 @@ Task("Clean")
 Task("Npm-Install")
     .Does(() =>
 {
+    var settings = new NpmInstallSettings();
+    settings.LogLevel = NpmLogLevel.Silent;
     NpmInstall();
 });
 
@@ -66,7 +68,8 @@ Task("Install-TypeScript")
 {
     var settings = new NpmInstallSettings();
     settings.Global = true;
-    settings.AddPackage("typescript", "2.5.3");
+    settings.AddPackage("typescript", "2.9.2");
+    settings.LogLevel = NpmLogLevel.Silent;
     NpmInstall(settings);
 });
 
@@ -76,6 +79,7 @@ Task("Install-Vsce")
     var settings = new NpmInstallSettings();
     settings.Global = true;
     settings.AddPackage("vsce", "1.31.1");
+    settings.LogLevel = NpmLogLevel.Silent;
     NpmInstall(settings);
 });
 
@@ -91,6 +95,7 @@ Task("Create-Release-Notes")
 });
 
 Task("Update-Project-Json-Version")
+    .WithCriteria(() => !parameters.IsLocalBuild)
     .Does(() =>
 {
     var projectToPackagePackageJson = "package.json";

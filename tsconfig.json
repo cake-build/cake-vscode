@@ -11,13 +11,14 @@
 		"noUnusedLocals": true,
 		"noFallthroughCasesInSwitch": true,
 		"allowUnreachableCode": false,
-		"noImplicitAny": true,
+		"noImplicitAny": false,
 		"noImplicitReturns": true,
 		"alwaysStrict": true,
 		"noImplicitThis": true,
 		"strict": true
 	},
 	"exclude": [
-		"node_modules"
+		"node_modules",
+		".vscode-test"
 	]
 }

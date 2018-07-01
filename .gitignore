@@ -5,12 +5,11 @@ node_modules
 
 # Build related
 build-results/
-tools/Cake/
-tools/nuget.exe
-tools/gitreleasemanager/
-tools/GitVersion.CommandLine/
-tools/Addins/
-tools/packages.config.md5sum
+tools/**
+!tools/packages.config
 
 # until we move to Yarn
 yarn.lock
+
+# Mac OS X files
+.DS_Store

@@ -1,50 +1,75 @@
+import { readCakeConfigFile } from '../shared/utils/readConfigFile';
 var request = require('request');
 var AdmZip = require('adm-zip');
-import * as vscode from 'vscode';
+import { window, workspace } from 'vscode';
 import * as path from 'path';
 import * as fs from 'fs';
+import * as utils from './../shared/utils';
+import {
+    DEFAULT_RESPONSE_TIMEOUT,
+    CAKE_CORECLR_PACKAGE_URL
+} from '../constants';
 
 export class CakeDebug {
-    public getTargetPath(): string {
-        if (vscode.workspace.rootPath) {
-            return path.join(vscode.workspace.rootPath, "tools/Cake.CoreCLR/Cake.dll");
-        }
+    private config: utils.Config;
+    constructor() {
+        this.config = readCakeConfigFile(workspace.rootPath);
+    }
 
-        return "";
+    public getTargetPath(): string {
+        if (workspace.rootPath) {
+            return path.join(
+                workspace.rootPath,
+                this.config.Paths.Tools,
+                'Cake.CoreCLR/Cake.dll'
+            );
+        }
+        return '';
     }
 
     public getNupkgDestinationPath(): string {
-        if (vscode.workspace.rootPath) {
-            return path.join(vscode.workspace.rootPath, "tools/Cake.CoreCLR");
+        if (workspace.rootPath) {
+            return path.join(
+                workspace.rootPath,
+                this.config.Paths.Tools,
+                'Cake.CoreCLR'
+            );
         }
-
-        return "";
+        return '';
     }
 
     public getToolFolderPath(): string {
-        if (vscode.workspace.rootPath) {
-            return path.join(vscode.workspace.rootPath, "tools");
+        if (workspace.rootPath) {
+            return path.join(workspace.rootPath, this.config.Paths.Tools);
         }
-
-        return "";
+        return '';
     }
 
     public downloadAndExtract(): Thenable<boolean> {
         return new Promise((resolve, reject) => {
             // Download the NuGet Package
             let vm = this;
-            if (!fs.existsSync(vm.getToolFolderPath())) {
-                fs.mkdirSync(vm.getToolFolderPath());
+
+            try {
+                if (!fs.existsSync(vm.getToolFolderPath())) {
+                    fs.mkdirSync(vm.getToolFolderPath());
+                }
+            } catch (error) {
+                window.showErrorMessage('Unable to create directory');
             }
 
-            var data: any[] = [], dataLen = 0;
+            var data: any[] = [],
+                dataLen = 0;
 
-            request.get("http://nuget.org/api/v2/package/Cake.CoreCLR/", { timeout: 10000 })
-                .on('data', function (chunk: any) {
+            request
+                .get(CAKE_CORECLR_PACKAGE_URL, {
+                    timeout: DEFAULT_RESPONSE_TIMEOUT
+                })
+                .on('data', function(chunk: any) {
                     data.push(chunk);
                     dataLen += chunk.length;
                 })
-                .on('end', function () {
+                .on('end', function() {
                     var buf = new Buffer(dataLen);
 
                     for (var i = 0, len = data.length, pos = 0; i < len; i++) {
@@ -56,9 +81,9 @@ export class CakeDebug {
                     zip.extractAllTo(vm.getNupkgDestinationPath());
                     resolve(true);
                 })
-                .on('error', function (e: any) {
+                .on('error', function(e: any) {
                     reject(`Failed to download debug dependencies: ${e}`);
-                })
+                });
         });
     }
 }

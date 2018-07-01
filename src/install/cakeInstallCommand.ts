@@ -22,7 +22,7 @@ export function installCakeToWorkspaceCommand() {
             window.showInformationMessage(message);
             logger.logToOutput(fileName); // to suppress warnings
         })
-        .then(undefined, (err) => {
+        .then(undefined, (err: any) => {
             window.setStatusBarMessage('');
             if (err !== CANCEL) {
                 window.showErrorMessage(err.message || err || 'We encountered an unknown error! Please try again.');
