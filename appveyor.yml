@@ -4,12 +4,7 @@ init:
 
 # Build script
 build_script:
-  - ps: tsc -V
   - ps: .\build.ps1 -Target "AppVeyor" --settings_skipverification=true
-
-after_build:
-  - ps: tsc -V
-  - ps: vsce -V
 
 # Tests
 test: off
@@ -27,6 +22,4 @@ branches:
 # Build cache
 cache:
 - tools -> build.cake
-
-on_finish:
-  - ps: $blockRdp = $true; iex ((new-object net.webclient).DownloadString('https://raw.githubusercontent.com/appveyor/ci/master/scripts/enable-rdp.ps1'))
+- node_modules -> package.json
