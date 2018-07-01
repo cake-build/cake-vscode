@@ -7,6 +7,9 @@ build_script:
   - ps: tsc -V
   - ps: .\build.ps1 -Target "AppVeyor" --settings_skipverification=true
 
+after_build:
+  - ps: tsc -V
+
 # Tests
 test: off
 
