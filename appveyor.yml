@@ -27,4 +27,3 @@ branches:
 # Build cache
 cache:
 - tools -> build.cake
-- node_modules -> package.json
