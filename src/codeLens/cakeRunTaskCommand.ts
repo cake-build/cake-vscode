@@ -8,8 +8,8 @@ export async function installCakeRunTaskCommand(
 ) {
     const buildCommand =
         os.platform() === 'win32'
-            ? `powershell -ExecutionPolicy ByPass -File build.ps1 -script \"${fileName}\" -target \"${taskName}\" -verbosity=${runConfig.verbosity}`
-            : `./build.sh --script \"${fileName}\" --target=\"${taskName}\" --verbosity=${runConfig.verbosity}`;
+            ? `powershell -ExecutionPolicy ByPass -File build.ps1 -script \"${fileName}\" -target \"${taskName}\" -verbosity ${runConfig.verbosity}`
+            : `./build.sh --script=\"${fileName}\" --target=\"${taskName}\" --verbosity=${runConfig.verbosity}`;
 
     TerminalExecutor.runInTerminal(buildCommand);
 }
