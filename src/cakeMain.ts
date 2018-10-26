@@ -11,12 +11,14 @@ import { installCakeBakeryCommand } from './bakery/cakeBakeryCommand';
 import { installCakeRunTaskCommand } from './codeLens/cakeRunTaskCommand';
 import { installCakeDebugTaskCommand } from './codeLens/cakeDebugTaskCommand';
 import { CakeCodeLensProvider } from './codeLens/cakeCodeLensProvider';
+import { CakeDocumentSymbolProvider} from './documentSymbols/cakeDocumentSymbolProvider';
 import { TerminalExecutor } from './shared/utils';
 import * as fs from 'fs';
 import * as os from 'os';
 
 let taskProvider: vscode.Disposable | undefined;
 let codeLensProvider: CakeCodeLensProvider;
+let documentSymbolProvider: CakeDocumentSymbolProvider;
 
 interface CakeTaskDefinition extends vscode.TaskDefinition {
     script: string;
@@ -237,6 +239,17 @@ function _registerCodeLens(
                 pattern: config.scriptsIncludePattern
             },
             codeLensProvider
+        )
+    );
+
+    documentSymbolProvider = new CakeDocumentSymbolProvider();
+    context.subscriptions.push(
+        vscode.languages.registerDocumentSymbolProvider(
+            {
+                language: 'csharp',
+                scheme: 'file'
+            }, 
+            documentSymbolProvider
         )
     );
 }
