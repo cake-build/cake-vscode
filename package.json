@@ -22,7 +22,7 @@
     "theme": "light"
   },
   "engines": {
-    "vscode": "^1.24.0"
+    "vscode": "^1.25.0"
   },
   "categories": [
     "Programming Languages",
@@ -419,6 +419,33 @@
                   }
                 }
               }
+            }
+          }
+        },
+        "cake.codeOutline": {
+          "type": "object",
+          "description": "The Cake outline view configuration",
+          "default": {
+            "showCodeOutline": true,
+            "scriptsIncludePattern": "**/*.cake",
+            "contextRegularExpression": "(Setup|TaskSetup|Teardown|TaskTeardown|RunTarget)\\s*?",
+            "taskRegularExpression": "Task\\s*?\\(\\s*?\"(.*?)\"\\s*?\\)"
+          },
+          "properties": {
+            "showCodeOutline": {
+              "type": "boolean",
+              "description": "Show code outline for tasks in Cake files",
+              "default": true
+            },
+            "scriptsIncludePattern": {
+              "type": "string",
+              "description": "Glob pattern to detect cake build scripts in current workspace",
+              "default": "**/*.cake"
+            },
+            "taskRegularExpression": {
+              "type": "string",
+              "description": "Regular expression pattern to get tasks from Cake script",
+              "default": "(Task\\s*?\\(\\s*?\"(.*?)\"\\s*?\\)|Setup\\(.*=>|TearDown\\(.*=>|RunTarget\\(.*\\);)"
             }
           }
         }
