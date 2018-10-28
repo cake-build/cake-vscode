@@ -11,7 +11,7 @@ import { installCakeBakeryCommand } from './bakery/cakeBakeryCommand';
 import { installCakeRunTaskCommand } from './codeLens/cakeRunTaskCommand';
 import { installCakeDebugTaskCommand } from './codeLens/cakeDebugTaskCommand';
 import { CakeCodeLensProvider } from './codeLens/cakeCodeLensProvider';
-import { CakeDocumentSymbolProvider} from './documentSymbols/cakeDocumentSymbolProvider';
+import { CakeDocumentSymbolProvider } from './documentSymbols/cakeDocumentSymbolProvider';
 import { TerminalExecutor } from './shared/utils';
 import * as fs from 'fs';
 import * as os from 'os';
@@ -91,6 +91,8 @@ export function activate(context: vscode.ExtensionContext): void {
     // Register code lens provider and tasks
     _registerCodeLens(config.codeLens, context);
 
+    _registerCodeOutline(config.codeOutline, context);
+
     vscode.workspace.onDidChangeConfiguration(onConfigurationChanged);
     onConfigurationChanged();
 }
@@ -100,6 +102,7 @@ function onConfigurationChanged() {
 
     _verifyTasksRunner(config.taskRunner);
     _verifyCodeLens(config.codeLens);
+    _verifyCodeOutline(config.codeOutline);
 }
 
 function _verifyTasksRunner(config: any) {
@@ -241,8 +244,14 @@ function _registerCodeLens(
             codeLensProvider
         )
     );
+}
 
-    documentSymbolProvider = new CakeDocumentSymbolProvider();
+function _registerCodeOutline(
+    config: any,
+    context: vscode.ExtensionContext
+): void {
+
+    documentSymbolProvider = new CakeDocumentSymbolProvider(config);
     context.subscriptions.push(
         vscode.languages.registerDocumentSymbolProvider(
             {
@@ -252,6 +261,10 @@ function _registerCodeLens(
             documentSymbolProvider
         )
     );
+}
+
+function _verifyCodeOutline(config: any): void {
+    documentSymbolProvider.showCodeOutline = config.showCodeOutline;
 }
 
 function _verifyCodeLens(config: any): void {
