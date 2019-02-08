@@ -404,7 +404,7 @@
     "test": "npm run compile && node ./node_modules/vscode/bin/test"
   },
   "dependencies": {
-    "adm-zip": "^0.4.11",
+    "adm-zip": "^0.4.13",
     "byline": "^5.0.0",
     "https-proxy-agent": "^2.2.1",
     "ini": "^1.3.4",
