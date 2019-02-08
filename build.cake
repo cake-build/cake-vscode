@@ -60,7 +60,7 @@ Task("Npm-Install")
 {
     var settings = new NpmInstallSettings();
     settings.LogLevel = NpmLogLevel.Silent;
-    NpmInstall();
+    NpmInstall(settings);
 });
 
 Task("Install-TypeScript")
