@@ -5,4 +5,4 @@ os:
   - linux
 
 script:
-  - ./build.sh --verbosity=diagnostic --settings_skipverification=true
+  - ./build.sh --verbosity=diagnostic
