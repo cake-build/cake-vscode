@@ -11,3 +11,6 @@ issue-labels-alias:
     - name:    Documentation
       header:  Documentation
       plural:  Documentation
+    - name:    security
+      header:  Security
+      plural:  Security
