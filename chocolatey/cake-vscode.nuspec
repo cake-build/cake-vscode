@@ -27,7 +27,7 @@ https://github.com/cake-build/cake-vscode/releases
     </releaseNotes>
     <dependencies>
       <!-- Should be set to the minimum version the extension supports -->
-      <dependency id="vscode" version="1.30.0" />
+      <dependency id="vscode" version="1.32.1" />
       <dependency id="chocolatey-vscode.extension" version="1.0.0" />
     </dependencies>
   </metadata>
