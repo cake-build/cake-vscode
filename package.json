@@ -384,17 +384,19 @@
       }
     ],
     "taskDefinitions": [
-        {
-          "type": "cake",
-          "required": ["script"],
-          "properties": {
-            "script": {
-              "type": "string",
-              "description": "The script to execute"
-            }
+      {
+        "type": "cake",
+        "required": [
+          "script"
+        ],
+        "properties": {
+          "script": {
+            "type": "string",
+            "description": "The script to execute"
           }
         }
-      ]
+      }
+    ]
   },
   "scripts": {
     "vscode:prepublish": "npm run compile",
