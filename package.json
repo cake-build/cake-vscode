@@ -95,9 +95,6 @@
         "title": "Cake: Install intellisense support"
       }
     ],
-    "outputChannels": [
-      "Cake"
-    ],
     "configuration": {
       "type": "object",
       "title": "Cake configuration",
