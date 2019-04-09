@@ -4,7 +4,8 @@ init:
 
 # Build script
 build_script:
-  - ps: .\build.ps1 -Target "AppVeyor" --settings_skipverification=true
+  - ps: Get-ChildItem -Path "C:\Program Files (x86)\Microsoft SDKs\TypeScript\*" -Include tsc.exe,tsc.js -Recurse | Rename-Item -NewName {$_.name -replace "tsc","tsc1"}
+  - ps: .\build.ps1 -Target "AppVeyor"
 
 # Tests
 test: off

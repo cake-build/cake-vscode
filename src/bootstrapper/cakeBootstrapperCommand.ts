@@ -51,7 +51,9 @@ export async function installCakeBootstrapperFile(
 
     if (result) {
         if (process.platform !== 'win32' && info.posix) {
-            fs.chmod(buildFilePath, 0o755);
+            fs.chmod(buildFilePath, 0o755, () => {
+                window.showErrorMessage('Error changing permissions.');
+            });
         }
 
         if (notifyOnCompletion) {

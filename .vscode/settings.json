@@ -9,5 +9,12 @@
         "**/bower_components": true,
         "logs/": true,
         "out/": true
-    }
+    },
+    "cSpell.words": [
+        "Addin",
+        "bootstrapper",
+        "bootstrappers",
+        "coreclr",
+        "typemoq"
+    ]
 }

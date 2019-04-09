@@ -40,7 +40,7 @@ https://cakebuild.net
 
 [CmdletBinding()]
 Param(
-    [string]$Script = "build.cake",
+    [string]$Script = "recipe.cake",
     [string]$Target = "Default",
     [ValidateSet("Release", "Debug")]
     [string]$Configuration = "Release",
@@ -179,7 +179,7 @@ if(-Not $SkipToolPackageRestore.IsPresent) {
         $md5Hash | Out-File $PACKAGES_CONFIG_MD5 -Encoding "ASCII"
     }
     Write-Verbose -Message ($NuGetOutput | out-string)
-    
+
     Pop-Location
 }
 

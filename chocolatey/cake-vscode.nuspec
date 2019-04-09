@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Do not remove this test for UTF-8: if “Ω” doesn’t appear as greek uppercase omega letter enclosed in quotation marks, you should use an editor that supports UTF-8, not this one. -->
+<package xmlns="http://schemas.microsoft.com/packaging/2015/06/nuspec.xsd">
+  <metadata>
+    <id>vscode-cake</id>
+    <version>0.0</version>
+    <owners>gep13, pascalberger, bbtsoftware</owners>
+    <title>Visual Studio Code Cake Extension</title>
+    <authors>Cake Build</authors>
+    <projectUrl>https://marketplace.visualstudio.com/items?itemName=cake-build.cake-vscode</projectUrl>
+    <iconUrl>https://cdn.jsdelivr.net/gh/bbtsoftware/chocolatey-packages@19e7388f56f2faf2e2b7a270984d51e93ff8a1cb/icons/vscode-cake.png</iconUrl>
+    <copyright>Copyright (c) 2015 Cake Build</copyright>
+    <docsUrl>https://marketplace.visualstudio.com/items?itemName=cake-build.cake-vscode</docsUrl>
+    <bugTrackerUrl>https://github.com/cake-build/cake-vscode/issues</bugTrackerUrl>
+    <licenseUrl>https://marketplace.visualstudio.com/items/cake-build.cake-vscode/license</licenseUrl>
+    <requireLicenseAcceptance>true</requireLicenseAcceptance>
+    <projectSourceUrl>https://github.com/cake-build/cake-vscode</projectSourceUrl>
+    <tags>microsoft visualstudiocode vscode extension cake</tags>
+    <summary>Cake build script language support.</summary>
+    <description>
+Cake build script language support.
+
+This addin brings language support for [Cake](https://cakebuild.net/) build scripts to Visual Studio Code.
+    </description>
+    <releaseNotes>
+https://github.com/cake-build/cake-vscode/releases
+    </releaseNotes>
+    <dependencies>
+      <!-- Should be set to the minimum version the extension supports -->
+      <dependency id="vscode" version="1.33.0" />
+      <dependency id="chocolatey-vscode.extension" version="1.0.0" />
+    </dependencies>
+  </metadata>
+  <!-- Files will be added during build -->
+</package>

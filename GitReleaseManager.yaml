@@ -4,9 +4,13 @@ issue-labels-include:
 - Bug
 - Improvement
 - Documentation
+- security
 issue-labels-exclude:
 - Build
 issue-labels-alias:
     - name:    Documentation
       header:  Documentation
       plural:  Documentation
+    - name:    security
+      header:  Security
+      plural:  Security

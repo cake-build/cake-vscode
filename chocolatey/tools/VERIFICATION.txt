@@ -1,0 +1,13 @@
+VERIFICATION
+Verification is intended to assist the Chocolatey moderators and community
+in verifying that this package's contents are trustworthy.
+
+This package is being officially supplied by the software author.
+
+The included binary file can be downloaded from our releases page located at
+<https://github.com/cake-build/cake-vscode/releases>
+
+and should match the checksum of the included vsix file.
+
+The file 'LICENSE.md' is also available in the repository at
+<https://github.com/cake-build/cake-vscode/blob/develop/LICENSE>
