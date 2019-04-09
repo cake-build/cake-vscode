@@ -12,6 +12,7 @@ export class MemoryStream extends stream.Writable {
     }
 
      _write(chunk: any, encoding: string, callback: Function): void {
+        //@ts-ignore TS2345
         let buffer = (Buffer.isBuffer(chunk)) ? chunk : new Buffer(chunk, encoding);
 
         this.memBuffer = Buffer.concat([this.memBuffer, buffer]);
