@@ -426,7 +426,7 @@
     "tslint": "^5.16.0",
     "typemoq": "^2.1.0",
     "typescript": "^3.4.5",
-    "vscode": "^1.1.33"
+    "vscode": "^1.1.34"
   },
   "extensionDependencies": [
     "ms-vscode.csharp"
