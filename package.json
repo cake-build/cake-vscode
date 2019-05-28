@@ -421,7 +421,7 @@
     "@types/node": "^11.13.4",
     "@types/node-fetch": "^2.3.2",
     "@types/xml2js": "^0.4.4",
-    "expect": "^24.7.1",
+    "expect": "^24.8.0",
     "mocha": "^6.1.4",
     "tslint": "^5.16.0",
     "typemoq": "^2.1.0",
