@@ -423,7 +423,7 @@
     "@types/xml2js": "^0.4.4",
     "expect": "^24.8.0",
     "mocha": "^6.1.4",
-    "tslint": "^5.16.0",
+    "tslint": "^5.20.0",
     "typemoq": "^2.1.0",
     "typescript": "^3.4.5",
     "vscode": "^1.1.34"
