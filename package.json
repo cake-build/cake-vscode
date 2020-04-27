@@ -422,7 +422,7 @@
     "@types/node-fetch": "^2.5.5",
     "@types/xml2js": "^0.4.4",
     "expect": "^24.8.0",
-    "mocha": "^6.1.4",
+    "mocha": "^7.1.2",
     "tslint": "^6.0.0",
     "typemoq": "^2.1.0",
     "typescript": "^3.4.5",
