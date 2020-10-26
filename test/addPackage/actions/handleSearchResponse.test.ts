@@ -4,12 +4,12 @@ import { handleSearchResponse } from '../../../src/addPackage/actions';
 
 export default function describeHandleSearchResponseTests() {
     suite('handleSearchResponse', function() {
-        // test('should return a rejected promise when response.ok is false', function(done) {
-        //     handleSearchResponse(<Response>{ ok: false }).catch(() => {
-        //         assert.equal(true, true);
-        //         done();
-        //     });
-        // });
+        test('should return a rejected promise when response.ok is false', function(done) {
+            (<Promise<never>>handleSearchResponse(<Response>{ ok: false })).catch(()=> {
+                assert.equal(true, true);
+                done();
+            });
+        });
         test('should call response.json when response.ok is truthy', function(done) {
             handleSearchResponse(<Response>{
                 ok: true,
