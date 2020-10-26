@@ -29,9 +29,15 @@ export default function getFetchOptions(configuration?: IProxyConfiguration) {
         fetchOptions.agent = lastHttpsProxyAgent;
     } else {
         const parsedProxy = url.parse(proxy);
+        if(!parsedProxy.host || !parsedProxy.port) {
+            return fetchOptions;
+        }
+
         const useStrictSSL = !!proxyStrictSSL; // coerce to boolean just in case
+
         fetchOptions.agent = new HttpsProxyAgent({
-            ...parsedProxy,
+            host: <string>parsedProxy.host,
+            port: <string>parsedProxy.port,
             secureEndpoint: useStrictSSL,
             rejectUnauthorized: useStrictSSL
         });
