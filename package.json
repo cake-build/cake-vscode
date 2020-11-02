@@ -411,7 +411,7 @@
     "node-fetch": "^2.6.1",
     "npm": "^6.14.6",
     "request": "^2.88.2",
-    "xml2js": "^0.4.19"
+    "xml2js": "^0.4.23"
   },
   "devDependencies": {
     "@types/byline": "^4.2.32",
