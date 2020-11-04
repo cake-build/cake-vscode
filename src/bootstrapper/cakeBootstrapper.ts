@@ -8,16 +8,44 @@ export class CakeBootstrapper {
 
     private static bootstrappers = [
         new CakeBootstrapperInfo(
-            'powershell',
-            'PowerShell',
-            'Bootstrapper for Windows',
+            'dotnet-tool-powershell',
+            '.NET Tool runner PowerShell',
+            'Bootstrapper for .NET Tool on Windows',
             'build.ps1',
             false
         ),
         new CakeBootstrapperInfo(
-            'bash',
-            'Bash',
-            'Bootstrapper for Linux and OSX',
+            'dotnet-tool-bash',
+            '.NET Tool runner Bash',
+            'Bootstrapper for .NET Tool on Linux and macOS',
+            'build.sh',
+            true
+        ),
+        new CakeBootstrapperInfo(
+            'dotnet-framework-powershell',
+            '.NET Framework runner PowerShell',
+            'Bootstrapper for .NET Framework on Windows',
+            'build.ps1',
+            false
+        ),
+        new CakeBootstrapperInfo(
+            'dotnet-framework-bash',
+            '.NET Framework runner Bash',
+            'Bootstrapper for .NET Framework (Mono) on Linux and macOS',
+            'build.sh',
+            true
+        ),
+        new CakeBootstrapperInfo(
+            'dotnet-core-powershell',
+            '.NET Core runner PowerShell',
+            'Bootstrapper for .NET Core on Windows',
+            'build.ps1',
+            false
+        ),
+        new CakeBootstrapperInfo(
+            'dotnet-core-bash',
+            '.NET Core runner Bash',
+            'Bootstrapper for .NET Core on Linux and macOS',
             'build.sh',
             true
         )
