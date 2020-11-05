@@ -85,6 +85,35 @@ function _handleDirectiveWithFileContent(
             return showFileQuickPick(result, ADD);
         })
         .then((pickedCakeFile: any) => {
+            // ensure to save the cake-file in workspace before taking any actions
+            return new Promise((resolve, reject) => {
+                if(!pickedCakeFile){
+                    // we're all doomed, probably
+                    resolve(pickedCakeFile);
+                    return;
+                }
+
+                try {
+                    const cakeFileInEditor = workspace.textDocuments.find(x => x.fileName === pickedCakeFile);
+                    if(!cakeFileInEditor){
+                        // the file is not open, so no problem.
+                        resolve(pickedCakeFile);
+                        return;
+                    }
+
+                    cakeFileInEditor.save().then(() => {
+                        resolve(pickedCakeFile);
+                    });
+                } catch (ex) {
+                    return handleError(
+                        ex,
+                        getFileErrorMessage('save', pickedCakeFile),
+                        reject
+                    );
+                }
+            });
+        })
+        .then((pickedCakeFile: any) => {
             const isLatestVersion = selectedVersion.startsWith(
                 'Latest version'
             );
