@@ -112,8 +112,12 @@
         "cake.bootstrappers": {
           "type": "object",
           "default": {
-            "powershell": "https://cakebuild.net/download/bootstrapper/powershell",
-            "bash": "https://cakebuild.net/download/bootstrapper/bash"
+            "dotnet-framework-powershell": "https://cakebuild.net/download/bootstrapper/dotnet-framework/powershell",
+            "dotnet-framework-bash": "https://cakebuild.net/download/bootstrapper/dotnet-framework/bash",
+            "dotnet-core-powershell": "https://cakebuild.net/download/bootstrapper/dotnet-core/powershell",
+            "dotnet-core-bash": "https://cakebuild.net/download/bootstrapper/dotnet-core/bash",
+            "dotnet-tool-powershell": "https://cakebuild.net/download/bootstrapper/dotnet-tool/powershell",
+            "dotnet-tool-bash": "https://cakebuild.net/download/bootstrapper/dotnet-tool/bash"
           },
           "description": "The Cake bootstrapper URIs."
         },
@@ -419,13 +423,13 @@
     "@types/mocha": "^8.0.3",
     "@types/node": "^14.14.6",
     "@types/node-fetch": "^2.5.7",
+    "@types/vscode": "^1.24.0",
     "@types/xml2js": "^0.4.5",
     "expect": "^26.6.2",
     "mocha": "^8.2.1",
     "tslint": "^6.1.3",
     "typemoq": "^2.1.0",
     "typescript": "^4.0.5",
-    "@types/vscode": "^1.24.0",
     "vscode-test": "^1.4.0"
   },
   "extensionDependencies": [
