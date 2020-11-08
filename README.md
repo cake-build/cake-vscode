@@ -76,6 +76,9 @@ There are a number of configuration options which allow you to control how the T
 * `cake.taskRunner.scriptsIncludePattern`: a glob pattern which specifies how to detect `.cake` files in the current workspace. Default value is `**/*.cake`.
 * `cake.taskRunner.scriptsExcludePattan`: a glob pattern which specifies all files and folders that shouldn't be included in search of current workspace.  Default value is `""`.
 * `cake.taskRunner.taskRegularExpression`: a regular expression pattern which is used to identify Tasks within the `*.cake` files. Default value is `Task\\s*?\\(\\s*?\"(.*?)\"\\s*?\\)`.
+* `cake.taskRunner.buildScript`: the name of the build script to run, when running a task. 
+  This is a complex object, consisting of at least one property `default` and optionally properties corresponding to values of [`os.platform()`](https://nodejs.org/api/os.html#os_os_platform) for non-default values specific to different platforms.
+  Default value is `null` which is equal to specifying `{"default": "./build.sh", "win32": "powershell -ExecutionPolicy ByPass -File build.ps1"}`.
 
 ### Codelens
 
@@ -99,6 +102,9 @@ There are a number of configuration options which allow you to control the Cake 
 * `cake.codeLens.debugTask.logging.programOutput`: flag to determine whether program output should be logged to the output window when not using an external console. Default value is `false`.
 * `cake.codeLens.debugTask.logging.engineLogging`: flag to determine whether program output should be logged to the output window when not using an external console. Default value is `false`.
 * `cake.codeLens.debugTask.logging.browserStdOut`: flag to determine if stdout text from the launching the web browser should be logged to the output window. Default value is `false`.
+
+**Remark**: While the command to debug a task is configurable using the `cake.codeLens.debugTask.program` setting,
+there is no specific setting for configuring the command to run a task. For this case the `cake.taskRunner.buildScript` setting is used (see above).
 
 ## Resource Video
 

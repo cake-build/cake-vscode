@@ -12,6 +12,7 @@ import { installCakeRunTaskCommand } from './codeLens/cakeRunTaskCommand';
 import { installCakeDebugTaskCommand } from './codeLens/cakeDebugTaskCommand';
 import { CakeCodeLensProvider } from './codeLens/cakeCodeLensProvider';
 import { TerminalExecutor } from './shared/utils';
+import { getExtensionSettings, ICodeLensSettings, ITaskRunnerSettings } from './extensionSettings';
 import * as fs from 'fs';
 import * as os from 'os';
 
@@ -24,7 +25,7 @@ interface CakeTaskDefinition extends vscode.TaskDefinition {
 }
 
 export function activate(context: vscode.ExtensionContext): void {
-    const config = vscode.workspace.getConfiguration('cake');
+    const config = getExtensionSettings();
 
     // Register the add addin command.
     context.subscriptions.push(
@@ -94,13 +95,13 @@ export function activate(context: vscode.ExtensionContext): void {
 }
 
 function onConfigurationChanged() {
-    const config = vscode.workspace.getConfiguration('cake');
+    const config = getExtensionSettings();
 
     _verifyTasksRunner(config.taskRunner);
     _verifyCodeLens(config.codeLens);
 }
 
-function _verifyTasksRunner(config: any) {
+function _verifyTasksRunner(config: ITaskRunnerSettings) {
     if (taskProvider && !config.autoDetect) {
         taskProvider.dispose();
         taskProvider = undefined;
@@ -128,7 +129,7 @@ async function _getCakeScriptsAsTasks(): Promise<vscode.Task[]> {
     }
 
     try {
-        const config = _getTaskRunnerConfig();
+        const config = getExtensionSettings().taskRunner;
         let files = await vscode.workspace.findFiles(
             config.scriptsIncludePattern,
             config.scriptsExcludePattern
@@ -155,17 +156,15 @@ async function _getCakeScriptsAsTasks(): Promise<vscode.Task[]> {
                 taskNames.push(matches[1]);
             }
 
+            const buildCommandBase = config.buildScript[os.platform()] || config.buildScript.default;
+
             taskNames.forEach(taskName => {
                 const kind: CakeTaskDefinition = {
                     type: 'cake',
                     script: taskName
                 };
 
-                let buildCommand = `./build.sh --target=\"${taskName}\"`;
-
-                if (os.platform() === 'win32') {
-                    buildCommand = `powershell -ExecutionPolicy ByPass -File build.ps1 -target \"${taskName}\"`;
-                }
+                const buildCommand = `${buildCommandBase} --target=\"${taskName}\"`;
 
                 const buildTask = new vscode.Task(
                     kind,
@@ -186,14 +185,6 @@ async function _getCakeScriptsAsTasks(): Promise<vscode.Task[]> {
     }
 }
 
-function _getCodeLensConfig(): any {
-    return vscode.workspace.getConfiguration('cake').codeLens;
-}
-
-function _getTaskRunnerConfig(): any {
-    return vscode.workspace.getConfiguration('cake').taskRunner;
-}
-
 function _registerCodeLens(
     config: any,
     context: vscode.ExtensionContext
@@ -205,7 +196,7 @@ function _registerCodeLens(
                 installCakeRunTaskCommand(
                     taskName,
                     fileName,
-                    _getCodeLensConfig().runTask
+                    getExtensionSettings()
                 );
             }
         )
@@ -223,7 +214,7 @@ function _registerCodeLens(
                 installCakeDebugTaskCommand(
                     taskName,
                     fileName,
-                    _getCodeLensConfig().debugTask
+                    getExtensionSettings().codeLens.debugTask
                 );
             }
         )
@@ -241,7 +232,7 @@ function _registerCodeLens(
     );
 }
 
-function _verifyCodeLens(config: any): void {
+function _verifyCodeLens(config: ICodeLensSettings): void {
     codeLensProvider.showCodeLens = config.showCodeLens;
 }
 
