@@ -164,7 +164,7 @@ async function _getCakeScriptsAsTasks(): Promise<vscode.Task[]> {
                     script: taskName
                 };
 
-                const buildCommand = `${buildCommandBase} --target=\"${taskName}\"`;
+                const buildCommand = `${buildCommandBase} \"${file.fsPath}\"  --target=\"${taskName}\" --verbosity=${config.verbosity}`;
 
                 const buildTask = new vscode.Task(
                     kind,

@@ -106,7 +106,8 @@
             "scriptsIncludePattern": "**/*.cake",
             "scriptsExcludePattern": "",
             "taskRegularExpression": "Task\\s*?\\(\\s*?\"(.*?)\"\\s*?\\)",
-            "buildScript": null
+            "buildScript": null,
+            "verbosity": "normal"
           },
           "description": "The Cake Task Runner settings"
         },

@@ -11,6 +11,7 @@ export interface ITaskRunnerSettings {
     scriptsExcludePattern: string;
     taskRegularExpression: string;
     buildScript: IBuildScriptSettings;
+    verbosity: "diagnostic" | "minimal" | "normal" | "quiet" | "verbose";
 }
 
 export interface IBootstrappersSettings {
@@ -29,7 +30,7 @@ export interface IConfigurationSettings {
 export interface ICodeLensDebugTaskSettings {
     verbosity: "diagnostic" | "minimal" | "normal" | "quiet" | "verbose";
     debugType: "mono" | "coreclr";
-    request: string; // really?
+    request: string;
     program: string;
     cwd: string;
     stopAtEntry: boolean;
@@ -65,9 +66,9 @@ export function getExtensionSettings(): IExtensionSettings {
     var taskRunner = settings.taskRunner;
 
     // extend "cake.taskRunner.buildScript" here, because the default of `{"default":"...", "win32":"..."}`
-    // can not (!) be part of the vs-internal settings defaults or else the platform-specific setting 
+    // can not (!) be part of the vs-internal settings defaults or else the platform-specific setting
     // can never be overridden. (i.e. win32 will always be set.)
-    const defaultScript = "./build.sh"; 
+    const defaultScript = "./build.sh";
     let buildScript = settings.taskRunner.buildScript;
     if(!buildScript) {
         buildScript = {
