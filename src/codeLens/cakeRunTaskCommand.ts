@@ -7,8 +7,8 @@ export async function installCakeRunTaskCommand(
     fileName: string,
     settings: IExtensionSettings
 ) {
-    let buildCommand = settings.taskRunner.buildScript[os.platform()] || settings.taskRunner.buildScript.default;
-    buildCommand = `${buildCommand} \"${fileName}\" --target=\"${taskName}\" --verbosity=${settings.codeLens.runTask.verbosity}`;
+    let buildCommand = settings.taskRunner.launchCommand[os.platform()] || settings.taskRunner.launchCommand.default;
+    buildCommand = `${buildCommand} \"${fileName}\" --target=\"${taskName}\" --verbosity=${settings.taskRunner.verbosity}`;
 
     TerminalExecutor.runInTerminal(buildCommand);
 }

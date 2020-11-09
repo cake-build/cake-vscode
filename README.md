@@ -76,9 +76,10 @@ There are a number of configuration options which allow you to control how the T
 * `cake.taskRunner.scriptsIncludePattern`: a glob pattern which specifies how to detect `.cake` files in the current workspace. Default value is `**/*.cake`.
 * `cake.taskRunner.scriptsExcludePattan`: a glob pattern which specifies all files and folders that shouldn't be included in search of current workspace.  Default value is `""`.
 * `cake.taskRunner.taskRegularExpression`: a regular expression pattern which is used to identify Tasks within the `*.cake` files. Default value is `Task\\s*?\\(\\s*?\"(.*?)\"\\s*?\\)`.
-* `cake.taskRunner.buildScript`: the name of the build script to run, when running a task. 
+* `cake.taskRunner.launchCommand`: the name of the build script to run, when running a task.
   This is a complex object, consisting of at least one property `default` and optionally properties corresponding to values of [`os.platform()`](https://nodejs.org/api/os.html#os_os_platform) for non-default values specific to different platforms.
   Default value is `null` which is equal to specifying `{"default": "./build.sh", "win32": "powershell -ExecutionPolicy ByPass -File build.ps1"}`.
+* `cake.taskRunner.verbosity`: allows you to control cake `run task` verbosity (`diagnostic`, `minimal`, `normal`, `quiet` and `verbose`. Default value is `normal`.
 
 ### Codelens
 
@@ -89,7 +90,6 @@ There are a number of configuration options which allow you to control the Cake 
 * `cake.codeLens.showCodeLens`: a boolean value which toggles codelens on or off. Default value is `true`.
 * `cake.codeLens.scriptsIncludePattern`: a glob pattern which specifies how to detect `.cake` files in the current workspace. Default value is `**/*.cake`.
 * `cake.codeLens.taskRegularExpression`: a regular expression pattern which is used to identify Tasks within the `*.cake` files. Default value is `Task\\s*?\\(\\s*?\"(.*?)\"\\s*?\\)`.
-* `cake.codeLens.runTask.verbosity`: allows you to control cake `run task` verbosity (`diagnostic`, `minimal`, `normal`, `quiet` and `verbose`. Default value is `normal`.
 * `cake.codeLens.debugTask.verbosity`: allows you to control cake `debug task` verbosity (`diagnostic`, `minimal`, `normal`, `quiet` and `verbose`. Default value is `normal`.
 * `cake.codeLens.debugTask.debugType`: framework type of the debug session (`mono`or `coreclr`). Default value is `coreclr`.
 * `cake.codeLens.debugTask.request`: request type of the debug session. Default value is `launch`.
@@ -104,7 +104,7 @@ There are a number of configuration options which allow you to control the Cake 
 * `cake.codeLens.debugTask.logging.browserStdOut`: flag to determine if stdout text from the launching the web browser should be logged to the output window. Default value is `false`.
 
 **Remark**: While the command to debug a task is configurable using the `cake.codeLens.debugTask.program` setting,
-there is no specific setting for configuring the command to run a task. For this case the `cake.taskRunner.buildScript` setting is used (see above).
+there is no specific setting for configuring the command to run a task. For this case the `cake.taskRunner.launchCommand` setting is used (see above).  In addition, the verbosity used with running a task is controlled via the `cake.taskRunner.verbosity` setting.
 
 ## Resource Video
 

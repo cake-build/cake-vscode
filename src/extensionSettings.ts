@@ -1,6 +1,6 @@
 import * as vscode from 'vscode';
 
-interface IBuildScriptSettings {
+interface ILaunchCommandSettings {
     default: string;
     [platform: string]: string;
 }
@@ -10,7 +10,7 @@ export interface ITaskRunnerSettings {
     scriptsIncludePattern: string;
     scriptsExcludePattern: string;
     taskRegularExpression: string;
-    buildScript: IBuildScriptSettings;
+    launchCommand: ILaunchCommandSettings;
     verbosity: "diagnostic" | "minimal" | "normal" | "quiet" | "verbose";
 }
 
@@ -49,9 +49,6 @@ export interface ICodeLensSettings {
     scriptsIncludePattern: string;
     taskRegularExpression: string;
     debugTask: ICodeLensDebugTaskSettings;
-    runTask: {
-        verbosity: "diagnostic" | "minimal" | "normal" | "quiet" | "verbose";
-    };
 }
 
 export interface IExtensionSettings {
@@ -65,23 +62,23 @@ export function getExtensionSettings(): IExtensionSettings {
     var settings = vscode.workspace.getConfiguration('cake') as unknown as IExtensionSettings;
     var taskRunner = settings.taskRunner;
 
-    // extend "cake.taskRunner.buildScript" here, because the default of `{"default":"...", "win32":"..."}`
+    // extend "cake.taskRunner.launchCommand" here, because the default of `{"default":"...", "win32":"..."}`
     // can not (!) be part of the vs-internal settings defaults or else the platform-specific setting
     // can never be overridden. (i.e. win32 will always be set.)
-    const defaultScript = "./build.sh";
-    let buildScript = settings.taskRunner.buildScript;
-    if(!buildScript) {
-        buildScript = {
-            default: defaultScript,
+    const defaultCommand = "./build.sh";
+    let launchCommand = settings.taskRunner.launchCommand;
+    if (!launchCommand) {
+        launchCommand = {
+            default: defaultCommand,
             win32: "powershell -ExecutionPolicy ByPass -File build.ps1"
         }
     }
 
-    // make sure that there is always "cake.taskRunner.buildScript.default" - even if it's not in the settings.
-    if(!buildScript.default){
-        buildScript = {
-            ...buildScript,
-            default: defaultScript
+    // make sure that there is always "cake.taskRunner.launchCommand.default" - even if it's not in the settings.
+    if (!launchCommand.default) {
+        launchCommand = {
+            ...launchCommand,
+            default: defaultCommand
         }
     }
 
@@ -89,7 +86,7 @@ export function getExtensionSettings(): IExtensionSettings {
         ...settings,
         taskRunner: {
             ...taskRunner,
-            buildScript
+            launchCommand: launchCommand
         }
     }
 }

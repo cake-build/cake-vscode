@@ -156,7 +156,7 @@ async function _getCakeScriptsAsTasks(): Promise<vscode.Task[]> {
                 taskNames.push(matches[1]);
             }
 
-            const buildCommandBase = config.buildScript[os.platform()] || config.buildScript.default;
+            const buildCommandBase = config.launchCommand[os.platform()] || config.launchCommand.default;
 
             taskNames.forEach(taskName => {
                 const kind: CakeTaskDefinition = {

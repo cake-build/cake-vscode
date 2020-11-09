@@ -106,7 +106,7 @@
             "scriptsIncludePattern": "**/*.cake",
             "scriptsExcludePattern": "",
             "taskRegularExpression": "Task\\s*?\\(\\s*?\"(.*?)\"\\s*?\\)",
-            "buildScript": null,
+            "launchCommand": null,
             "verbosity": "normal"
           },
           "description": "The Cake Task Runner settings"
@@ -152,9 +152,6 @@
                 "engineLogging": false,
                 "browserStdOut": false
               }
-            },
-            "runTask": {
-              "verbosity": "normal"
             }
           },
           "properties": {
@@ -172,31 +169,6 @@
               "type": "string",
               "description": "Regular expression pattern to get tasks from Cake script",
               "default": "Task\\s*?\\(\\s*?\"(.*?)\"\\s*?\\)"
-            },
-            "runTask": {
-              "type": "object",
-              "description": "Cake run task configuration",
-              "properties": {
-                "verbosity": {
-                  "type": "string",
-                  "description": "Represents Cake run task output verbosity",
-                  "enum": [
-                    "diagnostic",
-                    "minimal",
-                    "normal",
-                    "quiet",
-                    "verbose"
-                  ],
-                  "enumDescriptions": [
-                    "Diagnostic verbosity",
-                    "Minimal verbosity.",
-                    "Normal verbosity.",
-                    "Quiet verbosity.",
-                    "Verbose verbosity."
-                  ],
-                  "default": "diagnostic"
-                }
-              }
             },
             "debugTask": {
               "type": "object",
