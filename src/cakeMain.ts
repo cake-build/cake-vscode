@@ -15,6 +15,7 @@ import { TerminalExecutor } from './shared/utils';
 import { getExtensionSettings, ICodeLensSettings, ITaskRunnerSettings } from './extensionSettings';
 import * as fs from 'fs';
 import * as os from 'os';
+import * as path from 'path';
 
 let taskProvider: vscode.Disposable | undefined;
 let codeLensProvider: CakeCodeLensProvider;
@@ -141,6 +142,8 @@ async function _getCakeScriptsAsTasks(): Promise<vscode.Task[]> {
 
         const result: vscode.Task[] = [];
 
+        const addFileName = files.length > 1;
+
         files.forEach(file => {
             const contents = fs.readFileSync(file.fsPath).toString();
 
@@ -157,6 +160,10 @@ async function _getCakeScriptsAsTasks(): Promise<vscode.Task[]> {
             }
 
             const buildCommandBase = config.launchCommand[os.platform()] || config.launchCommand.default;
+            let taskNamePrefix = "";
+            if(addFileName){
+                taskNamePrefix = path.basename(file.fsPath) + ": ";
+            }
 
             taskNames.forEach(taskName => {
                 const kind: CakeTaskDefinition = {
@@ -168,7 +175,7 @@ async function _getCakeScriptsAsTasks(): Promise<vscode.Task[]> {
 
                 const buildTask = new vscode.Task(
                     kind,
-                    `Run ${taskName}`,
+                    `Run ${taskNamePrefix}${taskName}`,
                     'Cake',
                     new vscode.ShellExecution(`${buildCommand}`),
                     []
