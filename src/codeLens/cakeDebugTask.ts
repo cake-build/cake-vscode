@@ -20,13 +20,13 @@ export class CakeDebugTask {
             }
 
             const debuggerConfig: DebugConfiguration = {
-                name: 'Cake: Task Debug Script (CoreCLR)',
+                name: 'Cake: Task Debug Script',
                 type: debugConfig.debugType,
                 request: debugConfig.request,
                 program: debugConfig.program,
                 args: [
                     `${fileName}`,
-                    `--target=\"${taskName}\"`,
+                    `--target=${taskName}`,
                     '--debug',
                     `--verbosity=${debugConfig.verbosity}`
                 ],
@@ -35,6 +35,14 @@ export class CakeDebugTask {
                 console: debugConfig.console,
                 logging: debugConfig.logging
             };
+
+            // https://code.visualstudio.com/docs/editor/tasks#_operating-system-specific-properties
+            ["windows", "linux", "osx"].forEach(platform => {
+                const platformSettings = debugConfig[platform];
+                if(platformSettings){
+                    debuggerConfig[platform] = platformSettings;
+                }    
+            });
             resolve(debuggerConfig);
         });
     }

@@ -295,7 +295,10 @@
               "verbosity": "normal",
               "debugType": "coreclr",
               "request": "launch",
-              "program": "${workspaceRoot}/tools/Cake.CoreCLR/Cake.dll",
+              "program": "~/.dotnet/tools/dotnet-cake",
+              "windows":{
+                "program": "dotnet-cake.exe"
+              },
               "cwd": "${workspaceRoot}",
               "stopAtEntry": true,
               "console": "internalConsole",
