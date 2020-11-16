@@ -18,6 +18,10 @@ PACKAGES_CONFIG_MD5=$TOOLS_DIR/packages.config.md5sum
 ADDINS_PACKAGES_CONFIG=$ADDINS_DIR/packages.config
 MODULES_PACKAGES_CONFIG=$MODULES_DIR/packages.config
 
+export CAKE_PATHS_TOOLS=$TOOLS_DIR
+export CAKE_PATHS_ADDINS=$ADDINS_DIR
+export CAKE_PATHS_MODULES=$MODULES_DIR
+
 # Define md5sum or md5 depending on Linux/OSX
 MD5_EXE=
 if [[ "$(uname -s)" == "Darwin" ]]; then
@@ -27,7 +31,7 @@ else
 fi
 
 # Define default arguments.
-SCRIPT="recipe.cake"
+SCRIPT=$SCRIPT_DIR/recipe.cake
 CAKE_ARGUMENTS=()
 
 # Parse arguments.
@@ -68,7 +72,7 @@ fi
 # Restore tools from NuGet.
 pushd "$TOOLS_DIR" >/dev/null
 if [ ! -f "$PACKAGES_CONFIG_MD5" ] || [ "$( cat "$PACKAGES_CONFIG_MD5" | sed 's/\r$//' )" != "$( $MD5_EXE "$PACKAGES_CONFIG" | awk '{ print $1 }' )" ]; then
-    find . -type d ! -name . | xargs rm -rf
+    find . -type d ! -name . ! -name 'Cake.Bakery' | xargs rm -rf
 fi
 
 mono "$NUGET_EXE" install -ExcludeVersion
