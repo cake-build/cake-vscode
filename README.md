@@ -93,7 +93,9 @@ There are a number of configuration options which allow you to control the Cake 
 * `cake.codeLens.debugTask.verbosity`: allows you to control cake `debug task` verbosity (`diagnostic`, `minimal`, `normal`, `quiet` and `verbose`. Default value is `normal`.
 * `cake.codeLens.debugTask.debugType`: framework type of the debug session (`mono`or `coreclr`). Default value is `coreclr`.
 * `cake.codeLens.debugTask.request`: request type of the debug session. Default value is `launch`.
-* `cake.codeLens.debugTask.program`: executable of the debug session (`tools/Cake/Cake.exe` for `mono` or `tools/Cake.CoreCLR/Cake.dll` for `coreclr`). Default value is `${workspaceRoot}/tools/Cake.CoreCLR/Cake.dll`.
+* `cake.codeLens.debugTask.program`: executable of the debug session (e.g. `tools/Cake/Cake.exe` for debugType `mono` or `tools/Cake.CoreCLR/Cake.dll` for debugType `coreclr`). 
+  This is a complex object, consisting of at least one property `default` and optionally properties corresponding to values of [`os.platform()`](https://nodejs.org/api/os.html#os_os_platform) for non-default values specific to different platforms.
+  Default value is `null` which is equal to specifying `{"default": "~/.dotnet/tools/dotnet-cake", "win32": "dotnet-cake.exe"}`.
 * `cake.codeLens.debugTask.cwd`: path to the working directory of the program being debugged. Default value is `${workspaceRoot}`.
 * `cake.codeLens.debugTask.stopAtEntry`: if true, the debugger should stop at the entry point of the target. Default value is `true`.
 * `cake.codeLens.debugTask.console`: console used by the debugger (`internalConsole`, `integratedTerminal` or `externalTerminal`) . Default value is `internalConsole`.
