@@ -106,6 +106,15 @@ There are a number of configuration options which allow you to control the Cake 
 **Remark**: While the command to debug a task is configurable using the `cake.codeLens.debugTask.program` setting,
 there is no specific setting for configuring the command to run a task. For this case the `cake.taskRunner.launchCommand` setting is used (see above).  In addition, the verbosity used with running a task is controlled via the `cake.taskRunner.verbosity` setting.
 
+### CodeSymbols
+
+The extension produces "code symbols", which are in turn used by Visual Studio Code to produce the code outline and breadcrumb navigation.
+
+There are configuration options to allow you to configure the symbol generation:
+
+* `cake.codeSymbols.contextRegularExpression`: a regular expression pattern to get contexts from Cake script. Default value is `(Setup|TaskSetup|Teardown|TaskTeardown|RunTarget)\\s*?`.
+* `cake.codeSymbols.taskRegularExpression`: a regular expression pattern to get tasks from Cake script. Default value is `(Task\\s*?\\(\\s*?\"(.*?)\"\\s*?\\)|Setup\\(.*=>|TearDown\\(.*=>|RunTarget\\(.*\\);)`.
+
 ## Resource Video
 
 There is a short introduction video to the Visual Studio Code Extension for Cake here:

@@ -8,14 +8,17 @@ import {
     DocumentSymbol,
     Range
 } from 'vscode';
+import { ICodeSymbolsSettings } from '../extensionSettings'
 
 export class CakeDocumentSymbolProvider implements DocumentSymbolProvider {
-    private ctxRegEx: RegExp;
-    private taskRegEx: RegExp;
-    public showCodeOutline: boolean = false; 
-
+    private ctxRegEx!: RegExp;
+    private taskRegEx!: RegExp;
     
-    public constructor(config:any) {
+    public constructor(config: ICodeSymbolsSettings) {
+        this.reconfigure(config);
+    }
+
+    public reconfigure(config: ICodeSymbolsSettings){
         this.ctxRegEx = new RegExp(config.contextRegularExpression, 'gm');
         this.taskRegEx = new RegExp(config.taskRegularExpression, 'gm');
     }
@@ -32,12 +35,12 @@ export class CakeDocumentSymbolProvider implements DocumentSymbolProvider {
             if (!document) {
                 return reject('No open document in the workspace');
             }
-
-            if (token.isCancellationRequested) {
-                return resolve(symbols);
-            }    
-            
+ 
             for (var i = 0; i < document.lineCount; i++) {
+                if (token.isCancellationRequested) {
+                    return resolve(symbols);
+                }  
+                
                 const line = document.lineAt(i)
                 let match = this.matchTask(line.text);
                 if (match !== null) {

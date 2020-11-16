@@ -13,7 +13,7 @@ import { installCakeDebugTaskCommand } from './codeLens/cakeDebugTaskCommand';
 import { CakeCodeLensProvider } from './codeLens/cakeCodeLensProvider';
 import { CakeDocumentSymbolProvider } from './documentSymbols/cakeDocumentSymbolProvider';
 import { TerminalExecutor } from './shared/utils';
-import { getExtensionSettings, ICodeLensSettings, ITaskRunnerSettings } from './extensionSettings';
+import { getExtensionSettings, ICodeLensSettings, ICodeSymbolsSettings, ITaskRunnerSettings } from './extensionSettings';
 import * as fs from 'fs';
 import * as os from 'os';
 import * as path from 'path';
@@ -93,18 +93,22 @@ export function activate(context: vscode.ExtensionContext): void {
     // Register code lens provider and tasks
     _registerCodeLens(config.codeLens, context);
 
-    _registerCodeOutline(config.codeOutline, context);
+    _registerSymbolProvider(config.codeSymbols, context);
 
     vscode.workspace.onDidChangeConfiguration(onConfigurationChanged);
-    onConfigurationChanged();
+    onConfigurationChanged(null as unknown as vscode.ConfigurationChangeEvent);
 }
 
-function onConfigurationChanged() {
+function onConfigurationChanged(event: vscode.ConfigurationChangeEvent) {
+    if(event && !event.affectsConfiguration("cake")) {
+        // we're not affected
+        return;
+    }
     const config = getExtensionSettings();
 
     _verifyTasksRunner(config.taskRunner);
     _verifyCodeLens(config.codeLens);
-    _verifyCodeOutline(config.codeOutline);
+    _verifySymbolProvider(config.codeSymbols);
 }
 
 function _verifyTasksRunner(config: ITaskRunnerSettings) {
@@ -244,8 +248,8 @@ function _registerCodeLens(
     );
 }
 
-function _registerCodeOutline(
-    config: any,
+function _registerSymbolProvider(
+    config: ICodeSymbolsSettings,
     context: vscode.ExtensionContext
 ): void {
 
@@ -261,8 +265,8 @@ function _registerCodeOutline(
     );
 }
 
-function _verifyCodeOutline(config: any): void {
-    documentSymbolProvider.showCodeOutline = config.showCodeOutline;
+function _verifySymbolProvider(_config: ICodeSymbolsSettings): void {
+    documentSymbolProvider.reconfigure(_config);
 }
 
 function _verifyCodeLens(config: ICodeLensSettings): void {
