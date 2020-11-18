@@ -3,6 +3,7 @@ import * as path from 'path';
 import * as TypeMoq from 'typemoq';
 import { workspace, CancellationToken, CodeLens } from 'vscode';
 import { CakeCodeLensProvider } from '../../src/codeLens/cakeCodeLensProvider';
+import { ICodeLensSettings } from '../../src/extensionSettings';
 
 export default function describeCodeLensTests() {
     const configsPath = path.join(
@@ -16,11 +17,11 @@ export default function describeCodeLensTests() {
     );
     suite('CodeLens', () => {
         test('should get default codelens config from cake configuration', async () => {
-            let config = workspace.getConfiguration('cake').inspect('codeLens');
-            let defaultConfig: any =
+            let config = workspace.getConfiguration('cake').inspect<ICodeLensSettings>('codeLens');
+            let defaultConfig: ICodeLensSettings =
                 config == undefined
-                    ? { defaultValue: {} }
-                    : config.defaultValue;
+                    ? ({ defaultValue: {} } as unknown as ICodeLensSettings)
+                    : config.defaultValue as ICodeLensSettings;
 
             assert.equal(defaultConfig.showCodeLens, true);
             assert.equal(defaultConfig.scriptsIncludePattern, '**/*.cake');
@@ -28,7 +29,6 @@ export default function describeCodeLensTests() {
                 defaultConfig.taskRegularExpression,
                 'Task\\s*?\\(\\s*?"(.*?)"\\s*?\\)'
             );
-            assert.equal(defaultConfig.runTask.verbosity, 'normal');
             assert.equal(defaultConfig.debugTask.verbosity, 'normal');
             assert.equal(defaultConfig.debugTask.debugType, 'coreclr');
             assert.equal(defaultConfig.debugTask.request, 'launch');
@@ -132,6 +132,9 @@ export default function describeCodeLensTests() {
             taskName = task.command.arguments[0];
             fileName = task.command.arguments[1];
         }
+
+        // sanitize directory separator in expectedFileName
+        expectedFileName = expectedFileName.replace(/[\/\\]/g, path.sep);
 
         assert.equal(title, expectedTitle);
         assert.equal(command, expectedCommand);
