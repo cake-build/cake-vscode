@@ -20,7 +20,7 @@ BuildParameters.SetParameters(context: Context,
                             appVeyorAccountName: "cakebuild",
                             shouldRunGitVersion: true,
                             vsceVersionNumber:"1.78.0",
-                            typeScriptVersionNumber: "4.0.2");
+                            typeScriptVersionNumber: "4.1.2");
 
 BuildParameters.PrintParameters(Context);
 
