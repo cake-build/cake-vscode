@@ -221,10 +221,13 @@ function _registerCodeLens(
             'cake.debugTask',
             async (taskName: string, fileName: string) => {
 
+                /*
+                TODO: Should we install something auto-magically?
                 const result = await installCakeDebugCommand(true);
 
                 if(!result)
                     return;
+                */
 
                 installCakeDebugTaskCommand(
                     taskName,

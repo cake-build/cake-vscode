@@ -24,7 +24,7 @@ In addition to integrated editing features, the extension also provides commands
 
 * `Cake: Install a bootstrapper` to install a Cake bootstrapper for Windows, OS X or Linux in the root folder.
 * `Cake: Install to workspace` will run through all of the available commands at once, to save having to run them one by one
-* `Cake: Install debug dependencies` to download the Cake.CoreCLR NuGet Package into the tools folder, ready for enabling debugging
+* `Cake: Install debug dependencies` to either install the .NET global tool or alternatively download the Cake.CoreCLR NuGet Package into the tools folder.
 * `Cake: Install sample build file` to install a sample Cake File that contains Setup and Teardown actions, a sample task, and argument parsing.
 * `Cake: Add addin from NuGet` to add or update an Addin from NuGet in the specified Cake file.
 * `Cake: Add tool from NuGet` to add or update a Tool from NuGet in the specified Cake file.
