@@ -11,14 +11,16 @@ import { installCakeBakeryCommand } from './bakery/cakeBakeryCommand';
 import { installCakeRunTaskCommand } from './codeLens/cakeRunTaskCommand';
 import { installCakeDebugTaskCommand } from './codeLens/cakeDebugTaskCommand';
 import { CakeCodeLensProvider } from './codeLens/cakeCodeLensProvider';
+import { CakeDocumentSymbolProvider } from './documentSymbols/cakeDocumentSymbolProvider';
 import { TerminalExecutor } from './shared/utils';
-import { getExtensionSettings, ICodeLensSettings, ITaskRunnerSettings } from './extensionSettings';
+import { getExtensionSettings, ICodeLensSettings, ICodeSymbolsSettings, ITaskRunnerSettings } from './extensionSettings';
 import * as fs from 'fs';
 import * as os from 'os';
 import * as path from 'path';
 
 let taskProvider: vscode.Disposable | undefined;
 let codeLensProvider: CakeCodeLensProvider;
+let documentSymbolProvider: CakeDocumentSymbolProvider;
 
 interface CakeTaskDefinition extends vscode.TaskDefinition {
     script: string;
@@ -91,15 +93,22 @@ export function activate(context: vscode.ExtensionContext): void {
     // Register code lens provider and tasks
     _registerCodeLens(config.codeLens, context);
 
+    _registerSymbolProvider(config.codeSymbols, context);
+
     vscode.workspace.onDidChangeConfiguration(onConfigurationChanged);
-    onConfigurationChanged();
+    onConfigurationChanged(null as unknown as vscode.ConfigurationChangeEvent);
 }
 
-function onConfigurationChanged() {
+function onConfigurationChanged(event: vscode.ConfigurationChangeEvent) {
+    if(event && !event.affectsConfiguration("cake")) {
+        // we're not affected
+        return;
+    }
     const config = getExtensionSettings();
 
     _verifyTasksRunner(config.taskRunner);
     _verifyCodeLens(config.codeLens);
+    _verifySymbolProvider(config.codeSymbols);
 }
 
 function _verifyTasksRunner(config: ITaskRunnerSettings) {
@@ -237,6 +246,27 @@ function _registerCodeLens(
             codeLensProvider
         )
     );
+}
+
+function _registerSymbolProvider(
+    config: ICodeSymbolsSettings,
+    context: vscode.ExtensionContext
+): void {
+
+    documentSymbolProvider = new CakeDocumentSymbolProvider(config);
+    context.subscriptions.push(
+        vscode.languages.registerDocumentSymbolProvider(
+            {
+                language: 'csharp',
+                scheme: 'file'
+            }, 
+            documentSymbolProvider
+        )
+    );
+}
+
+function _verifySymbolProvider(_config: ICodeSymbolsSettings): void {
+    documentSymbolProvider.reconfigure(_config);
 }
 
 function _verifyCodeLens(config: ICodeLensSettings): void {

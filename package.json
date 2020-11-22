@@ -421,6 +421,26 @@
               }
             }
           }
+        },
+        "cake.codeSymbols": {
+          "type": "object",
+          "description": "The Cake code symbols configuration",
+          "default": {
+            "contextRegularExpression": "(Setup|TaskSetup|Teardown|TaskTeardown|RunTarget)\\s*?",
+            "taskRegularExpression": "Task\\s*?\\(\\s*?\"(.*?)\"\\s*?\\)"
+          },
+          "properties": {
+            "contextRegularExpression":  {
+              "type": "string",
+              "description": "Regular expression pattern to get contexts from Cake script",
+              "default": "(Setup|TaskSetup|Teardown|TaskTeardown|RunTarget)\\s*?"
+            },
+            "taskRegularExpression": {
+              "type": "string",
+              "description": "Regular expression pattern to get tasks from Cake script",
+              "default": "(Task\\s*?\\(\\s*?\"(.*?)\"\\s*?\\)|Setup\\(.*=>|TearDown\\(.*=>|RunTarget\\(.*\\);)"
+            }
+          }
         }
       }
     },

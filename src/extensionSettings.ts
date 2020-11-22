@@ -51,11 +51,17 @@ export interface ICodeLensSettings {
     debugTask: ICodeLensDebugTaskSettings;
 }
 
+export interface ICodeSymbolsSettings {
+    contextRegularExpression: string;
+    taskRegularExpression: string;
+}
+
 export interface IExtensionSettings {
     taskRunner: ITaskRunnerSettings;
     bootstrappers: IBootstrappersSettings;
     configuration: IConfigurationSettings;
     codeLens: ICodeLensSettings;
+    codeSymbols: ICodeSymbolsSettings;
 }
 
 export function getExtensionSettings(): IExtensionSettings {
