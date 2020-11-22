@@ -1,4 +1,4 @@
-#load "nuget:https://www.nuget.org/api/v2?package=Cake.VsCode.Recipe&version=0.2.1"
+#load "nuget:https://www.nuget.org/api/v2?package=Cake.VsCode.Recipe&version=0.3.0"
 
 if(BuildSystem.IsLocalBuild)
 {
