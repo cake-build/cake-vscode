@@ -295,7 +295,7 @@
               "verbosity": "normal",
               "debugType": "coreclr",
               "request": "launch",
-              "program": "${workspaceRoot}/tools/Cake.CoreCLR/Cake.dll",
+              "program": null,
               "cwd": "${workspaceRoot}",
               "stopAtEntry": true,
               "console": "internalConsole",
@@ -358,9 +358,78 @@
                   "default": "launch"
                 },
                 "program": {
-                  "type": "string",
-                  "description": "The executable for the debug session",
-                  "default": "${workspaceRoot}/tools/Cake.CoreCLR/Cake.dll"
+                  "type": [
+                    "null",
+                    "object"
+                  ],
+                  "description": "An Object describing the executable for the debug session. The default of `null` is equal to is equal to {\"default\": \"~/.dotnet/tools/dotnet-cake\", \"win32\": \"dotnet-cake.exe\"}",
+                  "default": null,
+                  "required": [
+                    "default"
+                  ],
+                  "properties": {
+                    "default": {
+                      "type": "string",
+                      "description": "The default executable for the debug session.",
+                      "default": "~/.dotnet/tools/dotnet-cake"
+                    },
+                    "win32": {
+                      "type": [
+                        "null",
+                        "string"
+                      ],
+                      "description": "The win32-specific executable for the debug session.",
+                      "default": "dotnet-cake.exe"
+                    },
+                    "darwin": {
+                      "type": [
+                        "null",
+                        "string"
+                      ],
+                      "description": "The darwin-specific executable for the debug session.",
+                      "default": null
+                    },
+                    "linux": {
+                      "type": [
+                        "null",
+                        "string"
+                      ],
+                      "description": "The linux-specific executable for the debug session.",
+                      "default": null
+                    },
+                    "aix": {
+                      "type": [
+                        "null",
+                        "string"
+                      ],
+                      "description": "The aix-specific executable for the debug session.",
+                      "default": null
+                    },
+                    "freebsd": {
+                      "type": [
+                        "null",
+                        "string"
+                      ],
+                      "description": "The freebsd-specific executable for the debug session.",
+                      "default": null
+                    },
+                    "openbsd": {
+                      "type": [
+                        "null",
+                        "string"
+                      ],
+                      "description": "The openbsd-specific executable for the debug session.",
+                      "default": null
+                    },
+                    "sunos": {
+                      "type": [
+                        "null",
+                        "string"
+                      ],
+                      "description": "The sunos-specific executable for the debug session.",
+                      "default": null
+                    }
+                  }
                 },
                 "cwd": {
                   "type": "string",
@@ -446,11 +515,57 @@
     },
     "debuggers": [
       {
+        "type": "cake-tool",
+        "label": "Cake Tool",
+        "initialConfigurations": [
+          {
+            "name": "Cake: Debug Script (.NET Tool)",
+            "type": "coreclr",
+            "request": "launch",
+            "program": "dotnet-cake",
+            "windows": {
+              "program": "dotnet-cake.exe"
+            },
+            "args": [
+              "${workspaceRoot}/build.cake",
+              "--debug",
+              "--verbosity=diagnostic"
+            ],
+            "cwd": "${workspaceRoot}",
+            "stopAtEntry": true,
+            "externalConsole": false
+          }
+        ],
+        "configurationSnippets": [
+          {
+            "label": "Cake: Debug Script (.NET Tool)",
+            "description": "test",
+            "body": {
+              "name": "Cake: Debug Script (.NET Tool)",
+              "type": "coreclr",
+              "request": "launch",
+              "program": "dotnet-cake",
+              "windows": {
+                "program": "dotnet-cake.exe"
+              },
+              "args": [
+                "^\"\\${workspaceRoot}/build.cake\"",
+                "--debug",
+                "--verbosity=diagnostic"
+              ],
+              "cwd": "^\"\\${workspaceRoot}\"",
+              "stopAtEntry": true,
+              "externalConsole": false
+            }
+          }
+        ]
+      },
+      {
         "type": "cake-coreclr",
         "label": "Cake CoreCLR",
         "initialConfigurations": [
           {
-            "name": "Cake: Debug Script (CoreCLR)",
+            "name": "Cake: Debug Script (.NET Core)",
             "type": "coreclr",
             "request": "launch",
             "program": "${workspaceRoot}/tools/Cake.CoreCLR/Cake.dll",
@@ -466,7 +581,7 @@
         ],
         "configurationSnippets": [
           {
-            "label": "Cake: Debug Script (CoreCLR)",
+            "label": "Cake: Debug Script (.NET Core)",
             "description": "test",
             "body": {
               "name": "Cake: Debug Script (CoreCLR)",
@@ -490,7 +605,7 @@
         "label": "Cake Mono",
         "initialConfigurations": [
           {
-            "name": "Cake: Debug Script (mono)",
+            "name": "Cake: Debug Script (Mono)",
             "type": "mono",
             "request": "launch",
             "program": "${workspaceRoot}/tools/Cake/Cake.exe",

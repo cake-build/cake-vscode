@@ -1,8 +1,13 @@
 import * as vscode from 'vscode';
+import * as os from 'os';
 
-interface ILaunchCommandSettings {
-    default: string;
-    [platform: string]: string;
+interface IPlatformSettings<T> {
+    default: T;
+    [platform: string]: T;
+}
+
+interface ILaunchCommandSettings 
+    extends IPlatformSettings<string> {
 }
 
 export interface ITaskRunnerSettings {
@@ -27,11 +32,15 @@ export interface IConfigurationSettings {
     config: string;
 }
 
+export interface ICodeLensDebugTaskProgramSettings 
+    extends IPlatformSettings<string> {
+}
+
 export interface ICodeLensDebugTaskSettings {
     verbosity: "diagnostic" | "minimal" | "normal" | "quiet" | "verbose";
     debugType: "mono" | "coreclr";
     request: string;
-    program: string;
+    program: ILaunchCommandSettings;
     cwd: string;
     stopAtEntry: boolean;
     console: "internalConsole" | "integratedTerminal" | "externalTerminal";
@@ -64,35 +73,70 @@ export interface IExtensionSettings {
     codeSymbols: ICodeSymbolsSettings;
 }
 
+export function getPlatformSettingsValue<T>(settings: IPlatformSettings<T>): T {
+    return settings[os.platform()] || settings.default;
+}
+
 export function getExtensionSettings(): IExtensionSettings {
-    var settings = vscode.workspace.getConfiguration('cake') as unknown as IExtensionSettings;
-    var taskRunner = settings.taskRunner;
+    const settings = vscode.workspace.getConfiguration('cake') as unknown as IExtensionSettings;
+    const taskRunner = settings.taskRunner;
+    const codeLens = settings.codeLens;
 
     // extend "cake.taskRunner.launchCommand" here, because the default of `{"default":"...", "win32":"..."}`
     // can not (!) be part of the vs-internal settings defaults or else the platform-specific setting
     // can never be overridden. (i.e. win32 will always be set.)
-    const defaultCommand = "./build.sh";
-    let launchCommand = settings.taskRunner.launchCommand;
-    if (!launchCommand) {
-        launchCommand = {
-            default: defaultCommand,
-            win32: "powershell -ExecutionPolicy ByPass -File build.ps1"
-        }
-    }
+    const launchCommand = _ensureDefaultsOnLaunchCommand(taskRunner.launchCommand);
 
-    // make sure that there is always "cake.taskRunner.launchCommand.default" - even if it's not in the settings.
-    if (!launchCommand.default) {
-        launchCommand = {
-            ...launchCommand,
-            default: defaultCommand
-        }
-    }
+    // also extend "cake.codeLens.debugTask.program" here, of the same reason as above.
+    const debugTaskProgram = _ensureDefaultsOnDebugTaskProgram(codeLens.debugTask.program);
+
 
     return {
         ...settings,
         taskRunner: {
             ...taskRunner,
             launchCommand: launchCommand
+        },
+        codeLens: {
+            ...codeLens,
+            debugTask: {
+                ...codeLens.debugTask,
+                program: debugTaskProgram
+            }
         }
     }
+}
+
+function _ensureDefaultsOnLaunchCommand(launchCommand: ILaunchCommandSettings): ILaunchCommandSettings {
+    const defaultVal = {
+        default: "./build.sh",
+        win32: "powershell -ExecutionPolicy ByPass -File build.ps1"
+    };
+
+    return _ensureDefaultsOnPlatformSetting(launchCommand, defaultVal);
+}
+
+function _ensureDefaultsOnDebugTaskProgram(program: ICodeLensDebugTaskProgramSettings): ICodeLensDebugTaskProgramSettings {
+    const defaultVal = {
+        default: "~/.dotnet/tools/dotnet-cake",
+        win32: "dotnet-cake.exe"
+    };
+
+    return _ensureDefaultsOnPlatformSetting(program, defaultVal);
+}
+
+function _ensureDefaultsOnPlatformSetting<T extends IPlatformSettings<TInner>, TInner>(inputVal: T, defaultVal: T): T {
+    if(!inputVal) {
+        return defaultVal;
+    }
+
+    // ensure "default" is always set.
+    if(!inputVal.default){
+        inputVal = {
+            ...inputVal,
+            default: defaultVal.default
+        }
+    }
+
+    return inputVal;
 }

@@ -70,11 +70,12 @@ export function installCake(
                     })
                 );
             }
+            // TODO: Is a selection CoreCLR/global tool needed?
             if (installOpts.installDebug) {
                 results.push(
                     installCakeDebug().then(v => {
                         logResult(
-                            v,
+                            v.installed,
                             'Debug dependencies successfully installed.',
                             'Error encountered while install debugging dependencies.'
                         );

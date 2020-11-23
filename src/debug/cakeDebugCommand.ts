@@ -1,6 +1,7 @@
 import { window, workspace } from 'vscode';
 import * as fs from 'fs';
 import { CakeDebug } from './cakeDebug';
+import { CakeTool } from './cakeTool';
 
 export async function installCakeDebugCommand(hideWarning?: boolean): Promise<boolean> {
     // Check if there is an open folder in workspace
@@ -9,27 +10,49 @@ export async function installCakeDebugCommand(hideWarning?: boolean): Promise<bo
         return false;
     }
 
-    var result = await installCakeDebug();
+    const selection = await window.showQuickPick([
+        'Cake.Tool',
+        'Cake.CoreCLR'
+    ]);
+
+    if(!selection){
+        return false;
+    }
+
+    const isCakeTool = selection === 'Cake.Tool';
+    const result = await (isCakeTool ? installCakeTool()  : installCakeDebug());
+    const messages = {
+        advice: isCakeTool ?
+            'Cake Debug Dependencies correctly installed globally.' :
+            'Cake Debug Dependencies correctly downloaded.',
+        warning: isCakeTool ? 
+            'Cake.Tool is already installed globally' :
+            'Cake.CoreCLR package has already been installed.',
+        error: isCakeTool ? 
+            'Error installing Cake Debug Dependencies' : 
+            'Error downloading Cake Debug Dependencies'
+    }
 
     if (result.installed) {
         if (result.advice) {
-            window.showInformationMessage(
-                'Cake Debug Dependencies correctly downloaded.'
-            );
+            window.showInformationMessage(messages.advice);
         } else if (!hideWarning) {
-            window.showWarningMessage(
-                'Cake.CoreCLR package has already been installed.'
-            );
+            window.showWarningMessage(messages.warning);
         }
     } else {
-        window.showErrorMessage('Error downloading Cake Debug Dependencies');
+        window.showErrorMessage(messages.error);
         return false;
     }
 
     return true;
 }
 
-export async function installCakeDebug(): Promise<any> {
+interface IInstallResult {
+    installed: boolean;
+    advice: boolean;
+}
+
+export async function installCakeDebug(): Promise<IInstallResult> {
     let debug = new CakeDebug();
 
     var targetPath = debug.getTargetPath();
@@ -38,5 +61,17 @@ export async function installCakeDebug(): Promise<any> {
     }
 
     var result = await debug.downloadAndExtract();
+    return { installed: result, advice: true };
+}
+
+async function installCakeTool(): Promise<IInstallResult> {
+    const tool = new CakeTool();
+
+    const alreadyInstalled = await tool.isInstalled();
+    if(alreadyInstalled){
+        return { installed: true, advice: false };
+    }
+
+    const result = await tool.install();
     return { installed: result, advice: true };
 }

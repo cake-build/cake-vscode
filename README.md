@@ -24,7 +24,7 @@ In addition to integrated editing features, the extension also provides commands
 
 * `Cake: Install a bootstrapper` to install a Cake bootstrapper for Windows, OS X or Linux in the root folder.
 * `Cake: Install to workspace` will run through all of the available commands at once, to save having to run them one by one
-* `Cake: Install debug dependencies` to download the Cake.CoreCLR NuGet Package into the tools folder, ready for enabling debugging
+* `Cake: Install debug dependencies` to either install the .NET global tool or alternatively download the Cake.CoreCLR NuGet Package into the tools folder.
 * `Cake: Install sample build file` to install a sample Cake File that contains Setup and Teardown actions, a sample task, and argument parsing.
 * `Cake: Add addin from NuGet` to add or update an Addin from NuGet in the specified Cake file.
 * `Cake: Add tool from NuGet` to add or update a Tool from NuGet in the specified Cake file.
@@ -93,7 +93,9 @@ There are a number of configuration options which allow you to control the Cake 
 * `cake.codeLens.debugTask.verbosity`: allows you to control cake `debug task` verbosity (`diagnostic`, `minimal`, `normal`, `quiet` and `verbose`. Default value is `normal`.
 * `cake.codeLens.debugTask.debugType`: framework type of the debug session (`mono`or `coreclr`). Default value is `coreclr`.
 * `cake.codeLens.debugTask.request`: request type of the debug session. Default value is `launch`.
-* `cake.codeLens.debugTask.program`: executable of the debug session (`tools/Cake/Cake.exe` for `mono` or `tools/Cake.CoreCLR/Cake.dll` for `coreclr`). Default value is `${workspaceRoot}/tools/Cake.CoreCLR/Cake.dll`.
+* `cake.codeLens.debugTask.program`: executable of the debug session (e.g. `tools/Cake/Cake.exe` for debugType `mono` or `tools/Cake.CoreCLR/Cake.dll` for debugType `coreclr`). 
+  This is a complex object, consisting of at least one property `default` and optionally properties corresponding to values of [`os.platform()`](https://nodejs.org/api/os.html#os_os_platform) for non-default values specific to different platforms.
+  Default value is `null` which is equal to specifying `{"default": "~/.dotnet/tools/dotnet-cake", "win32": "dotnet-cake.exe"}`.
 * `cake.codeLens.debugTask.cwd`: path to the working directory of the program being debugged. Default value is `${workspaceRoot}`.
 * `cake.codeLens.debugTask.stopAtEntry`: if true, the debugger should stop at the entry point of the target. Default value is `true`.
 * `cake.codeLens.debugTask.console`: console used by the debugger (`internalConsole`, `integratedTerminal` or `externalTerminal`) . Default value is `internalConsole`.

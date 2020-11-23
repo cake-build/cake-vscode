@@ -13,9 +13,8 @@ import { installCakeDebugTaskCommand } from './codeLens/cakeDebugTaskCommand';
 import { CakeCodeLensProvider } from './codeLens/cakeCodeLensProvider';
 import { CakeDocumentSymbolProvider } from './documentSymbols/cakeDocumentSymbolProvider';
 import { TerminalExecutor } from './shared/utils';
-import { getExtensionSettings, ICodeLensSettings, ICodeSymbolsSettings, ITaskRunnerSettings } from './extensionSettings';
+import { getExtensionSettings, getPlatformSettingsValue, ICodeLensSettings, ICodeSymbolsSettings, ITaskRunnerSettings } from './extensionSettings';
 import * as fs from 'fs';
-import * as os from 'os';
 import * as path from 'path';
 
 let taskProvider: vscode.Disposable | undefined;
@@ -168,7 +167,7 @@ async function _getCakeScriptsAsTasks(): Promise<vscode.Task[]> {
                 taskNames.push(matches[1]);
             }
 
-            const buildCommandBase = config.launchCommand[os.platform()] || config.launchCommand.default;
+            const buildCommandBase = getPlatformSettingsValue(config.launchCommand);
             let taskNamePrefix = "";
             if(addFileName){
                 taskNamePrefix = path.basename(file.fsPath) + ": ";
@@ -222,10 +221,13 @@ function _registerCodeLens(
             'cake.debugTask',
             async (taskName: string, fileName: string) => {
 
+                /*
+                TODO: Should we install something auto-magically?
                 const result = await installCakeDebugCommand(true);
 
                 if(!result)
                     return;
+                */
 
                 installCakeDebugTaskCommand(
                     taskName,
