@@ -430,7 +430,7 @@
             "taskRegularExpression": "Task\\s*?\\(\\s*?\"(.*?)\"\\s*?\\)"
           },
           "properties": {
-            "contextRegularExpression":  {
+            "contextRegularExpression": {
               "type": "string",
               "description": "Regular expression pattern to get contexts from Cake script",
               "default": "(Setup|TaskSetup|Teardown|TaskTeardown|RunTarget)\\s*?"
