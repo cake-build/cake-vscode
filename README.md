@@ -78,7 +78,7 @@ There are a number of configuration options which allow you to control how the T
 * `cake.taskRunner.taskRegularExpression`: a regular expression pattern which is used to identify Tasks within the `*.cake` files. Default value is `Task\\s*?\\(\\s*?\"(.*?)\"\\s*?\\)`.
 * `cake.taskRunner.launchCommand`: the name of the build script to run, when running a task.
   This is a complex object, consisting of at least one property `default` and optionally properties corresponding to values of [`os.platform()`](https://nodejs.org/api/os.html#os_os_platform) for non-default values specific to different platforms.
-  Default value is `null` which is equal to specifying `{"default": "./build.sh", "win32": "powershell -ExecutionPolicy ByPass -File build.ps1"}`.
+  Default value is `null` which is equal to specifying `{"default": "~/.dotnet/tools/dotnet-cake", "win32": "dotnet-cake.exe"}`.
 * `cake.taskRunner.verbosity`: allows you to control cake `run task` verbosity (`diagnostic`, `minimal`, `normal`, `quiet` and `verbose`. Default value is `normal`.
 
 ### Codelens

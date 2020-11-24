@@ -109,8 +109,8 @@ export function getExtensionSettings(): IExtensionSettings {
 
 function _ensureDefaultsOnLaunchCommand(launchCommand: ILaunchCommandSettings): ILaunchCommandSettings {
     const defaultVal = {
-        default: "./build.sh",
-        win32: "powershell -ExecutionPolicy ByPass -File build.ps1"
+        default: "~/.dotnet/tools/dotnet-cake",
+        win32: "dotnet-cake.exe"
     };
 
     return _ensureDefaultsOnPlatformSetting(launchCommand, defaultVal);
