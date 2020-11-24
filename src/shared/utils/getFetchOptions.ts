@@ -36,8 +36,8 @@ export default function getFetchOptions(configuration?: IProxyConfiguration) {
         const useStrictSSL = !!proxyStrictSSL; // coerce to boolean just in case
 
         fetchOptions.agent = createHttpsProxyAgent({
-            host: <string>parsedProxy.host,
-            port: <string>parsedProxy.port,
+            host: parsedProxy.host,
+            port: parsedProxy.port,
             secureEndpoint: useStrictSSL,
             rejectUnauthorized: useStrictSSL
         });
