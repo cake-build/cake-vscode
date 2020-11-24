@@ -136,7 +136,7 @@
                 "null",
                 "object"
               ],
-              "description": "The name of the build script to run, when running a task. the default of `null` is equal to {\"default\": \"./build.sh\", \"win32\": \"powershell -ExecutionPolicy ByPass -File build.ps1\"}",
+              "description": "The name of the build script to run, when running a task. the default of `null` is equal to {\"default\": \"~/.dotnet/tools/dotnet-cake\", \"win32\": \"dotnet-cake.exe\"}",
               "default": null,
               "required": [
                 "default"
@@ -145,7 +145,7 @@
                 "default": {
                   "type": "string",
                   "description": "The default name of the build script to run.",
-                  "default": "./build.sh"
+                  "default": "~/.dotnet/tools/dotnet-cake"
                 },
                 "win32": {
                   "type": [
@@ -153,7 +153,7 @@
                     "string"
                   ],
                   "description": "The win32-specific name of the build script to run.",
-                  "default": "powershell -ExecutionPolicy ByPass -File build.ps1"
+                  "default": "dotnet-cake.exe"
                 },
                 "darwin": {
                   "type": [
