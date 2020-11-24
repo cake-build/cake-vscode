@@ -232,7 +232,7 @@ function _registerCodeLens(
                 installCakeDebugTaskCommand(
                     taskName,
                     fileName,
-                    getExtensionSettings().codeLens.debugTask
+                    getExtensionSettings()
                 );
             }
         )

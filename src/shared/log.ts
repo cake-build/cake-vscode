@@ -20,6 +20,15 @@ export function logError(error: string, notify: boolean = true) {
     }
 }
 
+export function logInfo(info: string, notify: boolean = false) {
+    var channel = getChannel(OUTPUT_CHANNEL_NAME);
+    channel.appendLine(`I: ${info}`);
+
+    if (notify) {
+        window.showInformationMessage(info);
+    }
+}
+
 function getChannel(name: string): OutputChannel {
     if (!channel) {
         channel = window.createOutputChannel(name);
