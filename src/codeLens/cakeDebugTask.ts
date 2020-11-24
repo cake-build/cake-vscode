@@ -4,8 +4,8 @@ import {
     workspace,
     DebugConfiguration
 } from 'vscode';
-import { ensureNotDirty } from './editorTools';
-import { getPlatformSettingsValue, ICodeLensDebugTaskSettings } from '../extensionSettings';
+import { ensureNotDirty, installCakeToolIfNeeded } from './shared';
+import { getPlatformSettingsValue, ICodeLensDebugTaskSettings, IExtensionSettings } from '../extensionSettings';
 
 export class CakeDebugTask {
     constructor() {}
@@ -43,7 +43,8 @@ export class CakeDebugTask {
         });
     }
 
-    public async debug(taskName: string, fileName: string, debugConfig: any) : Promise<boolean> {
+    public async debug(taskName: string, fileName: string, settings: IExtensionSettings) : Promise<boolean> {
+        const debugConfig = settings.codeLens.debugTask;
         try{
             if (
                 !workspace.workspaceFolders ||
@@ -51,9 +52,9 @@ export class CakeDebugTask {
             ) {
                 throw new Error('No open workspace');
             }
-            if(await ensureNotDirty(fileName)) {
-                window.showInformationMessage("Saved file before debugging task...");
-            }
+            
+            await ensureNotDirty(fileName);
+            await installCakeToolIfNeeded(settings);
         
             const workspaceFolder = workspace.workspaceFolders[0];
             const debuggerConfig = await this._getDebuggerConfig(taskName, fileName, debugConfig);

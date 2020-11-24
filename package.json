@@ -289,6 +289,7 @@
           "description": "The Cake codelens configuration",
           "default": {
             "showCodeLens": true,
+            "installNetTool": true,
             "scriptsIncludePattern": "**/*.cake",
             "taskRegularExpression": "Task\\s*?\\(\\s*?\"(.*?)\"\\s*?\\)",
             "debugTask": {
@@ -312,6 +313,11 @@
             "showCodeLens": {
               "type": "boolean",
               "description": "Show codelens for tasks in Cake files",
+              "default": true
+            },
+            "installNetTool": {
+              "type": "boolean",
+              "description": "Auto-install the Cake .NET Tool.",
               "default": true
             },
             "scriptsIncludePattern": {

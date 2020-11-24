@@ -88,6 +88,7 @@ The extension uses codelens to allow you to run and debug tasks individually on 
 There are a number of configuration options which allow you to control the Cake output verbosity and what host framework to use for the debug session, etc.
 
 * `cake.codeLens.showCodeLens`: a boolean value which toggles codelens on or off. Default value is `true`.
+* `cake.codeLens.installNetTool`: a boolean value which configures codelens to install the Cake .NET tool before running or debugging. Default value is `true`.
 * `cake.codeLens.scriptsIncludePattern`: a glob pattern which specifies how to detect `.cake` files in the current workspace. Default value is `**/*.cake`.
 * `cake.codeLens.taskRegularExpression`: a regular expression pattern which is used to identify Tasks within the `*.cake` files. Default value is `Task\\s*?\\(\\s*?\"(.*?)\"\\s*?\\)`.
 * `cake.codeLens.debugTask.verbosity`: allows you to control cake `debug task` verbosity (`diagnostic`, `minimal`, `normal`, `quiet` and `verbose`. Default value is `normal`.

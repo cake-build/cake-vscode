@@ -55,6 +55,7 @@ export interface ICodeLensDebugTaskSettings {
 
 export interface ICodeLensSettings {
     showCodeLens: boolean;
+    installNetTool: boolean;
     scriptsIncludePattern: string;
     taskRegularExpression: string;
     debugTask: ICodeLensDebugTaskSettings;
