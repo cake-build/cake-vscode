@@ -66,12 +66,6 @@ export async function installCakeDebug(): Promise<IInstallResult> {
 
 async function installCakeTool(): Promise<IInstallResult> {
     const tool = new CakeTool();
-
-    const alreadyInstalled = await tool.isInstalled();
-    if(alreadyInstalled){
-        return { installed: true, advice: false };
-    }
-
-    const result = await tool.install();
-    return { installed: result, advice: true };
+    const installationModified = await tool.ensureInstalled();
+    return { installed: true, advice: installationModified };
 }

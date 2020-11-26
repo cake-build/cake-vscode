@@ -24,15 +24,12 @@ export async function ensureNotDirty(fileName: string) : Promise<void> {
 export async function installCakeToolIfNeeded(settings: IExtensionSettings) {
     if(settings.codeLens.installNetTool) {
         const cakeTool = new CakeTool();
-        const isInstalled = await cakeTool.isInstalled();
-        if(!isInstalled){
-            try {
-                await cakeTool.install();
-            }
-            catch (ex) {
-                logError("Error installing Cake .NET Tool", true);
-                logError(ex);
-            }
+        try {
+            await cakeTool.ensureInstalled();
+        }
+        catch (ex) {
+            logError("Error installing Cake .NET Tool", true);
+            logError(ex);
         }
     }
 }
