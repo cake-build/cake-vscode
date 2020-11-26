@@ -1,8 +1,15 @@
 import { ChildProcessWithoutNullStreams, spawn } from 'child_process';
-import { window } from 'vscode';
+import { window, Memento, ExtensionContext } from 'vscode';
 import { Version } from '../shared/version';
 
 export class CakeTool {
+
+    private static readonly skipVersionKey = "cake.tool.skipversion";
+    private memento: Memento;
+
+    constructor(context: ExtensionContext) {
+        this.memento = context.workspaceState;
+    }
 
     private getCakeVersionFromProc(proc: ChildProcessWithoutNullStreams): Promise<Version|null> {
         return new Promise((resolve, reject) => {
@@ -96,16 +103,39 @@ export class CakeTool {
             return false;
         }
     
-        // ask for updates
-        const selection = await window.showQuickPick(['Yes','No'], {
+        // ask for updates or skip
+        if(await this.shouldSkipVersionUpdate(availableVersion)) {
+            return false;
+        }
+
+        const answers = {
+            yes: 'Yes',
+            no: 'No',
+            notThisVersion: 'No, and do not ask again for this version.'
+        }
+
+        const selection = await window.showQuickPick([answers.yes, answers.no, answers.notThisVersion], {
             placeHolder: `Cake.Tool version ${availableVersion.toString()} is available. Update now?`
         });
     
-        if(selection !== 'Yes') {
+        if(selection !== answers.yes) {
+            if(selection === answers.notThisVersion){
+                await this.storeVersionToSkip(availableVersion);
+            }
+
             return false;
         }
     
         await this.update();
         return true;
+    }
+
+    private async shouldSkipVersionUpdate(v: Version) : Promise<boolean> {
+        const verToSkip = await this.memento.get<string>(CakeTool.skipVersionKey);
+        return v.toString() === verToSkip;
+    }
+
+    private async storeVersionToSkip(v: Version) : Promise<void> {
+        await this.memento.update(CakeTool.skipVersionKey, v.toString());
     }
 }

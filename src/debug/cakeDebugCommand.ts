@@ -1,9 +1,9 @@
-import { window, workspace } from 'vscode';
+import { ExtensionContext, window, workspace } from 'vscode';
 import * as fs from 'fs';
 import { CakeDebug } from './cakeDebug';
 import { CakeTool } from './cakeTool';
 
-export async function installCakeDebugCommand(hideWarning?: boolean): Promise<boolean> {
+export async function installCakeDebugCommand(context: ExtensionContext, hideWarning?: boolean): Promise<boolean> {
     // Check if there is an open folder in workspace
     if (workspace.rootPath === undefined) {
         window.showErrorMessage('You have not yet opened a folder.');
@@ -20,7 +20,7 @@ export async function installCakeDebugCommand(hideWarning?: boolean): Promise<bo
     }
 
     const isCakeTool = selection === 'Cake.Tool';
-    const result = await (isCakeTool ? installCakeTool()  : installCakeDebug());
+    const result = await (isCakeTool ? installCakeTool(context)  : installCakeDebug());
     const messages = {
         advice: isCakeTool ?
             'Cake Debug Dependencies correctly installed globally.' :
@@ -64,8 +64,8 @@ export async function installCakeDebug(): Promise<IInstallResult> {
     return { installed: result, advice: true };
 }
 
-async function installCakeTool(): Promise<IInstallResult> {
-    const tool = new CakeTool();
+async function installCakeTool(context: ExtensionContext): Promise<IInstallResult> {
+    const tool = new CakeTool(context);
     const installationModified = await tool.ensureInstalled();
     return { installed: true, advice: installationModified };
 }

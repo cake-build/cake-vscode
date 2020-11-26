@@ -2,13 +2,14 @@ import {
     window,
     debug,
     workspace,
-    DebugConfiguration
+    DebugConfiguration,
+    ExtensionContext
 } from 'vscode';
 import { ensureNotDirty, installCakeToolIfNeeded } from './shared';
 import { getPlatformSettingsValue, ICodeLensDebugTaskSettings, IExtensionSettings } from '../extensionSettings';
 
 export class CakeDebugTask {
-    constructor() {}
+    constructor(private context: ExtensionContext) {}
 
     private _getDebuggerConfig(
         taskName: string,
@@ -54,7 +55,7 @@ export class CakeDebugTask {
             }
             
             await ensureNotDirty(fileName);
-            await installCakeToolIfNeeded(settings);
+            await installCakeToolIfNeeded(settings, this.context);
         
             const workspaceFolder = workspace.workspaceFolders[0];
             const debuggerConfig = await this._getDebuggerConfig(taskName, fileName, debugConfig);
