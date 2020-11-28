@@ -70,25 +70,24 @@ export function installCake(
                     })
                 );
             }
-            // TODO: Is a selection CoreCLR/global tool needed?
-            if (installOpts.installDebug) {
-                results.push(
-                    installCakeDebug().then(v => {
-                        logResult(
-                            v.installed,
-                            'Debug dependencies successfully installed.',
-                            'Error encountered while install debugging dependencies.'
-                        );
-                        vscode.window.showInformationMessage(
-                            "Add a new 'Cake' debug configuration to get started debugging your script."
-                        );
-                    })
-                );
-            }
 
             Promise.all(results)
                 .then(
                     _ => {
+                        // TODO: Is a selection CoreCLR/global tool needed?
+                        if (installOpts.installDebug) {
+                            installCakeDebug().then(v => {
+                                logResult(
+                                    v.installed,
+                                    'Debug dependencies successfully installed.',
+                                    'Error encountered while install debugging dependencies.'
+                                );
+                                vscode.window.showInformationMessage(
+                                    "Add a new 'Cake' debug configuration to get started debugging your script."
+                                );
+                            })
+                        }
+
                         // Clear the status bar, and display final notification
                         vscode.window.setStatusBarMessage('');
 
