@@ -4,6 +4,7 @@ import {
     showBootstrapperOption,
     handleScriptNameResponse,
     showConfigOption,
+    showBootstrapperTypeOption,
     showDebugOption,
     installCake
 } from './actions'
@@ -15,6 +16,7 @@ export function installCakeToWorkspaceCommand() {
     showScriptNameBox()
         .then(handleScriptNameResponse)
         .then(showBootstrapperOption)
+        .then(showBootstrapperTypeOption)
         .then(showConfigOption)
         .then(showDebugOption)
         .then(installCake)

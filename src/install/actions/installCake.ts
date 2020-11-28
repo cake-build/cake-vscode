@@ -46,7 +46,7 @@ export function installCake(
             );
             if (installOpts.installBootstrappers) {
                 results.push(
-                    installBootstrappers()
+                    installBootstrappers(installOpts.bootstrapperType)
                         .then(_ =>
                             logResult(true, 'Bootstrappers successfully created.')
                         )

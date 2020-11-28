@@ -1,6 +1,6 @@
 import * as vscode from 'vscode';
 import { DEFAULT_SCRIPT_NAME, CANCEL } from '../../constants';
-import { messages } from '../../shared';
+import { enums, messages } from '../../shared';
 import InstallOptions from '../installOptions';
 import { installCake } from './installCake';
 
@@ -44,6 +44,31 @@ export function showBootstrapperOption(
                 }
             }
         );
+    } else {
+        throw "Installation options are not defined";
+    }
+}
+
+export function showBootstrapperTypeOption(
+    installOpts: InstallOptions | undefined
+): Thenable<InstallOptions | undefined> {
+    if(installOpts) {
+        if(installOpts.installBootstrappers) {
+            return getBootstrapperOption(
+                messages.CONFIRM_BOOTSTRAPPER_TYPE,
+                installOpts,
+                (opts, value) => {
+                    if(opts) {
+                        opts.bootstrapperType = value;
+                        return opts;
+                    } else {
+                        throw "Installation options are not defined."
+                    }
+                }
+            );
+        } else {
+            return Promise.resolve(installOpts);
+        }
     } else {
         throw "Installation options are not defined";
     }
@@ -110,3 +135,23 @@ function getOption(
             });
     });
 }
+
+function getBootstrapperOption(
+    message: string,
+    options: InstallOptions | undefined,
+    callback: (opts: InstallOptions | undefined, value: enums.RunnerType) => void): Thenable<InstallOptions | undefined> {
+        return new Promise((resolve, reject) => {
+            vscode.window
+                .showQuickPick([enums.RunnerType.NetTool, enums.RunnerType.NetFramwork, enums.RunnerType.NetCore], {
+                    placeHolder: message
+                })
+                .then((value: string | undefined) => {
+                    if(!value) {
+                        reject(CANCEL);
+                    }
+
+                    callback(options, value as enums.RunnerType);
+                    resolve(options);
+                });
+        });
+    }
