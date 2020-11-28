@@ -28,15 +28,6 @@ export function showBootstrapperOption(
     installOpts: InstallOptions
 ): Thenable<InstallOptions | undefined> {
     if(installOpts) {
-        /*return vscode.window.showQuickPick([' Yes', 'No'], {
-            placeHolder: messages.CONFIRM_INSTALL_BOOTSTRAPPERS,
-        }).then((value) => {
-        if (!value) {
-            Promise.reject(CANCEL);
-        }
-        installOpts.installBootstrappers = value == 'Yes';
-        return installOpts;
-        }); */
         if (!installOpts) {
             Promise.reject(CANCEL);
         }
