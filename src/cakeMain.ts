@@ -62,7 +62,7 @@ export function activate(context: vscode.ExtensionContext): void {
     // Register the debug command.
     context.subscriptions.push(
         vscode.commands.registerCommand('cake.debug', async () => {
-            installCakeDebugCommand();
+            installCakeDebugCommand(context);
         })
     );
     // Register the build file command.
@@ -211,7 +211,8 @@ function _registerCodeLens(
                 installCakeRunTaskCommand(
                     taskName,
                     fileName,
-                    getExtensionSettings()
+                    getExtensionSettings(),
+                    context
                 );
             }
         )
@@ -232,7 +233,8 @@ function _registerCodeLens(
                 installCakeDebugTaskCommand(
                     taskName,
                     fileName,
-                    getExtensionSettings()
+                    getExtensionSettings(),
+                    context
                 );
             }
         )
