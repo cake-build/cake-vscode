@@ -3,3 +3,8 @@ export enum RunnerType {
   NetFramwork = "NETFRAMEWORK",
   NetCore = "NETCORE"
 }
+
+export enum DebugType {
+  NetTool = "NETTOOL",
+  NetCore = "NETCORE"
+}

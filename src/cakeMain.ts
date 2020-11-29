@@ -74,7 +74,7 @@ export function activate(context: vscode.ExtensionContext): void {
     // Register the interactive install command.
     context.subscriptions.push(
         vscode.commands.registerCommand('cake.install', async () => {
-            installCakeToWorkspaceCommand();
+            installCakeToWorkspaceCommand(context);
         })
     );
     // Register the interactive install command.
@@ -263,7 +263,7 @@ function _registerSymbolProvider(
             {
                 language: 'csharp',
                 scheme: 'file'
-            }, 
+            },
             documentSymbolProvider
         )
     );

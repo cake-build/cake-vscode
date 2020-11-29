@@ -1,11 +1,11 @@
 import * as vscode from 'vscode';
-import { logger } from '../../shared';
+import { enums, logger } from '../../shared';
 import InstallOptions from '../installOptions';
 import { ERROR_INVALID_SETTINGS, ERROR_NO_WORKSPACE } from '../../constants';
 import { installBootstrappers } from './bootstrapper';
 import { installBuildFile } from '../../buildFile/cakeBuildFileCommand';
 import { installCakeConfiguration } from '../../configuration/cakeConfigurationCommand';
-import { installCakeDebug } from '../../debug/cakeDebugCommand';
+import { installCakeDebug, installCakeTool } from '../../debug/cakeDebugCommand';
 
 export function installCake(
     installOpts: InstallOptions | undefined
@@ -74,18 +74,30 @@ export function installCake(
             Promise.all(results)
                 .then(
                     _ => {
-                        // TODO: Is a selection CoreCLR/global tool needed?
                         if (installOpts.installDebug) {
-                            installCakeDebug().then(v => {
-                                logResult(
-                                    v.installed,
-                                    'Debug dependencies successfully installed.',
-                                    'Error encountered while install debugging dependencies.'
-                                );
-                                vscode.window.showInformationMessage(
-                                    "Add a new 'Cake' debug configuration to get started debugging your script."
-                                );
-                            })
+                            if(installOpts.debuggerType === enums.DebugType.NetTool) {
+                                installCakeTool(installOpts.context).then(v => {
+                                    logResult(
+                                        v.installed,
+                                        'Cake Debug Dependencies correctly installed globally.',
+                                        'Error installing Cake Debug Dependencies.'
+                                    );
+                                })
+                            }
+
+                            if(installOpts.debuggerType === enums.DebugType.NetCore) {
+                                installCakeDebug().then(v => {
+                                    logResult(
+                                        v.installed,
+                                        'Cake Debug Dependencies correctly downloaded.',
+                                        'Error downloading Cake Debug Dependencies.'
+                                    );
+                                })
+                            }
+
+                            vscode.window.showInformationMessage(
+                                "Add a new 'Cake' debug configuration to get started debugging your script."
+                            );
                         }
 
                         // Clear the status bar, and display final notification
