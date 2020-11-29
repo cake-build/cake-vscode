@@ -25,12 +25,12 @@ export async function installCakeDebugCommand(context: ExtensionContext, hideWar
         advice: isCakeTool ?
             'Cake Debug Dependencies correctly installed globally.' :
             'Cake Debug Dependencies correctly downloaded.',
-        warning: isCakeTool ? 
+        warning: isCakeTool ?
             'Cake.Tool is already installed globally' :
             'Cake.CoreCLR package has already been installed.',
-        error: isCakeTool ? 
-            'Error installing Cake Debug Dependencies' : 
-            'Error downloading Cake Debug Dependencies'
+        error: isCakeTool ?
+            'Error installing Cake Debug Dependencies.' :
+            'Error downloading Cake Debug Dependencies.'
     }
 
     if (result.installed) {

@@ -263,7 +263,7 @@ function _registerSymbolProvider(
             {
                 language: 'csharp',
                 scheme: 'file'
-            }, 
+            },
             documentSymbolProvider
         )
     );
