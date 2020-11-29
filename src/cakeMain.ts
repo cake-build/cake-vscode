@@ -16,6 +16,9 @@ import { TerminalExecutor } from './shared/utils';
 import { getExtensionSettings, getPlatformSettingsValue, ICodeLensSettings, ICodeSymbolsSettings, ITaskRunnerSettings } from './extensionSettings';
 import * as fs from 'fs';
 import * as path from 'path';
+import * as os from 'os';
+import { CakeTool } from './shared/cakeTool';
+import { spawn } from 'child_process';
 
 let taskProvider: vscode.Disposable | undefined;
 let codeLensProvider: CakeCodeLensProvider;
@@ -94,23 +97,26 @@ export function activate(context: vscode.ExtensionContext): void {
 
     _registerSymbolProvider(config.codeSymbols, context);
 
-    vscode.workspace.onDidChangeConfiguration(onConfigurationChanged);
-    onConfigurationChanged(null as unknown as vscode.ConfigurationChangeEvent);
+    vscode.workspace.onDidChangeConfiguration(x => onConfigurationChanged(context, x));
+    onConfigurationChanged(context, null as unknown as vscode.ConfigurationChangeEvent);
 }
 
-function onConfigurationChanged(event: vscode.ConfigurationChangeEvent) {
+function onConfigurationChanged(
+    context: vscode.ExtensionContext,
+    event: vscode.ConfigurationChangeEvent) {
     if(event && !event.affectsConfiguration("cake")) {
         // we're not affected
         return;
     }
     const config = getExtensionSettings();
 
-    _verifyTasksRunner(config.taskRunner);
+    _verifyTasksRunner(config.taskRunner, context);
     _verifyCodeLens(config.codeLens);
     _verifySymbolProvider(config.codeSymbols);
 }
 
-function _verifyTasksRunner(config: ITaskRunnerSettings) {
+function _verifyTasksRunner(config: ITaskRunnerSettings,
+    context: vscode.ExtensionContext) {
     if (taskProvider && !config.autoDetect) {
         taskProvider.dispose();
         taskProvider = undefined;
@@ -120,7 +126,7 @@ function _verifyTasksRunner(config: ITaskRunnerSettings) {
     if (!taskProvider && config.autoDetect) {
         taskProvider = vscode.workspace.registerTaskProvider('cake', {
             provideTasks: async () => {
-                return await _getCakeScriptsAsTasks();
+                return await _getCakeScriptsAsTasks(context);
             },
             resolveTask(_task: vscode.Task): vscode.Task | undefined {
                 return undefined;
@@ -129,7 +135,7 @@ function _verifyTasksRunner(config: ITaskRunnerSettings) {
     }
 }
 
-async function _getCakeScriptsAsTasks(): Promise<vscode.Task[]> {
+async function _getCakeScriptsAsTasks(context: vscode.ExtensionContext): Promise<vscode.Task[]> {
     let workspaceRoot = vscode.workspace.rootPath;
     let emptyTasks: vscode.Task[] = [];
 
@@ -179,13 +185,17 @@ async function _getCakeScriptsAsTasks(): Promise<vscode.Task[]> {
                     script: taskName
                 };
 
-                const buildCommand = `${buildCommandBase} \"${file.fsPath}\"  --target=\"${taskName}\" --verbosity=${config.verbosity}`;
-
                 const buildTask = new vscode.Task(
                     kind,
+                    vscode.TaskScope.Workspace,
                     `Run ${taskNamePrefix}${taskName}`,
                     'Cake',
-                    new vscode.ShellExecution(`${buildCommand}`),
+                    new vscode.CustomExecution(getCakeToolExecution({
+                        command: buildCommandBase, 
+                        script: file.fsPath, 
+                        taskName,
+                        verbosity: config.verbosity
+                    }, config, context)),
                     []
                 );
                 buildTask.group = vscode.TaskGroup.Build;
@@ -221,15 +231,6 @@ function _registerCodeLens(
         vscode.commands.registerCommand(
             'cake.debugTask',
             async (taskName: string, fileName: string) => {
-
-                /*
-                TODO: Should we install something auto-magically?
-                const result = await installCakeDebugCommand(true);
-
-                if(!result)
-                    return;
-                */
-
                 installCakeDebugTaskCommand(
                     taskName,
                     fileName,
@@ -281,4 +282,97 @@ export function deactivate() {
     if (taskProvider) {
         taskProvider.dispose();
     }
+}
+
+function getCakeToolExecution(
+    cfg: ICakeTaskRunnerConfig,
+    settings: ITaskRunnerSettings,
+    context: vscode.ExtensionContext) 
+    : (resolvedDefinition: vscode.TaskDefinition) => Thenable<vscode.Pseudoterminal> {
+
+        return (_: vscode.TaskDefinition) => {
+            return new Promise<vscode.Pseudoterminal>((now) => now(new CakeTaskWrapper(cfg, settings, context)));
+        };
+}
+
+class CakeTaskWrapper implements vscode.Pseudoterminal {
+
+    private readonly writeEmitter = new vscode.EventEmitter<string>();
+	public onDidWrite: vscode.Event<string> = this.writeEmitter.event;
+	private readonly closeEmitter = new vscode.EventEmitter<number>();
+    public onDidClose: vscode.Event<number> = this.closeEmitter.event;
+    private isCanceled = false;
+    
+    constructor(private cfg: ICakeTaskRunnerConfig, 
+        private settings: ITaskRunnerSettings,
+        private context: vscode.ExtensionContext) {
+    }
+
+    public close(): void {
+        this.isCanceled = true;
+    }
+
+    public open(_: vscode.TerminalDimensions | undefined): void {
+        this.runTask();
+    }
+
+    private async runTask() : Promise<void>{
+        if(this.settings.installNetTool) {
+            const cakeTool = new CakeTool(this.context);
+            await cakeTool.ensureInstalled();
+        }
+        if(this.isCanceled){
+            return;
+        }
+
+        // run the task
+        const proc = spawn(this.cfg.command,
+            [`${this.cfg.script}`, `--target="${this.cfg.taskName}"`, `--verbosity=${this.cfg.verbosity}`],
+            {
+                shell: true, // not sure, why a shell is needed here.
+            });
+        this.writeEmitter.fire(`started command: ${proc.spawnargs.join(" ")}${os.EOL}`);
+        let exit = 0;
+        
+        proc.on('error', (error) => {
+            this.setColorRed();
+            this.writeEmitter.fire(`ERROR: ${error.name}${os.EOL}${error.message}${os.EOL}`);
+            if(error.stack){
+                this.writeEmitter.fire(error.stack+os.EOL);
+            }
+            this.resetColor();
+            exit = 1;
+        });
+
+        proc.stdout.on('data', (data: Buffer) => {
+            const txt = data.toString();
+            this.writeEmitter.fire(txt);
+        });
+        proc.stderr.on('data', (data: Buffer) => { 
+            const txt = data.toString();
+            this.setColorRed();
+            this.writeEmitter.fire(txt);
+            this.resetColor();
+        });
+
+        proc.on('close', () => {
+            this.closeEmitter.fire(exit);
+            this.writeEmitter.dispose();
+            this.closeEmitter.dispose();
+        });
+    }
+
+    private setColorRed(): void {
+        this.writeEmitter.fire('\x1b[31m')
+    }
+    private resetColor(): void {
+        this.writeEmitter.fire('\x1b[39m')
+    }
+}
+
+interface ICakeTaskRunnerConfig{
+    command: string; 
+    script: string;
+    taskName: string;
+    verbosity: string;
 }

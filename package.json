@@ -103,6 +103,7 @@
           "type": "object",
           "default": {
             "autoDetect": true,
+            "installNetTool": true,
             "scriptsIncludePattern": "**/*.cake",
             "scriptsExcludePattern": "",
             "taskRegularExpression": "Task\\s*?\\(\\s*?\"(.*?)\"\\s*?\\)",
@@ -114,6 +115,11 @@
             "autoDetect": {
               "type": "boolean",
               "description": "A boolean value which toggles auto detection of Tasks on or off.",
+              "default": true
+            },
+            "installNetTool": {
+              "type": "boolean",
+              "description": "Auto-install the Cake .NET Tool.",
               "default": true
             },
             "scriptsIncludePattern": {

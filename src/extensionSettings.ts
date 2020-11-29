@@ -12,6 +12,7 @@ interface ILaunchCommandSettings
 
 export interface ITaskRunnerSettings {
     autoDetect: boolean;
+    installNetTool: boolean;
     scriptsIncludePattern: string;
     scriptsExcludePattern: string;
     taskRegularExpression: string;

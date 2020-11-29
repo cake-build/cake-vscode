@@ -73,6 +73,7 @@ The extension will also parse all `*.cake` files in the workspace and make them 
 There are a number of configuration options which allow you to control how the Task Provider works:
 
 * `cake.taskRunner.autoDetect`: a boolean value which toggles auto detection of Tasks on or off.  Default value is `true`
+* `cake.taskRunner.installNetTool`: a boolean value which configures whether to install the Cake .NET tool before running tasks. Default value is `true`.
 * `cake.taskRunner.scriptsIncludePattern`: a glob pattern which specifies how to detect `.cake` files in the current workspace. Default value is `**/*.cake`.
 * `cake.taskRunner.scriptsExcludePattan`: a glob pattern which specifies all files and folders that shouldn't be included in search of current workspace.  Default value is `""`.
 * `cake.taskRunner.taskRegularExpression`: a regular expression pattern which is used to identify Tasks within the `*.cake` files. Default value is `Task\\s*?\\(\\s*?\"(.*?)\"\\s*?\\)`.
