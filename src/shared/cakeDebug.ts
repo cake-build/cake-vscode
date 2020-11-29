@@ -1,10 +1,10 @@
-import { readCakeConfigFile } from '../shared/utils/readConfigFile';
+import { readCakeConfigFile } from './utils/readConfigFile';
 var request = require('request');
 var AdmZip = require('adm-zip');
 import { window, workspace } from 'vscode';
 import * as path from 'path';
 import * as fs from 'fs';
-import * as utils from './../shared/utils';
+import * as utils from './utils';
 import {
     DEFAULT_RESPONSE_TIMEOUT,
     CAKE_CORECLR_PACKAGE_URL

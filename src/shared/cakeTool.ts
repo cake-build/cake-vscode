@@ -1,6 +1,6 @@
 import { ChildProcessWithoutNullStreams, spawn } from 'child_process';
 import { window, Memento, ExtensionContext } from 'vscode';
-import { Version } from '../shared/version';
+import { Version } from './version';
 
 export class CakeTool {
 
@@ -50,11 +50,11 @@ export class CakeTool {
         const ver = await this.getCakeVersionFromProc(proc);
         return ver;
     }
-    
+
     public install(): Thenable<boolean> {
         return new Promise((resolve, reject) => {
             const proc = spawn('dotnet', ['tool', 'install', 'Cake.Tool', '--global']);
-            
+
             proc.on('error', (error) => {
                 reject(error);
             });
@@ -68,7 +68,7 @@ export class CakeTool {
     public update(): Thenable<boolean> {
         return new Promise((resolve, reject) => {
             const proc = spawn('dotnet', ['tool', 'update', 'Cake.Tool', '--global']);
-            
+
             proc.on('error', (error) => {
                 reject(error);
             });
@@ -91,18 +91,18 @@ export class CakeTool {
             await this.install();
             return true;
         }
-    
+
         const availableVersion = await this.getAvailableVersion();
         if(availableVersion === null) {
             // cake.tool is installed, but we were unable to detect if it's the newest version
             // probably ok..
             return false;
         }
-    
+
         if(installedVersion.greaterThan(availableVersion, true)) {
             return false;
         }
-    
+
         // ask for updates or skip
         if(await this.shouldSkipVersionUpdate(availableVersion)) {
             return false;
@@ -117,7 +117,7 @@ export class CakeTool {
         const selection = await window.showQuickPick([answers.yes, answers.no, answers.notThisVersion], {
             placeHolder: `Cake.Tool version ${availableVersion.toString()} is available. Update now?`
         });
-    
+
         if(selection !== answers.yes) {
             if(selection === answers.notThisVersion){
                 await this.storeVersionToSkip(availableVersion);
@@ -125,7 +125,7 @@ export class CakeTool {
 
             return false;
         }
-    
+
         await this.update();
         return true;
     }

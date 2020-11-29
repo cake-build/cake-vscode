@@ -1,24 +1,24 @@
-import { window } from 'vscode';
+import { window, ExtensionContext } from 'vscode';
 import {
     showScriptNameBox,
     showBootstrapperOption,
-    handleScriptNameResponse,
     showConfigOption,
     showBootstrapperTypeOption,
     showDebugOption,
+    showDebugTypeOption,
     installCake
 } from './actions'
 
 import { CANCEL } from '../constants'
 import { logger } from "../shared";
 
-export function installCakeToWorkspaceCommand() {
-    showScriptNameBox()
-        .then(handleScriptNameResponse)
+export function installCakeToWorkspaceCommand(context: ExtensionContext) {
+    showScriptNameBox(context)
         .then(showBootstrapperOption)
         .then(showBootstrapperTypeOption)
         .then(showConfigOption)
         .then(showDebugOption)
+        .then(showDebugTypeOption)
         .then(installCake)
         .then(({message, fileName}) => {
             window.showInformationMessage(message);

@@ -1,5 +1,5 @@
 import { ExtensionContext, workspace } from 'vscode';
-import { CakeTool } from '../debug/cakeTool';
+import { CakeTool } from '../shared/cakeTool';
 import { IExtensionSettings } from '../extensionSettings';
 import { logError, logInfo } from '../shared/log';
 
