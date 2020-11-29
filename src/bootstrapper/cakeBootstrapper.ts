@@ -2,6 +2,7 @@ var request = require('request');
 import vscode = require('vscode');
 import * as path from 'path';
 import { CakeBootstrapperInfo } from './cakeBootstrapperInfo';
+import { enums } from '../shared';
 
 export class CakeBootstrapper {
     private _info: CakeBootstrapperInfo;
@@ -10,6 +11,7 @@ export class CakeBootstrapper {
         new CakeBootstrapperInfo(
             'dotnet-tool-powershell',
             '.NET Tool runner PowerShell',
+            enums.RunnerType.NetTool,
             'Bootstrapper for .NET Tool on Windows',
             'build.ps1',
             false
@@ -17,6 +19,7 @@ export class CakeBootstrapper {
         new CakeBootstrapperInfo(
             'dotnet-tool-bash',
             '.NET Tool runner Bash',
+            enums.RunnerType.NetTool,
             'Bootstrapper for .NET Tool on Linux and macOS',
             'build.sh',
             true
@@ -24,6 +27,7 @@ export class CakeBootstrapper {
         new CakeBootstrapperInfo(
             'dotnet-framework-powershell',
             '.NET Framework runner PowerShell',
+            enums.RunnerType.NetFramwork,
             'Bootstrapper for .NET Framework on Windows',
             'build.ps1',
             false
@@ -31,6 +35,7 @@ export class CakeBootstrapper {
         new CakeBootstrapperInfo(
             'dotnet-framework-bash',
             '.NET Framework runner Bash',
+            enums.RunnerType.NetFramwork,
             'Bootstrapper for .NET Framework (Mono) on Linux and macOS',
             'build.sh',
             true
@@ -38,6 +43,7 @@ export class CakeBootstrapper {
         new CakeBootstrapperInfo(
             'dotnet-core-powershell',
             '.NET Core runner PowerShell',
+            enums.RunnerType.NetCore,
             'Bootstrapper for .NET Core on Windows',
             'build.ps1',
             false
@@ -45,6 +51,7 @@ export class CakeBootstrapper {
         new CakeBootstrapperInfo(
             'dotnet-core-bash',
             '.NET Core runner Bash',
+            enums.RunnerType.NetCore,
             'Bootstrapper for .NET Core on Linux and macOS',
             'build.sh',
             true
@@ -65,6 +72,12 @@ export class CakeBootstrapper {
 
     public static getBootstrappers(): CakeBootstrapperInfo[] {
         return CakeBootstrapper.bootstrappers;
+    }
+
+    public static getBootstrappersByType(bootstrapperType: enums.RunnerType): CakeBootstrapperInfo[] {
+        var filteredBootstrappers = CakeBootstrapper.bootstrappers.filter(bootstrapper => bootstrapper.type === bootstrapperType);
+
+        return filteredBootstrappers;
     }
 
     public download(stream: NodeJS.WritableStream): Thenable<boolean> {
