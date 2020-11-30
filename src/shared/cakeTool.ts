@@ -1,6 +1,9 @@
 import { ChildProcessWithoutNullStreams, spawn } from 'child_process';
-import { window, Memento, ExtensionContext } from 'vscode';
+import { window, Memento, ExtensionContext, workspace } from 'vscode';
+import fetch from 'node-fetch';
+import { getFetchOptions } from './utils';
 import { Version } from './version';
+import { logError, logToOutput } from './log';
 
 export class CakeTool {
 
@@ -36,10 +39,28 @@ export class CakeTool {
         });
     }
 
+    /**
+     * returns the latest available version of Cake.Tool on nuget
+     */
     public async getAvailableVersion(): Promise<Version|null> {
-        const proc = spawn('dotnet', ['tool', 'search', 'cake.tool']);
-        const ver = await this.getCakeVersionFromProc(proc);
-        return ver;
+        const url = 'https://azuresearch-usnc.nuget.org/query?q=Cake.Tool&prerelease=false'; 
+        try {
+            const search = await fetch(
+                url,
+                getFetchOptions(workspace.getConfiguration('http')));
+            const searchResult: any = await search.json();
+            const cakeTool = (searchResult?.data || []).find((x:any) => x.id === "Cake.Tool");
+            const version = cakeTool?.version;
+            if(!version) {
+                logToOutput("Could not find a latest version for Cake.Tool from: "+url);
+                return null;
+            }
+            return Version.parse(version);
+        }
+        catch (ex: any) {
+            logError(ex, true);
+        }
+        return null
     }
 
     /**
