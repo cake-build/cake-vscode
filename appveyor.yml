@@ -1,16 +1,31 @@
-# Build script
+#---------------------------------#
+#  Build Image                    #
+#---------------------------------#
+
+image: Visual Studio 2019
+
+#---------------------------------#
+#  Init                           #
+#---------------------------------#
+
 init:
   - git config --global core.autocrlf true
 
-# Build script
+#---------------------------------#
+#  Build Script                   #
+#---------------------------------#
+
 build_script:
   - ps: Get-ChildItem -Path "C:\Program Files (x86)\Microsoft SDKs\TypeScript\*" -Include tsc.exe,tsc.js -Recurse | Rename-Item -NewName {$_.name -replace "tsc","tsc1"}
-  - ps: .\build.ps1 -Target "AppVeyor"
+  - ps: .\build.ps1 --target="AppVeyor"
 
 # Tests
 test: off
 
-# Branches to build
+#---------------------------------#
+#        Branches to build        #
+#---------------------------------#
+
 branches:
   # Whitelist
   only:
@@ -20,7 +35,10 @@ branches:
     - /release/.*/
     - /hotfix/.*/
 
-# Build cache
+#---------------------------------#
+#  Build Cache                    #
+#---------------------------------#
+
 cache:
-- tools -> build.cake
+- tools -> recipe.cake
 - node_modules -> package.json

@@ -48,7 +48,7 @@ export function readConfigFile<T>(
     if (!folderPath || !fs.existsSync(path.join(folderPath, fileName))) {
         return undefined;
     }
-    return <T> ini.parse(fs.readFileSync(path.join(folderPath, fileName), 'utf-8'));
+    return ini.parse(fs.readFileSync(path.join(folderPath, fileName), 'utf-8')) as T;
 }
 
 export function readCakeConfigFile(folderPath: string | undefined): Config {

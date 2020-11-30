@@ -11,12 +11,18 @@ import { installCakeBakeryCommand } from './bakery/cakeBakeryCommand';
 import { installCakeRunTaskCommand } from './codeLens/cakeRunTaskCommand';
 import { installCakeDebugTaskCommand } from './codeLens/cakeDebugTaskCommand';
 import { CakeCodeLensProvider } from './codeLens/cakeCodeLensProvider';
+import { CakeDocumentSymbolProvider } from './documentSymbols/cakeDocumentSymbolProvider';
 import { TerminalExecutor } from './shared/utils';
+import { getExtensionSettings, getPlatformSettingsValue, ICodeLensSettings, ICodeSymbolsSettings, ITaskRunnerSettings } from './extensionSettings';
 import * as fs from 'fs';
+import * as path from 'path';
 import * as os from 'os';
+import { CakeTool } from './shared/cakeTool';
+import { spawn } from 'child_process';
 
 let taskProvider: vscode.Disposable | undefined;
 let codeLensProvider: CakeCodeLensProvider;
+let documentSymbolProvider: CakeDocumentSymbolProvider;
 
 interface CakeTaskDefinition extends vscode.TaskDefinition {
     script: string;
@@ -24,7 +30,7 @@ interface CakeTaskDefinition extends vscode.TaskDefinition {
 }
 
 export function activate(context: vscode.ExtensionContext): void {
-    const config = vscode.workspace.getConfiguration('cake');
+    const config = getExtensionSettings();
 
     // Register the add addin command.
     context.subscriptions.push(
@@ -59,7 +65,7 @@ export function activate(context: vscode.ExtensionContext): void {
     // Register the debug command.
     context.subscriptions.push(
         vscode.commands.registerCommand('cake.debug', async () => {
-            installCakeDebugCommand();
+            installCakeDebugCommand(context);
         })
     );
     // Register the build file command.
@@ -71,7 +77,7 @@ export function activate(context: vscode.ExtensionContext): void {
     // Register the interactive install command.
     context.subscriptions.push(
         vscode.commands.registerCommand('cake.install', async () => {
-            installCakeToWorkspaceCommand();
+            installCakeToWorkspaceCommand(context);
         })
     );
     // Register the interactive install command.
@@ -89,18 +95,28 @@ export function activate(context: vscode.ExtensionContext): void {
     // Register code lens provider and tasks
     _registerCodeLens(config.codeLens, context);
 
-    vscode.workspace.onDidChangeConfiguration(onConfigurationChanged);
-    onConfigurationChanged();
+    _registerSymbolProvider(config.codeSymbols, context);
+
+    vscode.workspace.onDidChangeConfiguration(x => onConfigurationChanged(context, x));
+    onConfigurationChanged(context, null as unknown as vscode.ConfigurationChangeEvent);
 }
 
-function onConfigurationChanged() {
-    const config = vscode.workspace.getConfiguration('cake');
+function onConfigurationChanged(
+    context: vscode.ExtensionContext,
+    event: vscode.ConfigurationChangeEvent) {
+    if(event && !event.affectsConfiguration("cake")) {
+        // we're not affected
+        return;
+    }
+    const config = getExtensionSettings();
 
-    _verifyTasksRunner(config.taskRunner);
+    _verifyTasksRunner(config.taskRunner, context);
     _verifyCodeLens(config.codeLens);
+    _verifySymbolProvider(config.codeSymbols);
 }
 
-function _verifyTasksRunner(config: any) {
+function _verifyTasksRunner(config: ITaskRunnerSettings,
+    context: vscode.ExtensionContext) {
     if (taskProvider && !config.autoDetect) {
         taskProvider.dispose();
         taskProvider = undefined;
@@ -110,7 +126,7 @@ function _verifyTasksRunner(config: any) {
     if (!taskProvider && config.autoDetect) {
         taskProvider = vscode.workspace.registerTaskProvider('cake', {
             provideTasks: async () => {
-                return await _getCakeScriptsAsTasks();
+                return await _getCakeScriptsAsTasks(context);
             },
             resolveTask(_task: vscode.Task): vscode.Task | undefined {
                 return undefined;
@@ -119,7 +135,7 @@ function _verifyTasksRunner(config: any) {
     }
 }
 
-async function _getCakeScriptsAsTasks(): Promise<vscode.Task[]> {
+async function _getCakeScriptsAsTasks(context: vscode.ExtensionContext): Promise<vscode.Task[]> {
     let workspaceRoot = vscode.workspace.rootPath;
     let emptyTasks: vscode.Task[] = [];
 
@@ -128,7 +144,7 @@ async function _getCakeScriptsAsTasks(): Promise<vscode.Task[]> {
     }
 
     try {
-        const config = _getTaskRunnerConfig();
+        const config = getExtensionSettings().taskRunner;
         let files = await vscode.workspace.findFiles(
             config.scriptsIncludePattern,
             config.scriptsExcludePattern
@@ -139,6 +155,8 @@ async function _getCakeScriptsAsTasks(): Promise<vscode.Task[]> {
         }
 
         const result: vscode.Task[] = [];
+
+        const addFileName = files.length > 1;
 
         files.forEach(file => {
             const contents = fs.readFileSync(file.fsPath).toString();
@@ -155,23 +173,29 @@ async function _getCakeScriptsAsTasks(): Promise<vscode.Task[]> {
                 taskNames.push(matches[1]);
             }
 
+            const buildCommandBase = getPlatformSettingsValue(config.launchCommand);
+            let taskNamePrefix = "";
+            if(addFileName){
+                taskNamePrefix = path.basename(file.fsPath) + ": ";
+            }
+
             taskNames.forEach(taskName => {
                 const kind: CakeTaskDefinition = {
                     type: 'cake',
                     script: taskName
                 };
 
-                let buildCommand = `./build.sh --target=\"${taskName}\"`;
-
-                if (os.platform() === 'win32') {
-                    buildCommand = `powershell -ExecutionPolicy ByPass -File build.ps1 -target \"${taskName}\"`;
-                }
-
                 const buildTask = new vscode.Task(
                     kind,
-                    `Run ${taskName}`,
+                    vscode.TaskScope.Workspace,
+                    `Run ${taskNamePrefix}${taskName}`,
                     'Cake',
-                    new vscode.ShellExecution(`${buildCommand}`),
+                    new vscode.CustomExecution(getCakeToolExecution({
+                        command: buildCommandBase, 
+                        script: file.fsPath, 
+                        taskName,
+                        verbosity: config.verbosity
+                    }, config, context)),
                     []
                 );
                 buildTask.group = vscode.TaskGroup.Build;
@@ -186,14 +210,6 @@ async function _getCakeScriptsAsTasks(): Promise<vscode.Task[]> {
     }
 }
 
-function _getCodeLensConfig(): any {
-    return vscode.workspace.getConfiguration('cake').codeLens;
-}
-
-function _getTaskRunnerConfig(): any {
-    return vscode.workspace.getConfiguration('cake').taskRunner;
-}
-
 function _registerCodeLens(
     config: any,
     context: vscode.ExtensionContext
@@ -205,7 +221,8 @@ function _registerCodeLens(
                 installCakeRunTaskCommand(
                     taskName,
                     fileName,
-                    _getCodeLensConfig().runTask
+                    getExtensionSettings(),
+                    context
                 );
             }
         )
@@ -214,16 +231,11 @@ function _registerCodeLens(
         vscode.commands.registerCommand(
             'cake.debugTask',
             async (taskName: string, fileName: string) => {
-
-                const result = await installCakeDebugCommand(true);
-
-                if(!result)
-                    return;
-
                 installCakeDebugTaskCommand(
                     taskName,
                     fileName,
-                    _getCodeLensConfig().debugTask
+                    getExtensionSettings(),
+                    context
                 );
             }
         )
@@ -241,7 +253,28 @@ function _registerCodeLens(
     );
 }
 
-function _verifyCodeLens(config: any): void {
+function _registerSymbolProvider(
+    config: ICodeSymbolsSettings,
+    context: vscode.ExtensionContext
+): void {
+
+    documentSymbolProvider = new CakeDocumentSymbolProvider(config);
+    context.subscriptions.push(
+        vscode.languages.registerDocumentSymbolProvider(
+            {
+                language: 'csharp',
+                scheme: 'file'
+            },
+            documentSymbolProvider
+        )
+    );
+}
+
+function _verifySymbolProvider(_config: ICodeSymbolsSettings): void {
+    documentSymbolProvider.reconfigure(_config);
+}
+
+function _verifyCodeLens(config: ICodeLensSettings): void {
     codeLensProvider.showCodeLens = config.showCodeLens;
 }
 
@@ -249,4 +282,97 @@ export function deactivate() {
     if (taskProvider) {
         taskProvider.dispose();
     }
+}
+
+function getCakeToolExecution(
+    cfg: ICakeTaskRunnerConfig,
+    settings: ITaskRunnerSettings,
+    context: vscode.ExtensionContext) 
+    : (resolvedDefinition: vscode.TaskDefinition) => Thenable<vscode.Pseudoterminal> {
+
+        return (_: vscode.TaskDefinition) => {
+            return new Promise<vscode.Pseudoterminal>((now) => now(new CakeTaskWrapper(cfg, settings, context)));
+        };
+}
+
+class CakeTaskWrapper implements vscode.Pseudoterminal {
+
+    private readonly writeEmitter = new vscode.EventEmitter<string>();
+	public onDidWrite: vscode.Event<string> = this.writeEmitter.event;
+	private readonly closeEmitter = new vscode.EventEmitter<number>();
+    public onDidClose: vscode.Event<number> = this.closeEmitter.event;
+    private isCanceled = false;
+    
+    constructor(private cfg: ICakeTaskRunnerConfig, 
+        private settings: ITaskRunnerSettings,
+        private context: vscode.ExtensionContext) {
+    }
+
+    public close(): void {
+        this.isCanceled = true;
+    }
+
+    public open(_: vscode.TerminalDimensions | undefined): void {
+        this.runTask();
+    }
+
+    private async runTask() : Promise<void>{
+        if(this.settings.installNetTool) {
+            const cakeTool = new CakeTool(this.context);
+            await cakeTool.ensureInstalled();
+        }
+        if(this.isCanceled){
+            return;
+        }
+
+        // run the task
+        const proc = spawn(this.cfg.command,
+            [`${this.cfg.script}`, `--target="${this.cfg.taskName}"`, `--verbosity=${this.cfg.verbosity}`],
+            {
+                shell: true, // not sure, why a shell is needed here.
+            });
+        this.writeEmitter.fire(`started command: ${proc.spawnargs.join(" ")}${os.EOL}`);
+        let exit = 0;
+        
+        proc.on('error', (error) => {
+            this.setColorRed();
+            this.writeEmitter.fire(`ERROR: ${error.name}${os.EOL}${error.message}${os.EOL}`);
+            if(error.stack){
+                this.writeEmitter.fire(error.stack+os.EOL);
+            }
+            this.resetColor();
+            exit = 1;
+        });
+
+        proc.stdout.on('data', (data: Buffer) => {
+            const txt = data.toString();
+            this.writeEmitter.fire(txt);
+        });
+        proc.stderr.on('data', (data: Buffer) => { 
+            const txt = data.toString();
+            this.setColorRed();
+            this.writeEmitter.fire(txt);
+            this.resetColor();
+        });
+
+        proc.on('close', () => {
+            this.closeEmitter.fire(exit);
+            this.writeEmitter.dispose();
+            this.closeEmitter.dispose();
+        });
+    }
+
+    private setColorRed(): void {
+        this.writeEmitter.fire('\x1b[31m')
+    }
+    private resetColor(): void {
+        this.writeEmitter.fire('\x1b[39m')
+    }
+}
+
+interface ICakeTaskRunnerConfig{
+    command: string; 
+    script: string;
+    taskName: string;
+    verbosity: string;
 }

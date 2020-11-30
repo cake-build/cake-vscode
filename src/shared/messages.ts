@@ -1,4 +1,6 @@
 export const PROMPT_SCRIPT_NAME = 'Enter the name for your new build script';
+export const CONFIRM_DEBUG_TYPE_OPTION = 'What type of debugging support would you like to install?'
+export const CONFIRM_BOOTSTRAPPER_TYPE = 'What Cake Runner would you like to install Bootstrappers for?';
 export const CONFIRM_INSTALL_BOOTSTRAPPERS = 'Do you want to install the bootstrappers?';
 export const CONFIRM_INSTALL_CONFIG = 'Do you want to install a cake.config file?';
 export const CONFIRM_DEBUG_CONFIG = 'Do you want to install dependencies needed for debugging your script?';

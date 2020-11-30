@@ -1,5 +1,5 @@
 import * as url from 'url';
-import HttpsProxyAgent = require('https-proxy-agent');
+import createHttpsProxyAgent = require('https-proxy-agent');
 import { DEFAULT_RESPONSE_TIMEOUT } from '../../constants';
 
 // Cache a few things since this stuff will rarely change, and there's no need to recreate an agent
@@ -29,9 +29,15 @@ export default function getFetchOptions(configuration?: IProxyConfiguration) {
         fetchOptions.agent = lastHttpsProxyAgent;
     } else {
         const parsedProxy = url.parse(proxy);
+        if(!parsedProxy.host || !parsedProxy.port) {
+            return fetchOptions;
+        }
+
         const useStrictSSL = !!proxyStrictSSL; // coerce to boolean just in case
-        fetchOptions.agent = new HttpsProxyAgent({
-            ...parsedProxy,
+
+        fetchOptions.agent = createHttpsProxyAgent({
+            host: parsedProxy.host,
+            port: parsedProxy.port,
             secureEndpoint: useStrictSSL,
             rejectUnauthorized: useStrictSSL
         });
