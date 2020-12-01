@@ -1,10 +1,9 @@
-#load "nuget:https://www.nuget.org/api/v2?package=Cake.VsCode.Recipe&version=0.3.0"
+#load "nuget:https://www.nuget.org/api/v2?package=Cake.VsCode.Recipe&version=0.4.0"
 
 if(BuildSystem.IsLocalBuild)
 {
     Environment.SetVariableNames(
-        githubUserNameVariable: "CAKE_GITHUB_USERNAME",
-        githubPasswordVariable: "CAKE_GITHUB_PASSWORD"
+        githubTokenVariable: "CAKE_GITHUB_PAT"
     );
 }
 else
