@@ -4,6 +4,7 @@ import fetch from 'node-fetch';
 import { getFetchOptions } from './utils';
 import { Version } from './version';
 import { logError, logToOutput } from './log';
+import { getNugetServiceUrl, NuGetServiceType } from './nugetServiceUrl';
 
 export class CakeTool {
 
@@ -43,7 +44,7 @@ export class CakeTool {
      * returns the latest available version of Cake.Tool on nuget
      */
     public async getAvailableVersion(): Promise<Version|null> {
-        const url = 'https://azuresearch-usnc.nuget.org/query?q=Cake.Tool&prerelease=false'; 
+        const url = (await getNugetServiceUrl(NuGetServiceType.SearchQueryService)) + '?q=Cake.Tool&prerelease=false'; 
         try {
             const search = await fetch(
                 url,
