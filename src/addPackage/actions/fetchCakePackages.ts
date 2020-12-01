@@ -5,21 +5,23 @@ import { getFetchOptions } from '../../shared/utils';
 import { window, workspace } from 'vscode';
 import {
     CAKE_SEARCH_PAGE_SIZE,
-    NUGET_SEARCH_URL,
     CANCEL
 } from '../../constants';
-import {
-    NUGET_SEARCHING_PACKAGES
-} from '../../shared/messages';
+import { NUGET_SEARCHING_PACKAGES } from '../../shared/messages';
+import { getNugetServiceUrl, NuGetServiceType } from '../../shared/nugetServiceUrl';
 
-export default function fetchCakePackages(
+export default async function fetchCakePackages(
     value: string | undefined,
-    searchUrl: string = NUGET_SEARCH_URL,
+    searchUrl?: string,
     take: string = CAKE_SEARCH_PAGE_SIZE
-): Promise<Response> | Promise<never> {
+): Promise<Response | never> {
     if (!value) {
         // User has canceled the process.
         return Promise.reject(CANCEL);
+    }
+
+    if(!searchUrl){
+        searchUrl = await getNugetServiceUrl(NuGetServiceType.SearchAutocompleteService);
     }
 
     window.setStatusBarMessage(NUGET_SEARCHING_PACKAGES);
@@ -30,7 +32,7 @@ export default function fetchCakePackages(
         take: take
     });
 
-    return fetch(
+    return await fetch(
         `${searchUrl}?${queryParams}`,
         getFetchOptions(workspace.getConfiguration('http'))
     );
