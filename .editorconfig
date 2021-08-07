@@ -10,7 +10,11 @@ indent_size = 4
 trim_trailing_whitespace = true
 
 # 2 space indentation for .travis.yml and package.json
-[{.travis.yml},package.json]
+[{.travis.yml}]
+indent_style = space
+indent_size = 2
+
+[package.json]
 indent_style = space
 indent_size = 2
 
