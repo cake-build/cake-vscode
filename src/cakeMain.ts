@@ -124,6 +124,21 @@ async function _registerCakeBakery(context: vscode.ExtensionContext) {
             fs.mkdirSync(getOmnisharpUserFolderPath());
         }
 
+        if (fs.existsSync(getOmnisharpCakeConfigFile())) {
+            // Read in file
+            //import omnisharpCakeConfig from getOmnisharpCakeConfigFile();
+            var omnisharpCakeConfig = JSON.parse(fs.readFileSync(getOmnisharpCakeConfigFile(), 'utf-8'))
+            console.log(omnisharpCakeConfig.cake.bakeryPath);
+            omnisharpCakeConfig.cake.bakeryPath = targetPath;
+            fs.writeFileSync(getOmnisharpCakeConfigFile(), JSON.stringify(omnisharpCakeConfig));
+
+            // lets force a restart of the Omnisharp server to use new config
+            vscode.commands.executeCommand('o.restart');
+        } else {
+            // create file
+            var newOmnisharpCakeConfig = { cake: { bakeryPath: targetPath }};
+            fs.writeFileSync(getOmnisharpCakeConfigFile(), JSON.stringify(newOmnisharpCakeConfig));
+        }
     } else {
         logger.logToOutput("Cake.Bakery has already been installed, skipping automated download and extraction.");
     }
@@ -219,8 +234,8 @@ async function _getCakeScriptsAsTasks(context: vscode.ExtensionContext): Promise
                     `Run ${taskNamePrefix}${taskName}`,
                     'Cake',
                     new vscode.CustomExecution(getCakeToolExecution({
-                        command: buildCommandBase, 
-                        script: file.fsPath, 
+                        command: buildCommandBase,
+                        script: file.fsPath,
                         taskName,
                         verbosity: config.verbosity
                     }, config, context)),
@@ -315,7 +330,7 @@ export function deactivate() {
 function getCakeToolExecution(
     cfg: ICakeTaskRunnerConfig,
     settings: ITaskRunnerSettings,
-    context: vscode.ExtensionContext) 
+    context: vscode.ExtensionContext)
     : (resolvedDefinition: vscode.TaskDefinition) => Thenable<vscode.Pseudoterminal> {
 
         return (_: vscode.TaskDefinition) => {
@@ -330,8 +345,8 @@ class CakeTaskWrapper implements vscode.Pseudoterminal {
 	private readonly closeEmitter = new vscode.EventEmitter<number>();
     public onDidClose: vscode.Event<number> = this.closeEmitter.event;
     private isCanceled = false;
-    
-    constructor(private cfg: ICakeTaskRunnerConfig, 
+
+    constructor(private cfg: ICakeTaskRunnerConfig,
         private settings: ITaskRunnerSettings,
         private context: vscode.ExtensionContext) {
     }
@@ -361,7 +376,7 @@ class CakeTaskWrapper implements vscode.Pseudoterminal {
             });
         this.writeEmitter.fire(`started command: ${proc.spawnargs.join(" ")}${os.EOL}`);
         let exit = 0;
-        
+
         proc.on('error', (error) => {
             this.setColorRed();
             this.writeEmitter.fire(`ERROR: ${error.name}${os.EOL}${error.message}${os.EOL}`);
@@ -376,7 +391,7 @@ class CakeTaskWrapper implements vscode.Pseudoterminal {
             const txt = data.toString();
             this.writeEmitter.fire(txt);
         });
-        proc.stderr.on('data', (data: Buffer) => { 
+        proc.stderr.on('data', (data: Buffer) => {
             const txt = data.toString();
             this.setColorRed();
             this.writeEmitter.fire(txt);
@@ -399,7 +414,7 @@ class CakeTaskWrapper implements vscode.Pseudoterminal {
 }
 
 interface ICakeTaskRunnerConfig{
-    command: string; 
+    command: string;
     script: string;
     taskName: string;
     verbosity: string;
