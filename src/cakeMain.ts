@@ -7,7 +7,7 @@ import { installCakeConfigurationCommand } from './configuration/cakeConfigurati
 import { installCakeDebugCommand } from './debug/cakeDebugCommand';
 import { installBuildFileCommand } from './buildFile/cakeBuildFileCommand';
 import { installCakeToWorkspaceCommand } from './install/cakeInstallCommand';
-import { installCakeBakeryCommand } from './bakery/cakeBakeryCommand';
+import { updateCakeBakeryCommand } from './bakery/cakeBakeryCommand';
 import { installCakeRunTaskCommand } from './codeLens/cakeRunTaskCommand';
 import { installCakeDebugTaskCommand } from './codeLens/cakeDebugTaskCommand';
 import { CakeCodeLensProvider } from './codeLens/cakeCodeLensProvider';
@@ -19,6 +19,8 @@ import * as path from 'path';
 import * as os from 'os';
 import { CakeTool } from './shared/cakeTool';
 import { spawn } from 'child_process';
+import { CakeBakery } from './bakery/cakeBakery';
+import { logger } from './shared';
 
 let taskProvider: vscode.Disposable | undefined;
 let codeLensProvider: CakeCodeLensProvider;
@@ -83,7 +85,7 @@ export function activate(context: vscode.ExtensionContext): void {
     // Register the interactive install command.
     context.subscriptions.push(
         vscode.commands.registerCommand('cake.intellisense', async () => {
-            installCakeBakeryCommand();
+            updateCakeBakeryCommand(context.extensionPath);
         })
     );
     // Subscribe to terminal close event to remove reference from executor
@@ -97,8 +99,34 @@ export function activate(context: vscode.ExtensionContext): void {
 
     _registerSymbolProvider(config.codeSymbols, context);
 
+    _registerCakeBakery(context);
+
     vscode.workspace.onDidChangeConfiguration(x => onConfigurationChanged(context, x));
     onConfigurationChanged(context, null as unknown as vscode.ConfigurationChangeEvent);
+}
+
+function getOmnisharpUserFolderPath() : string {
+    return path.join(os.homedir(), ".omnisharp");
+}
+
+function getOmnisharpCakeConfigFile() : string {
+    return path.join(getOmnisharpUserFolderPath(), "omnisharp.json");
+}
+
+async function _registerCakeBakery(context: vscode.ExtensionContext) {
+    let bakery = new CakeBakery(context.extensionPath);
+    var targetPath = bakery.getTargetPath();
+
+    if (!fs.existsSync(targetPath)) {
+        await bakery.downloadAndExtract();
+
+        if (!fs.existsSync(getOmnisharpUserFolderPath())) {
+            fs.mkdirSync(getOmnisharpUserFolderPath());
+        }
+
+    } else {
+        logger.logToOutput("Cake.Bakery has already been installed, skipping automated download and extraction.");
+    }
 }
 
 function onConfigurationChanged(

@@ -92,7 +92,7 @@
       },
       {
         "command": "cake.intellisense",
-        "title": "Cake: Install intellisense support"
+        "title": "Cake: Update intellisense support"
       }
     ],
     "configuration": {
