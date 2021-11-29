@@ -9,7 +9,6 @@ export const NUGET_SERVICE_INDEX_URL = 'https://api.nuget.org/v3/index.json';
 export const DEFAULT_RESPONSE_TIMEOUT = 10000;
 export const CAKE_DEFAULT_NAME = "Cake";
 export const CAKE_BAKERY_PACKAGE_URL = 'http://nuget.org/api/v2/package/Cake.Bakery/';
-export const CAKE_CORECLR_PACKAGE_URL = 'http://nuget.org/api/v2/package/Cake.CoreCLR/';
 export const CAKE_FILE_EXTENSION_MATCHER = /\.(cake)$/;
 export const CAKE_FILE_EXTENSION = '.cake';
 export const CAKE_ADDIN_DIRECTIVE = '#addin';

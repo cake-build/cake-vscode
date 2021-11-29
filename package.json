@@ -304,7 +304,7 @@
               "request": "launch",
               "program": null,
               "cwd": "${workspaceRoot}",
-              "stopAtEntry": true,
+              "stopAtEntry": false,
               "console": "internalConsole",
               "logging": {
                 "exceptions": false,
@@ -451,7 +451,7 @@
                 "stopAtEntry": {
                   "type": "boolean",
                   "description": "If true, the debugger should stop at the entry point of the target.",
-                  "default": true
+                  "default": false
                 },
                 "console": {
                   "type": "string",
@@ -544,8 +544,9 @@
               "--verbosity=diagnostic"
             ],
             "cwd": "${workspaceRoot}",
-            "stopAtEntry": true,
-            "externalConsole": false
+            "stopAtEntry": false,
+            "externalConsole": false,
+            "justMyCode": false
           }
         ],
         "configurationSnippets": [
@@ -566,86 +567,9 @@
                 "--verbosity=diagnostic"
               ],
               "cwd": "^\"\\${workspaceRoot}\"",
-              "stopAtEntry": true,
-              "externalConsole": false
-            }
-          }
-        ]
-      },
-      {
-        "type": "cake-coreclr",
-        "label": "Cake CoreCLR",
-        "initialConfigurations": [
-          {
-            "name": "Cake: Debug Script (.NET Core)",
-            "type": "coreclr",
-            "request": "launch",
-            "program": "${workspaceRoot}/tools/Cake.CoreCLR/Cake.dll",
-            "args": [
-              "${workspaceRoot}/build.cake",
-              "--debug",
-              "--verbosity=diagnostic"
-            ],
-            "cwd": "${workspaceRoot}",
-            "stopAtEntry": true,
-            "externalConsole": false
-          }
-        ],
-        "configurationSnippets": [
-          {
-            "label": "Cake: Debug Script (.NET Core)",
-            "description": "test",
-            "body": {
-              "name": "Cake: Debug Script (CoreCLR)",
-              "type": "coreclr",
-              "request": "launch",
-              "program": "^\"\\${workspaceRoot}/tools/Cake.CoreCLR/Cake.dll\"",
-              "args": [
-                "^\"\\${workspaceRoot}/build.cake\"",
-                "--debug",
-                "--verbosity=diagnostic"
-              ],
-              "cwd": "^\"\\${workspaceRoot}\"",
-              "stopAtEntry": true,
-              "externalConsole": false
-            }
-          }
-        ]
-      },
-      {
-        "type": "cake-mono",
-        "label": "Cake Mono",
-        "initialConfigurations": [
-          {
-            "name": "Cake: Debug Script (Mono)",
-            "type": "mono",
-            "request": "launch",
-            "program": "${workspaceRoot}/tools/Cake/Cake.exe",
-            "args": [
-              "${workspaceRoot}/build.cake",
-              "--debug",
-              "--verbosity=diagnostic"
-            ],
-            "cwd": "${workspaceRoot}",
-            "console": "internalConsole"
-          }
-        ],
-        "configurationSnippets": [
-          {
-            "label": "Cake: Debug Script (Mono)",
-            "description": "test",
-            "body": {
-              "name": "Cake: Debug Script (Mono)",
-              "type": "mono",
-              "request": "launch",
-              "program": "${workspaceRoot}/tools/Cake/Cake.exe",
-              "args": [
-                "${workspaceRoot}/build.cake",
-                "--debug",
-                "--verbosity=diagnostic"
-              ],
-              "cwd": "${workspaceRoot}",
-              "console": "internalConsole"
+              "stopAtEntry": false,
+              "externalConsole": false,
+              "justMyCode": false
             }
           }
         ]

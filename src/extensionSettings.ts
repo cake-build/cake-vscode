@@ -39,7 +39,7 @@ export interface ICodeLensDebugTaskProgramSettings
 
 export interface ICodeLensDebugTaskSettings {
     verbosity: "diagnostic" | "minimal" | "normal" | "quiet" | "verbose";
-    debugType: "mono" | "coreclr";
+    debugType: "coreclr";
     request: string;
     program: ILaunchCommandSettings;
     cwd: string;

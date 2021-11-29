@@ -37,7 +37,11 @@ export class CakeDebugTask {
                 cwd: debugConfig.cwd,
                 stopAtEntry: debugConfig.stopAtEntry,
                 console: debugConfig.console,
-                logging: debugConfig.logging
+                logging: debugConfig.logging,
+                // This is hard-coded to false, and not made a config value
+                // since setting to anything else, results in debugging of
+                // Cake scripts not working.
+                justMyCode: false
             };
 
             resolve(debuggerConfig);
