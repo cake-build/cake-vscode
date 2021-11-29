@@ -6,7 +6,7 @@ interface IPlatformSettings<T> {
     [platform: string]: T;
 }
 
-interface ILaunchCommandSettings 
+interface ILaunchCommandSettings
     extends IPlatformSettings<string> {
 }
 
@@ -33,7 +33,7 @@ export interface IConfigurationSettings {
     config: string;
 }
 
-export interface ICodeLensDebugTaskProgramSettings 
+export interface ICodeLensDebugTaskProgramSettings
     extends IPlatformSettings<string> {
 }
 

@@ -57,10 +57,10 @@ export class CakeDebugTask {
             ) {
                 throw new Error('No open workspace');
             }
-            
+
             await ensureNotDirty(fileName);
             await installCakeToolIfNeeded(settings, this.context);
-        
+
             const workspaceFolder = workspace.workspaceFolders[0];
             const debuggerConfig = await this._getDebuggerConfig(taskName, fileName, debugConfig);
             return await debug.startDebugging(workspaceFolder, debuggerConfig);

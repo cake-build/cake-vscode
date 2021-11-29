@@ -15,7 +15,7 @@ export async function getNugetServiceUrl(type: NuGetServiceType) : Promise<strin
     const resources = (json.resources as any[] || []).filter((x:any) => x['@type'] === type);
     let resource = resources.find((x: any) => (x.comment as string).toLowerCase().indexOf('primary') >= 0);
     if(!resource && resources.length > 0) {
-        resource = resources[0]; 
+        resource = resources[0];
     }
 
     if(!resource){
