@@ -24,13 +24,13 @@ In addition to integrated editing features, the extension also provides commands
 
 * `Cake: Install a bootstrapper` to install a Cake bootstrapper for Windows, OS X or Linux in the root folder.
 * `Cake: Install to workspace` will run through all of the available commands at once, to save having to run them one by one
-* `Cake: Install debug dependencies` to either install the .NET global tool or alternatively download the Cake.CoreCLR NuGet Package into the tools folder.
+* `Cake: Install debug dependencies` to install the .NET global tool.
 * `Cake: Install sample build file` to install a sample Cake File that contains Setup and Teardown actions, a sample task, and argument parsing.
 * `Cake: Add addin from NuGet` to add or update an Addin from NuGet in the specified Cake file.
 * `Cake: Add tool from NuGet` to add or update a Tool from NuGet in the specified Cake file.
 * `Cake: Add module from NuGet` to add or update a Module from NuGet in the modules package.config.
 * `Cake: Install a configuration file` to install the default Cake Configuration file for controlling internal components of Cake.
-* `Cake: Install intellisense support` to download the Cake.Bakery NuGet Package into the tools folder, which in conjunction with OmniSharp provides intellisense support for Cake Files.
+* `Cake: Update intellisense support` to download the Cake.Bakery NuGet Package into the extension folder, which in conjunction with OmniSharp provides intellisense support for Cake Files.
 
 ### Snippets
 
@@ -93,13 +93,13 @@ There are a number of configuration options which allow you to control the Cake 
 * `cake.codeLens.scriptsIncludePattern`: a glob pattern which specifies how to detect `.cake` files in the current workspace. Default value is `**/*.cake`.
 * `cake.codeLens.taskRegularExpression`: a regular expression pattern which is used to identify Tasks within the `*.cake` files. Default value is `Task\\s*?\\(\\s*?\"(.*?)\"\\s*?\\)`.
 * `cake.codeLens.debugTask.verbosity`: allows you to control cake `debug task` verbosity (`diagnostic`, `minimal`, `normal`, `quiet` and `verbose`. Default value is `normal`.
-* `cake.codeLens.debugTask.debugType`: framework type of the debug session (`mono`or `coreclr`). Default value is `coreclr`.
+* `cake.codeLens.debugTask.debugType`: framework type of the debug session (`coreclr`). Default value is `coreclr`.
 * `cake.codeLens.debugTask.request`: request type of the debug session. Default value is `launch`.
-* `cake.codeLens.debugTask.program`: executable of the debug session (e.g. `tools/Cake/Cake.exe` for debugType `mono` or `tools/Cake.CoreCLR/Cake.dll` for debugType `coreclr`). 
+* `cake.codeLens.debugTask.program`: executable of the debug session (e.g. `~/.dotnet/tools/dotnet-cake` for debugType `coreclr` on MacOS and Linux or `~/.dotnet/tools/dotnet-cake.exe` for debugType `coreclr` on Windows).
   This is a complex object, consisting of at least one property `default` and optionally properties corresponding to values of [`os.platform()`](https://nodejs.org/api/os.html#os_os_platform) for non-default values specific to different platforms.
   Default value is `null` which is equal to specifying `{"default": "~/.dotnet/tools/dotnet-cake", "win32": "dotnet-cake.exe"}`.
 * `cake.codeLens.debugTask.cwd`: path to the working directory of the program being debugged. Default value is `${workspaceRoot}`.
-* `cake.codeLens.debugTask.stopAtEntry`: if true, the debugger should stop at the entry point of the target. Default value is `true`.
+* `cake.codeLens.debugTask.stopAtEntry`: if true, the debugger should stop at the entry point of the target. Default value is `false`.
 * `cake.codeLens.debugTask.console`: console used by the debugger (`internalConsole`, `integratedTerminal` or `externalTerminal`) . Default value is `internalConsole`.
 * `cake.codeLens.debugTask.logging.exceptions`: flag to determine whether exception messages should be logged to the output window. Default value is `false`.
 * `cake.codeLens.debugTask.logging.moduleLoad`: flag to determine whether module load events should be logged to the output window. Default value is `false`.

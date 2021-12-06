@@ -23,38 +23,6 @@ export class CakeBootstrapper {
             'Bootstrapper for .NET Tool on Linux and macOS',
             'build.sh',
             true
-        ),
-        new CakeBootstrapperInfo(
-            'dotnet-framework-powershell',
-            '.NET Framework runner PowerShell',
-            enums.RunnerType.NetFramwork,
-            'Bootstrapper for .NET Framework on Windows',
-            'build.ps1',
-            false
-        ),
-        new CakeBootstrapperInfo(
-            'dotnet-framework-bash',
-            '.NET Framework runner Bash',
-            enums.RunnerType.NetFramwork,
-            'Bootstrapper for .NET Framework (Mono) on Linux and macOS',
-            'build.sh',
-            true
-        ),
-        new CakeBootstrapperInfo(
-            'dotnet-core-powershell',
-            '.NET Core runner PowerShell',
-            enums.RunnerType.NetCore,
-            'Bootstrapper for .NET Core on Windows',
-            'build.ps1',
-            false
-        ),
-        new CakeBootstrapperInfo(
-            'dotnet-core-bash',
-            '.NET Core runner Bash',
-            enums.RunnerType.NetCore,
-            'Bootstrapper for .NET Core on Linux and macOS',
-            'build.sh',
-            true
         )
     ];
 

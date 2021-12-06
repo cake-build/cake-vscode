@@ -1,7 +1,5 @@
 import { ExtensionContext, window, workspace } from 'vscode';
-import * as fs from 'fs';
-import { enums, interfaces } from '../shared';
-import { CakeDebug } from '../shared/cakeDebug';
+import { interfaces } from '../shared';
 import { CakeTool } from '../shared/cakeTool';
 
 export async function installCakeDebugCommand(context: ExtensionContext, hideWarning?: boolean): Promise<boolean> {
@@ -11,27 +9,11 @@ export async function installCakeDebugCommand(context: ExtensionContext, hideWar
         return false;
     }
 
-    const selection = await window.showQuickPick([
-        enums.DebugType.NetTool,
-        enums.DebugType.NetCore
-    ]);
-
-    if(!selection){
-        return false;
-    }
-
-    const isCakeTool = selection as enums.DebugType === enums.DebugType.NetTool;
-    const result = await (isCakeTool ? installCakeTool(context)  : installCakeDebug());
+    const result = await (installCakeTool(context));
     const messages = {
-        advice: isCakeTool ?
-            'Cake Debug Dependencies correctly installed globally.' :
-            'Cake Debug Dependencies correctly downloaded.',
-        warning: isCakeTool ?
-            'Cake.Tool is already installed globally' :
-            'Cake.CoreCLR package has already been installed.',
-        error: isCakeTool ?
-            'Error installing Cake Debug Dependencies.' :
-            'Error downloading Cake Debug Dependencies.'
+        advice: 'Cake Debug Dependencies correctly installed globally.',
+        warning: 'Cake.Tool is already installed globally',
+        error: 'Error installing Cake Debug Dependencies.'
     }
 
     if (result.installed) {
@@ -46,18 +28,6 @@ export async function installCakeDebugCommand(context: ExtensionContext, hideWar
     }
 
     return true;
-}
-
-export async function installCakeDebug(): Promise<interfaces.IInstallResult> {
-    let debug = new CakeDebug();
-
-    var targetPath = debug.getTargetPath();
-    if (fs.existsSync(targetPath)) {
-        return { installed: true, advice: false };
-    }
-
-    var result = await debug.downloadAndExtract();
-    return { installed: result, advice: true };
 }
 
 export async function installCakeTool(context: ExtensionContext): Promise<interfaces.IInstallResult> {

@@ -37,7 +37,7 @@ export default function describeCodeLensTests() {
                 '${workspaceRoot}/tools/Cake.CoreCLR/Cake.dll'
             );
             assert.equal(defaultConfig.debugTask.cwd, '${workspaceRoot}');
-            assert.equal(defaultConfig.debugTask.stopAtEntry, true);
+            assert.equal(defaultConfig.debugTask.stopAtEntry, false);
             assert.equal(defaultConfig.debugTask.console, 'internalConsole');
             assert.equal(defaultConfig.debugTask.logging.exceptions, false);
             assert.equal(defaultConfig.debugTask.logging.moduleLoad, false);

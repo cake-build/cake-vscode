@@ -5,7 +5,7 @@ import { ERROR_INVALID_SETTINGS, ERROR_NO_WORKSPACE } from '../../constants';
 import { installBootstrappers } from './bootstrapper';
 import { installBuildFile } from '../../buildFile/cakeBuildFileCommand';
 import { installCakeConfiguration } from '../../configuration/cakeConfigurationCommand';
-import { installCakeDebug, installCakeTool } from '../../debug/cakeDebugCommand';
+import { installCakeTool } from '../../debug/cakeDebugCommand';
 
 export function installCake(
     installOpts: InstallOptions | undefined
@@ -75,22 +75,12 @@ export function installCake(
                 .then(
                     _ => {
                         if (installOpts.installDebug) {
-                            if(installOpts.debuggerType === enums.DebugType.NetTool) {
+                            if (installOpts.debuggerType === enums.DebugType.NetTool) {
                                 installCakeTool(installOpts.context).then(v => {
                                     logResult(
                                         v.installed,
                                         'Cake Debug Dependencies correctly installed globally.',
                                         'Error installing Cake Debug Dependencies.'
-                                    );
-                                })
-                            }
-
-                            if(installOpts.debuggerType === enums.DebugType.NetCore) {
-                                installCakeDebug().then(v => {
-                                    logResult(
-                                        v.installed,
-                                        'Cake Debug Dependencies correctly downloaded.',
-                                        'Error downloading Cake Debug Dependencies.'
                                     );
                                 })
                             }
