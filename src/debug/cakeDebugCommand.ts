@@ -1,5 +1,4 @@
 import { ExtensionContext, window, workspace } from 'vscode';
-import * as fs from 'fs';
 import { interfaces } from '../shared';
 import { CakeTool } from '../shared/cakeTool';
 

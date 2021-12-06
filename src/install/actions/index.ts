@@ -1,7 +1,6 @@
 import * as vscode from 'vscode';
 import { DEFAULT_SCRIPT_NAME, CANCEL } from '../../constants';
 import { enums, messages } from '../../shared';
-import { PROMPT_SCRIPT_NAME } from '../../shared/messages';
 import InstallOptions from '../installOptions';
 import { installCake } from './installCake';
 
