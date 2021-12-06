@@ -722,7 +722,7 @@
     "mocha": "^9.0.3",
     "typemoq": "^2.1.0",
     "typescript": "^4.3.5",
-    "vscode-test": "^1.4.0"
+    "vscode-test": "^1.6.1"
   },
   "extensionDependencies": [
     "ms-dotnettools.csharp"
