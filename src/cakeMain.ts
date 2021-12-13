@@ -7,7 +7,7 @@ import { installCakeConfigurationCommand } from './configuration/cakeConfigurati
 import { installCakeDebugCommand } from './debug/cakeDebugCommand';
 import { installBuildFileCommand } from './buildFile/cakeBuildFileCommand';
 import { installCakeToWorkspaceCommand } from './install/cakeInstallCommand';
-import { installCakeBakeryCommand } from './bakery/cakeBakeryCommand';
+import { updateCakeBakeryCommand } from './bakery/cakeBakeryCommand';
 import { installCakeRunTaskCommand } from './codeLens/cakeRunTaskCommand';
 import { installCakeDebugTaskCommand } from './codeLens/cakeDebugTaskCommand';
 import { CakeCodeLensProvider } from './codeLens/cakeCodeLensProvider';
@@ -19,6 +19,8 @@ import * as path from 'path';
 import * as os from 'os';
 import { CakeTool } from './shared/cakeTool';
 import { spawn } from 'child_process';
+import { CakeBakery } from './bakery/cakeBakery';
+import { logger } from './shared';
 
 let taskProvider: vscode.Disposable | undefined;
 let codeLensProvider: CakeCodeLensProvider;
@@ -83,7 +85,7 @@ export function activate(context: vscode.ExtensionContext): void {
     // Register the interactive install command.
     context.subscriptions.push(
         vscode.commands.registerCommand('cake.intellisense', async () => {
-            installCakeBakeryCommand();
+            updateCakeBakeryCommand(context.extensionPath);
         })
     );
     // Subscribe to terminal close event to remove reference from executor
@@ -97,8 +99,49 @@ export function activate(context: vscode.ExtensionContext): void {
 
     _registerSymbolProvider(config.codeSymbols, context);
 
+    _registerCakeBakery(context);
+
     vscode.workspace.onDidChangeConfiguration(x => onConfigurationChanged(context, x));
     onConfigurationChanged(context, null as unknown as vscode.ConfigurationChangeEvent);
+}
+
+function getOmnisharpUserFolderPath() : string {
+    return path.join(os.homedir(), ".omnisharp");
+}
+
+function getOmnisharpCakeConfigFile() : string {
+    return path.join(getOmnisharpUserFolderPath(), "omnisharp.json");
+}
+
+async function _registerCakeBakery(context: vscode.ExtensionContext) {
+    let bakery = new CakeBakery(context.extensionPath);
+    var targetPath = bakery.getTargetPath();
+
+    if (!fs.existsSync(targetPath)) {
+        await bakery.downloadAndExtract();
+
+        if (!fs.existsSync(getOmnisharpUserFolderPath())) {
+            fs.mkdirSync(getOmnisharpUserFolderPath());
+        }
+
+        if (fs.existsSync(getOmnisharpCakeConfigFile())) {
+            // Read in file
+            //import omnisharpCakeConfig from getOmnisharpCakeConfigFile();
+            var omnisharpCakeConfig = JSON.parse(fs.readFileSync(getOmnisharpCakeConfigFile(), 'utf-8'))
+            console.log(omnisharpCakeConfig.cake.bakeryPath);
+            omnisharpCakeConfig.cake.bakeryPath = targetPath;
+            fs.writeFileSync(getOmnisharpCakeConfigFile(), JSON.stringify(omnisharpCakeConfig));
+
+            // lets force a restart of the Omnisharp server to use new config
+            vscode.commands.executeCommand('o.restart');
+        } else {
+            // create file
+            var newOmnisharpCakeConfig = { cake: { bakeryPath: targetPath }};
+            fs.writeFileSync(getOmnisharpCakeConfigFile(), JSON.stringify(newOmnisharpCakeConfig));
+        }
+    } else {
+        logger.logToOutput("Cake.Bakery has already been installed, skipping automated download and extraction.");
+    }
 }
 
 function onConfigurationChanged(
@@ -191,8 +234,8 @@ async function _getCakeScriptsAsTasks(context: vscode.ExtensionContext): Promise
                     `Run ${taskNamePrefix}${taskName}`,
                     'Cake',
                     new vscode.CustomExecution(getCakeToolExecution({
-                        command: buildCommandBase, 
-                        script: file.fsPath, 
+                        command: buildCommandBase,
+                        script: file.fsPath,
                         taskName,
                         verbosity: config.verbosity
                     }, config, context)),
@@ -287,7 +330,7 @@ export function deactivate() {
 function getCakeToolExecution(
     cfg: ICakeTaskRunnerConfig,
     settings: ITaskRunnerSettings,
-    context: vscode.ExtensionContext) 
+    context: vscode.ExtensionContext)
     : (resolvedDefinition: vscode.TaskDefinition) => Thenable<vscode.Pseudoterminal> {
 
         return (_: vscode.TaskDefinition) => {
@@ -302,8 +345,8 @@ class CakeTaskWrapper implements vscode.Pseudoterminal {
 	private readonly closeEmitter = new vscode.EventEmitter<number>();
     public onDidClose: vscode.Event<number> = this.closeEmitter.event;
     private isCanceled = false;
-    
-    constructor(private cfg: ICakeTaskRunnerConfig, 
+
+    constructor(private cfg: ICakeTaskRunnerConfig,
         private settings: ITaskRunnerSettings,
         private context: vscode.ExtensionContext) {
     }
@@ -333,7 +376,7 @@ class CakeTaskWrapper implements vscode.Pseudoterminal {
             });
         this.writeEmitter.fire(`started command: ${proc.spawnargs.join(" ")}${os.EOL}`);
         let exit = 0;
-        
+
         proc.on('error', (error) => {
             this.setColorRed();
             this.writeEmitter.fire(`ERROR: ${error.name}${os.EOL}${error.message}${os.EOL}`);
@@ -348,7 +391,7 @@ class CakeTaskWrapper implements vscode.Pseudoterminal {
             const txt = data.toString();
             this.writeEmitter.fire(txt);
         });
-        proc.stderr.on('data', (data: Buffer) => { 
+        proc.stderr.on('data', (data: Buffer) => {
             const txt = data.toString();
             this.setColorRed();
             this.writeEmitter.fire(txt);
@@ -371,7 +414,7 @@ class CakeTaskWrapper implements vscode.Pseudoterminal {
 }
 
 interface ICakeTaskRunnerConfig{
-    command: string; 
+    command: string;
     script: string;
     taskName: string;
     verbosity: string;

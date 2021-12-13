@@ -37,7 +37,11 @@ export class CakeDebugTask {
                 cwd: debugConfig.cwd,
                 stopAtEntry: debugConfig.stopAtEntry,
                 console: debugConfig.console,
-                logging: debugConfig.logging
+                logging: debugConfig.logging,
+                // This is hard-coded to false, and not made a config value
+                // since setting to anything else, results in debugging of
+                // Cake scripts not working.
+                justMyCode: false
             };
 
             resolve(debuggerConfig);
@@ -53,10 +57,10 @@ export class CakeDebugTask {
             ) {
                 throw new Error('No open workspace');
             }
-            
+
             await ensureNotDirty(fileName);
             await installCakeToolIfNeeded(settings, this.context);
-        
+
             const workspaceFolder = workspace.workspaceFolders[0];
             const debuggerConfig = await this._getDebuggerConfig(taskName, fileName, debugConfig);
             return await debug.startDebugging(workspaceFolder, debuggerConfig);

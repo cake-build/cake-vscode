@@ -6,7 +6,7 @@ interface IPlatformSettings<T> {
     [platform: string]: T;
 }
 
-interface ILaunchCommandSettings 
+interface ILaunchCommandSettings
     extends IPlatformSettings<string> {
 }
 
@@ -33,13 +33,13 @@ export interface IConfigurationSettings {
     config: string;
 }
 
-export interface ICodeLensDebugTaskProgramSettings 
+export interface ICodeLensDebugTaskProgramSettings
     extends IPlatformSettings<string> {
 }
 
 export interface ICodeLensDebugTaskSettings {
     verbosity: "diagnostic" | "minimal" | "normal" | "quiet" | "verbose";
-    debugType: "mono" | "coreclr";
+    debugType: "coreclr";
     request: string;
     program: ILaunchCommandSettings;
     cwd: string;

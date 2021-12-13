@@ -2,7 +2,7 @@ import { commands, window, workspace } from 'vscode';
 import * as fs from 'fs';
 import { CakeBakery } from './cakeBakery';
 
-export async function installCakeBakeryCommand() {
+export async function updateCakeBakeryCommand(extensionPath: string) {
     // Make sure that we're in the correct place.
     if (workspace.rootPath === undefined) {
         window.showErrorMessage('You have not yet opened a folder.');
@@ -10,7 +10,7 @@ export async function installCakeBakeryCommand() {
     }
 
     // Install Cake Bakery
-    var result = await installCakeDebug();
+    var result = await installCakeDebug(extensionPath);
     if (result) {
         commands.executeCommand('o.restart');
         window.showInformationMessage(
@@ -23,15 +23,12 @@ export async function installCakeBakeryCommand() {
     }
 }
 
-export async function installCakeDebug(): Promise<boolean> {
-    let bakery = new CakeBakery();
+export async function installCakeDebug(extensionPath: string): Promise<boolean> {
+    let bakery = new CakeBakery(extensionPath);
 
-    var targetPath = bakery.getTargetPath();
+    var targetPath = bakery.getNupkgDestinationPath();
     if (fs.existsSync(targetPath)) {
-        window.showWarningMessage(
-            'Intellisense support for Cake files has already been installed.'
-        );
-        return true;
+        fs.rmdirSync(targetPath, {recursive: true});
     }
 
     return await bakery.downloadAndExtract();

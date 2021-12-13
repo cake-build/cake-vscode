@@ -50,18 +50,8 @@ export function showBootstrapperTypeOption(
 ): Thenable<InstallOptions | undefined> {
     if(installOpts) {
         if(installOpts.installBootstrappers) {
-            return getBootstrapperOption(
-                messages.CONFIRM_BOOTSTRAPPER_TYPE,
-                installOpts,
-                (opts, value) => {
-                    if(opts) {
-                        opts.bootstrapperType = value;
-                        return opts;
-                    } else {
-                        throw "Installation options are not defined."
-                    }
-                }
-            );
+            installOpts.bootstrapperType = enums.RunnerType.NetTool;
+            return Promise.resolve(installOpts);
         } else {
             return Promise.resolve(installOpts);
         }
@@ -119,18 +109,8 @@ export function showDebugTypeOption(
     }
 
     if(installOpts?.installDebug) {
-        return getDebugOption(
-            messages.CONFIRM_DEBUG_TYPE_OPTION,
-            installOpts,
-            (opts, value) => {
-                if(opts) {
-                    opts.debuggerType = value;
-                    return opts;
-                } else {
-                    throw "Installation options are not defined"
-                }
-            }
-        )
+        installOpts.debuggerType = enums.DebugType.NetTool;
+        return Promise.resolve(installOpts);
     } else {
         return Promise.resolve(installOpts);
     }
@@ -156,41 +136,3 @@ function getOption(
             });
     });
 }
-
-function getDebugOption(
-    message: string,
-    options: InstallOptions | undefined,
-    callback: (opts: InstallOptions | undefined, value: enums.DebugType) => void): Thenable<InstallOptions | undefined> {
-        return new Promise((resolve, reject) => {
-            vscode.window
-                .showQuickPick([enums.DebugType.NetTool, enums.DebugType.NetCore], { placeHolder: message })
-                .then((value: string | undefined) => {
-                    if(!value) {
-                        reject(CANCEL);
-                    }
-
-                    callback(options, value as enums.DebugType);
-                    resolve(options);
-                })
-        });
-}
-
-function getBootstrapperOption(
-    message: string,
-    options: InstallOptions | undefined,
-    callback: (opts: InstallOptions | undefined, value: enums.RunnerType) => void): Thenable<InstallOptions | undefined> {
-        return new Promise((resolve, reject) => {
-            vscode.window
-                .showQuickPick([enums.RunnerType.NetTool, enums.RunnerType.NetFramwork, enums.RunnerType.NetCore], {
-                    placeHolder: message
-                })
-                .then((value: string | undefined) => {
-                    if(!value) {
-                        reject(CANCEL);
-                    }
-
-                    callback(options, value as enums.RunnerType);
-                    resolve(options);
-                });
-        });
-    }

@@ -27,9 +27,11 @@ export async function installCakeToolIfNeeded(settings: IExtensionSettings, cont
         try {
             await cakeTool.ensureInstalled();
         }
-        catch (ex) {
+        catch (ex: unknown) {
             logError("Error installing Cake .NET Tool", true);
-            logError(ex);
+            if (ex instanceof Error) {
+                logError(ex.message);
+            }
         }
     }
 }

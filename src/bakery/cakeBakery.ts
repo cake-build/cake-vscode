@@ -2,47 +2,36 @@ var request = require('request');
 var AdmZip = require('adm-zip');
 import * as path from 'path';
 import * as fs from 'fs';
-import { window, workspace } from 'vscode';
-import { readCakeConfigFile, Config } from './../shared/utils';
+import { window } from 'vscode';
 import {
     CAKE_BAKERY_PACKAGE_URL,
     DEFAULT_RESPONSE_TIMEOUT
 } from '../constants';
 
 export class CakeBakery {
-    private config: Config;
+    private extensionPath : string;
 
-    constructor() {
-        this.config = readCakeConfigFile(workspace.rootPath);
+    constructor(extensionPath: string) {
+        this.extensionPath = extensionPath;
     }
 
     public getTargetPath(): string {
-        if (workspace.rootPath) {
-            return path.join(
-                workspace.rootPath,
-                this.config.Paths.Tools,
-                'Cake.Bakery.exe'
-            );
-        }
-        return '';
+        return path.join(
+            this.extensionPath,
+            'Cake.Bakery/tools/Cake.Bakery.exe'
+        );
     }
 
     public getNupkgDestinationPath(): string {
-        if (workspace.rootPath) {
-            return path.join(
-                workspace.rootPath,
-                this.config.Paths.Tools,
-                'Cake.Bakery'
-            );
-        }
-        return '';
+        return path.join(
+            this.extensionPath,
+            'Cake.Bakery'
+        );
     }
 
     public getToolFolderPath(): string {
-        if (workspace.rootPath) {
-            return path.join(workspace.rootPath, this.config.Paths.Tools);
-        }
-        return '';
+        return path.join(
+            this.extensionPath);
     }
 
     public downloadAndExtract(): Thenable<boolean> {
