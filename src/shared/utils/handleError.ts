@@ -1,5 +1,6 @@
+import { logger } from '../../shared'
 /**
- * Writes an error to the console but rejects with the given message
+ * Writes an error to the logger but rejects with the given message
  *
  * @param {Error} err
  * @param {string} displayMessage
@@ -10,7 +11,13 @@ export function handleError<T>(
   displayMessage: string,
   rejector: (reason?: any) => T
 ): T {
-  console.error(err || displayMessage);
+  logger.logError(displayMessage);
+  if(err){
+    if(typeof(err) == "object") {
+      err = JSON.stringify(err);
+    }
+    logger.logToOutput(err);
+  }
   return rejector(displayMessage);
 }
 
