@@ -21,7 +21,7 @@ export default async function fetchPackageVersions(
             versionsUrl = await getNugetServiceUrl(NuGetServiceType.FlatContainer3);
         }
 
-        versionsUrl = versionsUrl.replace(/\/?$/,`/${selectedPackageName}/index.json`)
+        versionsUrl = versionsUrl.replace(/\/?$/,`/${selectedPackageName.toLowerCase()}/index.json`)
         logger.logInfo(`Fetching package versions for package '${selectedPackageName}' using URL: ${versionsUrl}`);
         const response = await fetch(
             versionsUrl,
