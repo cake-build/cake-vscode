@@ -626,7 +626,7 @@
   "dependencies": {
     "adm-zip": "^0.5.9",
     "byline": "^5.0.0",
-    "https-proxy-agent": "^5.0.0",
+    "https-proxy-agent": "^5.0.1",
     "ini": "^3.0.1",
     "node-fetch": "^2.6.7",
     "request": "^2.88.2",
