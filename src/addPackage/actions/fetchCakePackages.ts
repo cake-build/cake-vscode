@@ -1,5 +1,6 @@
 import * as qs from 'querystring';
 import fetch from 'node-fetch';
+import { logger } from '../../shared'
 import { Response } from 'node-fetch';
 import { getFetchOptions } from '../../shared/utils';
 import { window, workspace } from 'vscode';
@@ -32,8 +33,16 @@ export default async function fetchCakePackages(
         take: take
     });
 
-    return await fetch(
-        `${searchUrl}?${queryParams}`,
-        getFetchOptions(workspace.getConfiguration('http'))
-    );
+    try {
+        const fullUrl = `${searchUrl}?${queryParams}`;
+        logger.logInfo(`Fetching available packages for query '${value}' using URL: ${fullUrl}`);
+        return await fetch(
+            fullUrl,
+            getFetchOptions(workspace.getConfiguration('http'))
+        );
+    } catch (e: any) {
+        logger.logError("Error fetching available packages from NuGet for query: "+value);
+        logger.logToOutput(e);
+        throw e;
+    }
 }

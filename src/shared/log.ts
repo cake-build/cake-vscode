@@ -1,5 +1,11 @@
-import { window, OutputChannel } from 'vscode';
+import { window, OutputChannel, extensions } from 'vscode';
 import { OUTPUT_CHANNEL_NAME } from '../constants';
+
+interface IPackageJson {
+    // see https://code.visualstudio.com/api/references/extension-manifest
+    name: string;
+    version: string;
+}
 
 let channel: OutputChannel;
 
@@ -32,6 +38,8 @@ export function logInfo(info: string, notify: boolean = false) {
 function getChannel(name: string): OutputChannel {
     if (!channel) {
         channel = window.createOutputChannel(name);
+        const thisExtension = (extensions.getExtension("cake-build.cake-vscode")?.packageJSON ?? {}) as IPackageJson;
+        channel.appendLine(`This is ${thisExtension.name}, version ${thisExtension.version}`);
     }
 
     return channel;
