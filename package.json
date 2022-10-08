@@ -627,7 +627,7 @@
     "adm-zip": "^0.5.9",
     "byline": "^5.0.0",
     "https-proxy-agent": "^5.0.0",
-    "ini": "^2.0.0",
+    "ini": "^3.0.1",
     "node-fetch": "^2.6.6",
     "request": "^2.88.2",
     "xml2js": "^0.4.23"
