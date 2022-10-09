@@ -18,7 +18,7 @@ export class CakeBakery {
     public getTargetPath(): string {
         return path.join(
             this.extensionPath,
-            'Cake.Bakery/tools/Cake.Bakery.exe'
+            'Cake.Bakery/tools/Cake.Bakery.dll'
         );
     }
 

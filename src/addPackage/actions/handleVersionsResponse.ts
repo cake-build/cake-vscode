@@ -11,7 +11,7 @@ export default function handleVersionsResponse({
 }): Promise<any> | Promise<never> {
     if (!response.ok) {
         return handleError<Promise<never>>(
-            null,
+            response,
             NUGET_BAD_VERSIONING,
             Promise.reject.bind(Promise)
         );

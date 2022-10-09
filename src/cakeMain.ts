@@ -128,8 +128,9 @@ async function _registerCakeBakery(context: vscode.ExtensionContext) {
             // Read in file
             //import omnisharpCakeConfig from getOmnisharpCakeConfigFile();
             var omnisharpCakeConfig = JSON.parse(fs.readFileSync(getOmnisharpCakeConfigFile(), 'utf-8'))
-            console.log(omnisharpCakeConfig.cake.bakeryPath);
+            logger.logInfo(`existing bakery-path: ${omnisharpCakeConfig.cake.bakeryPath}`);
             omnisharpCakeConfig.cake.bakeryPath = targetPath;
+            logger.logInfo(`new bakery-path: ${omnisharpCakeConfig.cake.bakeryPath}`);
             fs.writeFileSync(getOmnisharpCakeConfigFile(), JSON.stringify(omnisharpCakeConfig));
 
             // lets force a restart of the Omnisharp server to use new config
