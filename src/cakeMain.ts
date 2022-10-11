@@ -105,41 +105,13 @@ export function activate(context: vscode.ExtensionContext): void {
     onConfigurationChanged(context, null as unknown as vscode.ConfigurationChangeEvent);
 }
 
-function getOmnisharpUserFolderPath() : string {
-    return path.join(os.homedir(), ".omnisharp");
-}
-
-function getOmnisharpCakeConfigFile() : string {
-    return path.join(getOmnisharpUserFolderPath(), "omnisharp.json");
-}
-
 async function _registerCakeBakery(context: vscode.ExtensionContext) {
     let bakery = new CakeBakery(context.extensionPath);
     var targetPath = bakery.getTargetPath();
 
     if (!fs.existsSync(targetPath)) {
         await bakery.downloadAndExtract();
-
-        if (!fs.existsSync(getOmnisharpUserFolderPath())) {
-            fs.mkdirSync(getOmnisharpUserFolderPath());
-        }
-
-        if (fs.existsSync(getOmnisharpCakeConfigFile())) {
-            // Read in file
-            //import omnisharpCakeConfig from getOmnisharpCakeConfigFile();
-            var omnisharpCakeConfig = JSON.parse(fs.readFileSync(getOmnisharpCakeConfigFile(), 'utf-8'))
-            logger.logInfo(`existing bakery-path: ${omnisharpCakeConfig.cake.bakeryPath}`);
-            omnisharpCakeConfig.cake.bakeryPath = targetPath;
-            logger.logInfo(`new bakery-path: ${omnisharpCakeConfig.cake.bakeryPath}`);
-            fs.writeFileSync(getOmnisharpCakeConfigFile(), JSON.stringify(omnisharpCakeConfig));
-
-            // lets force a restart of the Omnisharp server to use new config
-            vscode.commands.executeCommand('o.restart');
-        } else {
-            // create file
-            var newOmnisharpCakeConfig = { cake: { bakeryPath: targetPath }};
-            fs.writeFileSync(getOmnisharpCakeConfigFile(), JSON.stringify(newOmnisharpCakeConfig));
-        }
+        await bakery.updateOmnisharpSettings();
     } else {
         logger.logToOutput("Cake.Bakery has already been installed, skipping automated download and extraction.");
     }
