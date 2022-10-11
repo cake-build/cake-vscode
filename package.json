@@ -619,9 +619,10 @@
   "scripts": {
     "vscode:prepublish": "npm run compile",
     "compile": "tsc -p ./",
-    "watch": "tsc -watch -p ./",
+    "watch": "npm run ensureCi && tsc -watch -p ./",
     "test": "npm run compile && node ./out/test/runTest.js",
-    "depcheck": "depcheck"
+    "depcheck": "depcheck",
+    "ensureCi": "node -e \"const fs=require('fs'); if (fs.existsSync('./node_modules/')) { process.exit(123); }\" && npm ci"
   },
   "dependencies": {
     "adm-zip": "^0.5.9",
