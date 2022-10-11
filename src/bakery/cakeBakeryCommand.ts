@@ -1,35 +1,33 @@
-import { commands, window, workspace } from 'vscode';
+import { commands, window } from 'vscode';
 import * as fs from 'fs';
 import { CakeBakery } from './cakeBakery';
+import { logger } from '../shared'
 
 export async function updateCakeBakeryCommand(extensionPath: string) {
-    // Make sure that we're in the correct place.
-    if (workspace.rootPath === undefined) {
-        window.showErrorMessage('You have not yet opened a folder.');
-        return;
-    }
-
     // Install Cake Bakery
-    var result = await installCakeDebug(extensionPath);
+    var result = await forceInstallBakery(extensionPath);
     if (result) {
         commands.executeCommand('o.restart');
         window.showInformationMessage(
-            'Intellisense support for Cake files was installed.'
+            'Intellisense support (Cake.Bakery) for Cake files was installed.'
         );
     } else {
         window.showErrorMessage(
-            'Error downloading intellisense support for Cake files.'
+            'Error downloading intellisense support (Cake.Bakery) for Cake files.'
         );
     }
 }
 
-export async function installCakeDebug(extensionPath: string): Promise<boolean> {
+export async function forceInstallBakery(extensionPath: string): Promise<boolean> {
     let bakery = new CakeBakery(extensionPath);
 
-    var targetPath = bakery.getNupkgDestinationPath();
+    var targetPath = bakery.getInstallationPath();
+    logger.logInfo("Force-updating Cake.Bakery in " + targetPath);
     if (fs.existsSync(targetPath)) {
         fs.rmdirSync(targetPath, {recursive: true});
     }
 
-    return await bakery.downloadAndExtract();
+    const success = await bakery.downloadAndExtract();
+    await bakery.updateOmnisharpSettings();
+    return success;
 }
