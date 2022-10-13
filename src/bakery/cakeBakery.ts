@@ -90,22 +90,36 @@ export class CakeBakery {
             
                 const targetPath = this.getTargetPath();
                 const omnisharpCakeConfigFile = this.getOmnisharpCakeConfigFile();
+                let omnisharpCakeConfig = {};
                 if (fs.existsSync(omnisharpCakeConfigFile)) {
                     // Read in file
                     //import omnisharpCakeConfig from omnisharpCakeConfigFile;
-                    var omnisharpCakeConfig = JSON.parse(fs.readFileSync(omnisharpCakeConfigFile, 'utf-8'))
-                    logger.logInfo(`existing bakery-path: ${omnisharpCakeConfig.cake.bakeryPath}`);
-                    omnisharpCakeConfig.cake.bakeryPath = targetPath;
-                    logger.logInfo(`new bakery-path: ${omnisharpCakeConfig.cake.bakeryPath}`);
-                    fs.writeFileSync(omnisharpCakeConfigFile, JSON.stringify(omnisharpCakeConfig, null, 2));
-            
-                    // lets force a restart of the Omnisharp server to use new config
-                    vscode.commands.executeCommand('o.restart');
+                    omnisharpCakeConfig = JSON.parse(fs.readFileSync(omnisharpCakeConfigFile, 'utf-8'))
                 } else {
-                    // create file
-                    var newOmnisharpCakeConfig = { cake: { bakeryPath: targetPath }};
-                    fs.writeFileSync(omnisharpCakeConfigFile, JSON.stringify(newOmnisharpCakeConfig));
+                    logger.logInfo(`${omnisharpCakeConfigFile} will be created.`);
                 }
+
+                let cakePropName = this.getPropertyNameCaseInsensitive(omnisharpCakeConfig, "cake");
+                if(!cakePropName) {
+                    cakePropName = "cake"
+                    omnisharpCakeConfig[cakePropName] = {};
+                }
+                
+                let bakeryPathPropName = this.getPropertyNameCaseInsensitive(omnisharpCakeConfig[cakePropName], "bakeryPath");
+                if(!bakeryPathPropName) {
+                    bakeryPathPropName = "bakeryPath"
+                    omnisharpCakeConfig[cakePropName][bakeryPathPropName] = "";
+                }
+                
+                logger.logInfo(`existing bakery-path: ${omnisharpCakeConfig[cakePropName][bakeryPathPropName]}`);
+                omnisharpCakeConfig[cakePropName][bakeryPathPropName] = targetPath;
+                logger.logInfo(`new bakery-path: ${omnisharpCakeConfig[cakePropName][bakeryPathPropName]}`);
+                
+
+                fs.writeFileSync(omnisharpCakeConfigFile, JSON.stringify(omnisharpCakeConfig, null, 2));
+            
+                // lets force a restart of the Omnisharp server to use new config
+                vscode.commands.executeCommand('o.restart');
                 logger.logInfo("Omnisharp setting successfully updated.")
                 resolve();
             } catch (e) {
@@ -123,5 +137,17 @@ export class CakeBakery {
     
     private getOmnisharpCakeConfigFile() : string {
         return path.join(this.getOmnisharpUserFolderPath(), "omnisharp.json");
+    }
+
+    private getPropertyNameCaseInsensitive(obj: any, propName: string) : string|null {
+        for (const key in obj) {
+            if (Object.prototype.hasOwnProperty.call(obj, key)) {
+                if(propName.toLowerCase() == key.toLowerCase()) {
+                    return key;
+                }
+            }
+        }
+    
+        return null;
     }
 }
