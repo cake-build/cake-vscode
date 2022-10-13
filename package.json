@@ -622,7 +622,7 @@
     "watch": "npm run ensureCi && tsc -watch -p ./",
     "test": "npm run compile && node ./out/test/runTest.js",
     "depcheck": "depcheck",
-    "ensureCi": "node -e \"const fs=require('fs'); if (fs.existsSync('./node_modules/')) { process.exit(123); }\" && npm ci"
+    "ensureCi": "(node -e \"const fs=require('fs'); if (fs.existsSync('./node_modules/')) { process.exit(123); }\" && npm ci) & echo 'ensured.'"
   },
   "dependencies": {
     "adm-zip": "^0.5.9",
