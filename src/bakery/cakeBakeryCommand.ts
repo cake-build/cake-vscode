@@ -5,16 +5,20 @@ import { logger } from '../shared'
 
 export async function updateCakeBakeryCommand(extensionPath: string) {
     // Install Cake Bakery
-    var result = await forceInstallBakery(extensionPath);
-    if (result) {
-        commands.executeCommand('o.restart');
-        window.showInformationMessage(
-            'Intellisense support (Cake.Bakery) for Cake files was installed.'
-        );
-    } else {
-        window.showErrorMessage(
-            'Error downloading intellisense support (Cake.Bakery) for Cake files.'
-        );
+    try {
+        var result = await forceInstallBakery(extensionPath);
+        if (result) {
+            commands.executeCommand('o.restart');
+            window.showInformationMessage(
+                'Intellisense support (Cake.Bakery) for Cake files was installed.'
+            );
+        } else {
+            window.showErrorMessage(
+                'Error downloading intellisense support (Cake.Bakery) for Cake files.'
+            );
+        }
+    } catch (e: unknown) {
+        logger.logError("Intellisense support (Cake.Bakery) for Cake files NOT installed!\r\n> "+e, false)
     }
 }
 
