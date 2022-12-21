@@ -625,7 +625,7 @@
     "ensureCi": "node -e \"const fs=require('fs'); if (fs.existsSync('./node_modules/')) { process.exit(123); }\" && npm ci"
   },
   "dependencies": {
-    "adm-zip": "^0.5.9",
+    "adm-zip": "^0.5.10",
     "byline": "^5.0.0",
     "https-proxy-agent": "^5.0.1",
     "ini": "^3.0.1",
