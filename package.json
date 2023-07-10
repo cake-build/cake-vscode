@@ -643,7 +643,7 @@
     "@types/vscode": "^1.24.0",
     "@types/xml2js": "^0.4.9",
     "depcheck": "^1.4.3",
-    "glob": "^8.0.3",
+    "glob": "^10.3.3",
     "mocha": "^10.0.0",
     "typemoq": "^2.1.0",
     "typescript": "^4.8.4",
